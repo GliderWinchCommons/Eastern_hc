@@ -5,6 +5,8 @@ import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
 import DataObjects.Operator;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -12,9 +14,9 @@ import DataObjects.Operator;
  */
 public class LaunchWeightWidget extends EnvironmentalWidget {
 
-    public LaunchWeightWidget()
+    public LaunchWeightWidget(TextField field, Label unit)
     {
-        super("Launch Weight", true, false);
+        super(field, null, unit);
     }
 
     @Override

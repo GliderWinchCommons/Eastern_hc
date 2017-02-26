@@ -3,50 +3,46 @@ package DatabaseUtilities;
 import static Communications.ErrorLogger.logError;
 import ParameterSelection.ParameterSelectionPanel;
 import java.sql.*;
-import javax.swing.JOptionPane;
+import javafx.scene.control.Alert;
 
 /**
  *
  * @author Alex Williams, Noah Fujioka, dbennett3
  */
 public class DatabaseInitialization {
-    
+
     public static final String HOSTCONTROLLER_VERSION = "3.0.0";
-    public static final String DATABASE_VERSION = "3.0.0";
+    public static final String DATABASE_VERSION = "4.0.0";
     public static final String WINCH_PRAM_VERSION = "1.0.0";
-    static final String databaseConnectionName = "jdbc:derby:hcDatabase;";
+    static final String databaseConnectionName = "jdbc:derby:hcDatabase;create=true;";
     static final String clientDriverName = "org.apache.derby.jdbc.ClientDriver";
     static final String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
-    
+
     /* Used to connect to the database 
     if you change the this method you should do that in connectEx as well
-    */
-    
+     */
     public static Connection connect() {
         Connection connection = null;
-        
+
         //Check for DB drivers
-        try{
+        try {
             Class.forName(clientDriverName);
             Class.forName(driverName);
-        }catch(ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Can't load JavaDb ClientDriver", 
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, "Can't load JavaDb ClientDriver, Check Error Log").showAndWait();
             logError(e);
         }
-    
+
         //Try to connect to the specified database
-        try{
+        try {
             connection = DriverManager.getConnection(databaseConnectionName);
-        }catch(SQLException e) {
-            //TODO Fix error handling
-            JOptionPane.showMessageDialog(null, "Correctly loaded the JavaDb ClientDriver, "
-                    + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Couldn't connect to database, Check Error Log").showAndWait();
             logError(e);
         }
         return connection;
     }
-    
+
     //Simmilar to the above but will throw exceptions
     public static Connection connectEx() throws ClassNotFoundException, SQLException {
         Connection connection = null;
@@ -55,176 +51,176 @@ public class DatabaseInitialization {
             Class.forName(clientDriverName);
             Class.forName(driverName);
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Can't load JavaDb ClientDriver", "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.ERROR, "Can't load JavaDb ClientDriver, Check Error Log").showAndWait();
             throw e;
         }
         //Try to connect to the specified database
         try {
             connection = DriverManager.getConnection(databaseConnectionName);
         } catch (SQLException e) {
-            //TODO Fix error handling
-            JOptionPane.showMessageDialog(null, "Correctly loaded the JavaDb ClientDriver, "
-                    + e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.ERROR, "Couldn't connect to database, Check Error Log").showAndWait();
             throw e;
         }
         return connection;
     }
-    
+
     /**
-    *Reinitializes the database for this program using calls to the helper
-    *functions
-    *
+     * Reinitializes the database for this program using calls to the helper
+     * functions
+     *
      * @param psp tells panel that database is created.
      * @return false if fails
-    */
+     */
     public static boolean rebuildDatabase(ParameterSelectionPanel psp) {
         Connection connection = connect();
-        if(connection == null) {
+        if (connection == null) {
             return false;
         }
         //This is to drop all tables
-        try{
+        try {
             dropTables(connection);
-        }catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error creating statment");
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Couldn't drop tables, Check Error Log").showAndWait();
             logError(e);
         }
-        
+
         buildDatabase(connection);
         psp.update();
-        
+
         return true;
     }
-    
+
     //builds the database if the database has been deleted or didn't exist
     public static boolean buildDatabase(Connection connection) {
-        if(connection == null) {
+        if (connection == null) {
             return false;
         }
         String fails = "";
-        
+
         //Build and set Version
-        if(!createVersion(connection)) {
+        if (!createVersion(connection)) {
             fails += "Version\n\r";
         }
-       
+
         //Build and fill Capability table
-        if(createCapability(connection)) {
+        if (!createCapability(connection)) {
             fails += "Capability\n\r";
         }
-        
+
         //Build the Pilot table
-        if(createPilot(connection)) {
+        if (!createPilot(connection)) {
             fails += "Pilot\n\r";
         }
         //Build the Glider table
-        if(createGlider(connection)) {
+        if (!createGlider(connection)) {
             fails += "Glider\n\r";
         }
-        
+
         //Build the Airfield table  
-        if(createAirfield(connection)) {
+        if (!createAirfield(connection)) {
             fails += "Airfield\n\r";
         }
 
         //Build the Runway table
-        if(createRunway(connection)) {
+        if (!createRunway(connection)) {
             fails += "Runway\n\r";
         }
 
         //Build the GliderPosition table
-        if(createGliderPosition(connection)) {
+        if (!createGliderPosition(connection)) {
             fails += "GliderPosition\n\r";
         }
 
         //Build the WinchPosition table
-        if(createWinchPosition(connection)) {
+        if (!createWinchPosition(connection)) {
             fails += "WinchPosition\n\r";
         }
 
         //Build the Operator table
-        if(createOperator(connection)) {
+        if (!createOperator(connection)) {
             fails += "Operator\n\r";
         }
 
         //Build the Winch table
-        if(createWinch(connection)) {
+        if (!createWinch(connection)) {
             fails += "Winch\n\r";
         }
 
         //Build the Drum table
-        if(createDrum(connection)) {
+        if (!createDrum(connection)) {
             fails += "Drum";
         }
 
         //Build the Parachute table
-        if(createParachute(connection)) {
+        if (!createParachute(connection)) {
             fails += "Parachute\n\r";
         }
 
         //Build the Previous Airfield Info
-        if(createPrevAirfieldInfo(connection)) {
+        if (!createPrevAirfieldInfo(connection)) {
             fails += "Previous Airfield\n\r";
         }
 
         //Build the PreviousLaunches
-        if(createPreviousLaunches(connection)) {
+        if (!createPreviousLaunches(connection)) {
             fails += "Previous Launches\n\r";
         }
-        
+
         //Build Distance convesion tables
-        if(createDistanceUnits(connection)) {
+        if (!createDistanceUnits(connection)) {
             fails += "Distance Units\n\r";
         }
-        if(createTensionUnits(connection)) {
+        if (!createTensionUnits(connection)) {
             fails += "Tension Units\n\r";
         }
-        if(createVelocityUnits(connection)) {
+        if (!createVelocityUnits(connection)) {
             fails += "Velocity Units\n\r";
         }
-        if(createWeightUnits(connection)) {
+        if (!createWeightUnits(connection)) {
             fails += "Weight Units\n\r";
         }
-        if(createTemperatureUnits(connection)) {
+        if (!createTemperatureUnits(connection)) {
             fails += "Temperature Units\n\r";
         }
-        if(createPressureUnits(connection)) {
+        if (!createPressureUnits(connection)) {
             fails += "Pressure Units\n\r";
         }
-        if(createPilotUnits(connection)) {
+        if (!createPilotUnits(connection)) {
             fails += "Pilot Units\n\r";
         }
-        if(createGliderUnits(connection)) {
+        if (!createGliderUnits(connection)) {
             fails += "Glider Units\n\r";
         }
-        if(createAirfieldUnits(connection)) {
+        if (!createAirfieldUnits(connection)) {
             fails += "Airfield Units\n\r";
         }
-        if(createPositionUnits(connection)) {
+        if (!createPositionUnits(connection)) {
             fails += "Position Units\n\r";
         }
-        if(createDashboardUnits(connection)) {
+        if (!createDashboardUnits(connection)) {
             fails += "Dashboard Units\n\r";
         }
-        if(createEnvironmentalUnits(connection)) {
+        if (!createEnvironmentalUnits(connection)) {
             fails += "Environmental Units\n\r";
         }
-        
-        if(!fails.equals("")) {
-            JOptionPane.showMessageDialog(null, "Failed to create:\n\r" + fails, 
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
+        if (!fails.equals("")) {
+            Alert a = new Alert(Alert.AlertType.ERROR,
+                    "Failed to create:\n\r" + fails);
+            a.showAndWait();
         }
-        
+
         //Depricated
         createMessagesTable(connection);
-        
+
         return true;
     }
-    
+
     /**
      * Creates the table in the database for storing the database's version
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      * @throws SQLException if the table can't be created
      */
     private static boolean createVersion(Connection connect) {
@@ -233,24 +229,26 @@ public class DatabaseInitialization {
                 + "hc_version VARCHAR(10),"
                 + "PRIMARY KEY(db_version))";
         String insertVersion = "INSERT INTO Version (db_version, hc_version) VALUES(?, ?)";
-        
+
         try (Statement createPilotTableStatement = connect.createStatement()) {
             createPilotTableStatement.execute(createPilotString);
             PreparedStatement ps = connect.prepareStatement(insertVersion);
             ps.setString(1, DATABASE_VERSION);
             ps.setString(2, HOSTCONTROLLER_VERSION);
             ps.executeUpdate();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
-        }        
+        }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Pilot object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Pilot object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      * @throws SQLException if the table can't be created
      */
     private static boolean createPilot(Connection connect) {
@@ -269,17 +267,19 @@ public class DatabaseInitialization {
                 + "FOREIGN KEY (capability) REFERENCES Capability (capability_id))";
         try (Statement createPilotTableStatement = connect.createStatement()) {
             createPilotTableStatement.execute(createPilotString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
-        }        
+        }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Glider object
-     * 
-     * @param connectthe connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Glider object
+     *
+     * @param connectthe connection to be used for creating the table in the
+     * database
      * @throws SQLException if the table can't be created
      */
     private static boolean createGlider(Connection connect) {
@@ -303,17 +303,19 @@ public class DatabaseInitialization {
                 + "PRIMARY KEY (glider_id))";
         try (Statement createPilotTableStatement = connect.createStatement()) {
             createPilotTableStatement.execute(createGliderString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-      
+
     /**
-     * Creates the table in the database for storing the possible Capabilities of a Pilot
-     * 
-     * @param connectthe connection to be used for creating the table in the database
+     * Creates the table in the database for storing the possible Capabilities
+     * of a Pilot
+     *
+     * @param connectthe connection to be used for creating the table in the
+     * database
      * @throws SQLException if the table can't be created
      */
     private static boolean createCapability(Connection connect) {
@@ -326,22 +328,24 @@ public class DatabaseInitialization {
         String addProficient = "INSERT INTO Capability(capability_id, capability_string) VALUES (1, 'Proficient')";
         String addAdvanced = "INSERT INTO Capability(capability_id, capability_string) VALUES (2, 'Advanced')";
         try (Statement createCapabilityTableStatement = connect.createStatement()) {
-                createCapabilityTableStatement.execute(createCapablityString);
-                createCapabilityTableStatement.executeUpdate(addStudent);
-                createCapabilityTableStatement.executeUpdate(addProficient);
-                createCapabilityTableStatement.executeUpdate(addAdvanced);
-                
-        }catch(SQLException e) {
+            createCapabilityTableStatement.execute(createCapablityString);
+            createCapabilityTableStatement.executeUpdate(addStudent);
+            createCapabilityTableStatement.executeUpdate(addProficient);
+            createCapabilityTableStatement.executeUpdate(addAdvanced);
+
+        } catch (SQLException e) {
             logError(e);
             return false;
-        }        
+        }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Airfield object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Airfield object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createAirfield(Connection connect) {
         String createAirfieldString = "CREATE TABLE Airfield"
@@ -358,17 +362,19 @@ public class DatabaseInitialization {
                 + "PRIMARY KEY (airfield_id))";
         try (Statement createAirfieldTableStatement = connect.createStatement()) {
             createAirfieldTableStatement.execute(createAirfieldString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Runway object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Runway object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createRunway(Connection connect) {
         String createRunwayString = "CREATE TABLE Runway "
@@ -381,17 +387,19 @@ public class DatabaseInitialization {
                 + "FOREIGN KEY (parent_id) REFERENCES Airfield (airfield_id) ON DELETE CASCADE)";
         try (Statement createRunwayTableStatement = connect.createStatement()) {
             createRunwayTableStatement.execute(createRunwayString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a GliderPosition object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * GliderPosition object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createGliderPosition(Connection connect) {
         String createGliderPositionString = "CREATE TABLE GliderPosition "
@@ -406,17 +414,19 @@ public class DatabaseInitialization {
                 + "FOREIGN KEY (parent_id) REFERENCES Runway (runway_id) ON DELETE CASCADE)";
         try (Statement createGliderPositionTableStatement = connect.createStatement()) {
             createGliderPositionTableStatement.execute(createGliderPositionString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a WinchPosition object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * WinchPosition object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createWinchPosition(Connection connect) {
         String createWinchPositionString = "CREATE TABLE WinchPosition"
@@ -431,48 +441,52 @@ public class DatabaseInitialization {
                 + "FOREIGN KEY (parent_id) REFERENCES Runway (runway_id) ON DELETE CASCADE)";
         try (Statement createWinchPositionTableStatement = connect.createStatement()) {
             createWinchPositionTableStatement.execute(createWinchPositionString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Winch object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Winch object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createWinch(Connection connect) {
-        String createDrumString = "CREATE TABLE Winch "
-                + "(winch_id INT, " 
-                + "name VARCHAR(30), " 
-                + "owner VARCHAR(30), " 
+        String createWinchString = "CREATE TABLE Winch "
+                + "(winch_id INT, "
+                + "name VARCHAR(30), "
+                + "owner VARCHAR(30), "
                 + "wc_version VARCHAR(10), "
                 + "w1 FLOAT, w2 FLOAT, w3 FLOAT, "
                 + "w4 FLOAT, w5 FLOAT, w6 FLOAT, "
                 + "w7 FLOAT, w8 FLOAT, w9 FLOAT, "
                 + "w10 FLOAT, w11 FLOAT, w12 FLOAT, "
                 + "w13 FLOAT, w14 FLOAT, w15 FLOAT, "
-                + "w16 FLOAT, " 
-                + "meteorological_check_time INT, " 
-                + "meteorological_verify_time INT, " 
-                + "run_orientation_tolerance FLOAT, " 
+                + "w16 FLOAT, "
+                + "meteorological_check_time INT, "
+                + "meteorological_verify_time INT, "
+                + "run_orientation_tolerance FLOAT, "
                 + "optional_info LONG VARCHAR, "
                 + "PRIMARY KEY (winch_id))";
         try (Statement createDrumTableStatement = connect.createStatement()) {
-            createDrumTableStatement.execute(createDrumString);
-        }catch(SQLException e) {
+            createDrumTableStatement.execute(createWinchString);
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Drum object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a Drum
+     * object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createDrum(Connection connect) {
         String createDrumString = "CREATE TABLE Drum "
@@ -482,6 +496,7 @@ public class DatabaseInitialization {
                 + "drum_number INT, "
                 + "core_diameter FLOAT, "
                 + "kfactor FLOAT, "
+                + "spring_const FLOAT, "
                 + "cable_length FLOAT, "
                 + "cable_density FLOAT, "
                 + "drum_system_emass FLOAT, "//Drum System Equivalent Mass
@@ -492,17 +507,19 @@ public class DatabaseInitialization {
                 + "FOREIGN KEY (winch_id) REFERENCES Winch (winch_id) ON DELETE CASCADE)";
         try (Statement createDrumTableStatement = connect.createStatement()) {
             createDrumTableStatement.execute(createDrumString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
-     * Creates the table in the database for storing data associated with a Parachute object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+
+    /**
+     * Creates the table in the database for storing data associated with a
+     * Parachute object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createParachute(Connection connect) {
         String createParachuteString = "CREATE TABLE Parachute"
@@ -515,17 +532,18 @@ public class DatabaseInitialization {
                 + "PRIMARY KEY (parachute_id))";
         try (Statement createParachuteTableStatement = connect.createStatement()) {
             createParachuteTableStatement.execute(createParachuteString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-        
+
     /**
      * Creates the table to store a list of previous launches
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createPreviousLaunches(Connection connect) {
         String createPastLaunchesInfo = "CREATE TABLE PreviousLaunches"
@@ -558,19 +576,19 @@ public class DatabaseInitialization {
                 + "glider_optional_info LONG VARCHAR, "
                 + ""
                 + "wind_direction_winch FLOAT, "
-                + "wind_average_speed_winch FLOAT, " 
-                + "wind_gust_speed_winch FLOAT, " 
-                + "wind_direction_glider FLOAT, " 
-                + "wind_average_speed_glider FLOAT, " 
-                + "wind_gust_speed_glider FLOAT, " 
-                + "density_altitude FLOAT, " 
-                + "temperature FLOAT, " 
+                + "wind_average_speed_winch FLOAT, "
+                + "wind_gust_speed_winch FLOAT, "
+                + "wind_direction_glider FLOAT, "
+                + "wind_average_speed_glider FLOAT, "
+                + "wind_gust_speed_glider FLOAT, "
+                + "density_altitude FLOAT, "
+                + "temperature FLOAT, "
                 + "altimeter_setting FLOAT, "
                 + "ballast FLOAT, "
                 + "baggage FLOAT, "
                 + "passenger_weight FLOAT, "
                 + ""
-                + "drum_name VARCHAR(30), " 
+                + "drum_name VARCHAR(30), "
                 + "drum_number INT, "
                 + "core_diameter FLOAT, "
                 + "kfactor FLOAT, "
@@ -590,17 +608,19 @@ public class DatabaseInitialization {
                 + "PRIMARY KEY (start_timestamp))";
         try (Statement createPastLaunchesInfoTableStatement = connect.createStatement()) {
             createPastLaunchesInfoTableStatement.execute(createPastLaunchesInfo);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Creates the table to store a list of winch and airfield info associated with previous launches
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table to store a list of winch and airfield info associated
+     * with previous launches
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createPrevAirfieldInfo(Connection connect) {
         String createPrevInfo = "CREATE TABLE PreviousAirfieldInfo "
@@ -624,22 +644,24 @@ public class DatabaseInitialization {
                 + "winch_position_latitude FLOAT, "
                 + "winch_position_longitude FLOAT, "
                 + ""
-                + "winch_name VARCHAR(30), " 
+                + "winch_name VARCHAR(30), "
                 + "winch_owner VARCHAR(30), "
                 + "PRIMARY KEY (table_id))";
         try (Statement createPastLaunchesInfoTableStatement = connect.createStatement()) {
             createPastLaunchesInfoTableStatement.execute(createPrevInfo);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
-        }       
+        }
         return true;
     }
-    
+
     /**
-     * Creates the table in the database for storing data associated with a Operator object
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     * Creates the table in the database for storing data associated with a
+     * Operator object
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createOperator(Connection connect) {
         String createProfileString = "CREATE TABLE Operator"
@@ -655,17 +677,18 @@ public class DatabaseInitialization {
                 + "PRIMARY KEY (operator_id))";
         try (Statement createProfileTableStatement = connect.createStatement()) {
             createProfileTableStatement.execute(createProfileString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
      * Creates the table to store the possible units of distance
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createDistanceUnits(Connection connect) {
         String createLengthUnitsString = "CREATE TABLE DistanceUnits"
@@ -685,17 +708,18 @@ public class DatabaseInitialization {
             createLengthUnitsTableStatement.executeUpdate(centimeters);
             createLengthUnitsTableStatement.executeUpdate(kilometers);
             createLengthUnitsTableStatement.close();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the possible units of tension
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createTensionUnits(Connection connect) {
         String createTensionUnitsString = "CREATE TABLE TensionUnits"
@@ -710,17 +734,18 @@ public class DatabaseInitialization {
             createTensionUnitsTableStatement.executeUpdate(newtons);
             createTensionUnitsTableStatement.executeUpdate(poundForce);
             createTensionUnitsTableStatement.executeUpdate(kilogramForce);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the possible units of weight
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createWeightUnits(Connection connect) {
         String createWeightUnitsString = "CREATE TABLE WeightUnits"
@@ -733,17 +758,18 @@ public class DatabaseInitialization {
             createWeightUnitsTableStatement.execute(createWeightUnitsString);
             createWeightUnitsTableStatement.executeUpdate(pounds);
             createWeightUnitsTableStatement.executeUpdate(kilograms);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the possible units of velocity
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createVelocityUnits(Connection connect) {
         String createVelocityUnitsString = "CREATE TABLE VelocityUnits"
@@ -760,17 +786,18 @@ public class DatabaseInitialization {
             createVelocityUnitsTableStatement.executeUpdate(kmPerHour);
             createVelocityUnitsTableStatement.executeUpdate(metersPerSecond);
             createVelocityUnitsTableStatement.executeUpdate(knots);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the possible units of temperature
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createTemperatureUnits(Connection connect) {
         String createTemperatureUnitsString = "CREATE TABLE TemperatureUnits"
@@ -783,17 +810,18 @@ public class DatabaseInitialization {
             createVelocityUnitsTableStatement.execute(createTemperatureUnitsString);
             createVelocityUnitsTableStatement.executeUpdate(fahrenheit);
             createVelocityUnitsTableStatement.executeUpdate(celsius);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the possible units of pressure
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createPressureUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE PressureUnits"
@@ -808,17 +836,18 @@ public class DatabaseInitialization {
             createPressureUnitsTableStatement.executeUpdate(psi);
             createPressureUnitsTableStatement.executeUpdate(megapascals);
             createPressureUnitsTableStatement.executeUpdate(kilopascals);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the units for pilot data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createPilotUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE PilotUnits"
@@ -831,17 +860,18 @@ public class DatabaseInitialization {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
             createPressureUnitsTableStatement.close();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the units for Glider data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createGliderUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE GliderUnits"
@@ -859,17 +889,18 @@ public class DatabaseInitialization {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
             createPressureUnitsTableStatement.close();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
-     /**
+
+    /**
      * Creates the table to store the units for Airfield data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createAirfieldUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE AirfieldUnits"
@@ -881,17 +912,18 @@ public class DatabaseInitialization {
         try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
      * Creates the table to store the units for Position data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createPositionUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE PositionUnits"
@@ -903,17 +935,18 @@ public class DatabaseInitialization {
         try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
      * Creates the table to store the units for Dashboard display data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createDashboardUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE DashboardUnits"
@@ -930,17 +963,18 @@ public class DatabaseInitialization {
         try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
      * Creates the table to store the units for environmental data
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createEnvironmentalUnits(Connection connect) {
         String createPressureUnitsString = "CREATE TABLE EnvironmentalUnits"
@@ -954,17 +988,18 @@ public class DatabaseInitialization {
         try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
             createPressureUnitsTableStatement.execute(createPressureUnitsString);
             createPressureUnitsTableStatement.executeUpdate(insertRow);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return false;
         }
         return true;
     }
-    
+
     /**
      * Creates the table to store flight messages
-     * 
-     * @param connect the connection to be used for creating the table in the database
+     *
+     * @param connect the connection to be used for creating the table in the
+     * database
      */
     private static boolean createMessagesTable(Connection connect) {
         String createMessagesString = "CREATE TABLE Messages"
@@ -972,95 +1007,135 @@ public class DatabaseInitialization {
                 + "message VARCHAR(40))";
         try (Statement createMessagesTableStatement = connect.createStatement()) {
             createMessagesTableStatement.execute(createMessagesString);
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             logError(e);
             return true;
         }
         return false;
     }
-    
+
     /*
         used to drop tables individually for clean up methods
-    */
-    private static void dropVersion(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE VERSION");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropPrevLaunches(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE PREVIOUSLAUNCHES");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropPrevAirfield(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE PreviousAirfieldInfo");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropDrum(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE DRUM");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropWinch(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE WINCH");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropParachute(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE PARACHUTE");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropOperator(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE OPERATOR");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropWinchPosition(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE WINCHPOSITION");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropGliderPosition(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE GLIDERPOSITION");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropRunway(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE RUNWAY");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropAirfield(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE AIRFIELD");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropGlider(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE GLIDER");
-        } catch(SQLException e) { logError(e); }
-    }
-    private static void dropPilot(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE PILOT");
-        } catch(SQLException e) { logError(e); }
-    }
-    
-    private static void dropCapabliity(Connection connect) {
-        try(Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE CAPABILITY");
-        } catch(SQLException e) { logError(e); }
-    }
-    
-    /**
-     * Drops all tables
-     * The order at which these tables are dropped is important because of table references
      */
-    private static void dropTables(Connection connect) throws SQLException {       
+    private static void dropVersion(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE VERSION");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropPrevLaunches(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE PREVIOUSLAUNCHES");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropPrevAirfield(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE PreviousAirfieldInfo");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropDrum(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE DRUM");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropWinch(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE WINCH");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropParachute(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE PARACHUTE");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropOperator(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE OPERATOR");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropWinchPosition(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE WINCHPOSITION");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropGliderPosition(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE GLIDERPOSITION");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropRunway(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE RUNWAY");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropAirfield(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE AIRFIELD");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropGlider(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE GLIDER");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropPilot(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE PILOT");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    private static void dropCapabliity(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE CAPABILITY");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+
+    /**
+     * Drops all tables The order at which these tables are dropped is important
+     * because of table references
+     */
+    private static void dropTables(Connection connect) throws SQLException {
         Statement stmt = connect.createStatement();
-        
+
         dropVersion(connect);
         dropPrevLaunches(connect);
         dropPrevAirfield(connect);
@@ -1075,103 +1150,136 @@ public class DatabaseInitialization {
         dropGlider(connect);
         dropPilot(connect);
         dropCapabliity(connect);
-        
+
         try {
             stmt.execute("DROP TABLE PilotUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE GliderUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE AirfieldUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE PositionUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE DashboardUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE EnvironmentalUnits");
-        } catch(SQLException e) { logError(e); }
-            
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE DistanceUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE TensionUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE WeightUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE VelocityUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE TemperatureUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE PressureUnits");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         try {
             stmt.execute("DROP TABLE Messages");
-        } catch(SQLException e) { logError(e); }
-        
+        } catch (SQLException e) {
+            logError(e);
+        }
+
         stmt.close();
     }
-    
+
     /* 
      * Used to scrub tables of entries
      **Caution** to clear a table that is referenced by another table
      * both tables will have to be cleared otherwise it won't work
      */
-    
     static void cleanPrevLaunches(Connection connect) {
         dropPrevLaunches(connect);
         createPreviousLaunches(connect);
     }
+
     static void cleanPrevAirfield(Connection connect) {
         cleanPrevLaunches(connect);
         dropPrevAirfield(connect);
         createPrevAirfieldInfo(connect);
     }
-    static void cleanDrum(Connection connect) {
+
+    public static void cleanDrum(Connection connect) {
         dropDrum(connect);
         createDrum(connect);
     }
+
     static void cleanWinch(Connection connect) {
         dropDrum(connect);
         dropWinch(connect);
         createWinch(connect);
         createDrum(connect);
     }
+
     static void cleanParachute(Connection connect) {
         dropParachute(connect);
         createParachute(connect);
     }
+
     static void cleanOperator(Connection connect) {
         dropOperator(connect);
         createOperator(connect);
     }
+
     static void cleanWinchPosition(Connection connect) {
         dropWinchPosition(connect);
         createWinchPosition(connect);
     }
+
     static void cleanGliderPosition(Connection connect) {
         dropGliderPosition(connect);
         createGliderPosition(connect);
     }
+
     static void cleanRunway(Connection connect) {
         dropGliderPosition(connect);
         dropWinchPosition(connect);
@@ -1181,6 +1289,7 @@ public class DatabaseInitialization {
         createGliderPosition(connect);
 
     }
+
     static void cleanAirfield(Connection connect) {
         dropGliderPosition(connect);
         dropWinchPosition(connect);
@@ -1191,13 +1300,15 @@ public class DatabaseInitialization {
         createWinchPosition(connect);
         createGliderPosition(connect);
     }
+
     static void cleanGlider(Connection connect) {
         dropGlider(connect);
         createGlider(connect);
     }
+
     static void cleanPilot(Connection connect) {
         dropPilot(connect);
         createPilot(connect);
     }
-    
+
 }

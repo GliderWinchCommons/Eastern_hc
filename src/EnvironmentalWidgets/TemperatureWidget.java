@@ -8,7 +8,10 @@ package EnvironmentalWidgets;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
-import DataObjects.Operator;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.awt.Color;
 
 /**
@@ -17,13 +20,13 @@ import java.awt.Color;
  */
 public class TemperatureWidget extends EnvironmentalWidget {
 
-    public TemperatureWidget() {
-        super("Temperature", true, true);
+    public TemperatureWidget(TextField field, CheckBox edit, Label unit) {
+        super(field, edit, unit);
     }
 
     @Override
     public void update() {
-        field.setBackground(Color.WHITE);
+        //field.setBackground(Color.WHITE);
         if (manualEntry())
         {
             try{
@@ -34,7 +37,7 @@ public class TemperatureWidget extends EnvironmentalWidget {
                 }
                 CurrentWidgetDataSet.getInstance().setValue("temperature", String.valueOf(temp));
             }catch (NumberFormatException e){
-                field.setBackground(Color.PINK);
+                //field.setBackground(Color.PINK);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -72,8 +75,7 @@ public class TemperatureWidget extends EnvironmentalWidget {
 
     @Override
     public void setupUnits() {
-        Operator temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile();
-        unitId = temp.getUnitSetting("temperature");
+        unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("temperature");
         unit.setText(" " + UnitLabelUtilities.tempUnitIndexToString(unitId));
     }
     

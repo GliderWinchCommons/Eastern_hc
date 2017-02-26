@@ -8,6 +8,10 @@ package EnvironmentalWidgets;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.awt.Color;
 
 /**
@@ -16,20 +20,20 @@ import java.awt.Color;
  */
 public class HumidityWidget extends EnvironmentalWidget {
 
-    public HumidityWidget() {
-        super("Humidity", true, true);
+    public HumidityWidget(TextField field, CheckBox edit, Label unit) {
+        super(field, edit, unit);
     }
 
     @Override
     public void update() {
-        field.setBackground(Color.WHITE);
+        //field.setBackground(Color.WHITE);
         if (manualEntry())
         {
             try{
                 float humid = Float.parseFloat(field.getText());
                 CurrentWidgetDataSet.getInstance().setValue("humidity", String.valueOf(humid));
             }catch (NumberFormatException e){
-                field.setBackground(Color.PINK);
+                //field.setBackground(Color.PINK);
             }
         }
         else

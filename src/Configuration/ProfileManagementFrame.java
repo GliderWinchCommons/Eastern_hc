@@ -1,12 +1,12 @@
 package Configuration;
 
-import static Communications.ErrorLogger.logError;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Operator;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +17,34 @@ import java.util.Random;
 import Communications.Observer;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntrySelect;
+import ParameterSelection.CurrentScenario;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.SubScene;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 
 
-public class ProfileManagementFrame extends JFrame {
+public class ProfileManagementFrame {
+
+    @FXML SubScene profilePilotPanel;
+    @FXML SubScene profileGliderPanel;
+    @FXML SubScene profileAirfieldPanel;
+    @FXML SubScene profileRunwayPanel;
+    @FXML SubScene profileGliderPositionPanel;
+    @FXML SubScene profileWinchPositionPanel;
+    @FXML SubScene profileOtherPanel;
+
     private Observer parent;
-    private JPanel contentPane;
     private ProfilePilotPanel ProfilePilotPanel;
     private ProfileGliderPanel ProfileGliderPanel;
     private ProfileAirfieldPanel ProfileAirfieldPanel;
+    private ProfileRunwayPanel ProfileRunwayPanel;
+    private ProfileGliderPositionPanel ProfileGliderPositionPanel;
+    private ProfileWinchPositionPanel ProfileWinchPositionPanel;
     private ProfileDisplayPanel ProfileDisplayPanel;
     private ProfileOtherPanel ProfileOtherPanel;
     private SaveAsNewFrame SaveAsNewFrame;
@@ -93,34 +110,45 @@ public class ProfileManagementFrame extends JFrame {
     {
         parent = p;
     }
-    
+
+    public ProfileManagementFrame()
+    {
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+        initProfileList();
+    }
+
+    private ProfileManagementFrame getCurrentProfileManagementFrame()
+    {
+        return this;
+    }
+
     public void getUnitsForProfile()
     {
-        flightWeightUnits = (String)ProfilePilotPanel.flightWeightComboBox.getSelectedItem();
-        airfieldAltitudeUnits = (String)ProfileAirfieldPanel.airfieldAltitudeComboBox.getSelectedItem();
-        gliderPosAltitudeUnits = (String)ProfileAirfieldPanel.gliderPosAltitudeComboBox.getSelectedItem();
-        runwayMagneticHeadingUnits = (String)ProfileAirfieldPanel.runwayMagneticHeadingComboBox.getSelectedItem();
-        winchPosAltitudeUnits = (String)ProfileAirfieldPanel.winchPosAltitudeComboBox.getSelectedItem();
-        emptyWeightUnits = (String)ProfileGliderPanel.emptyWeightComboBox.getSelectedItem();
-        maxGrossWeightUnits = (String)ProfileGliderPanel.maxGrossWeightComboBox.getSelectedItem();
-        stallSpeedUnits = (String)ProfileGliderPanel.stallSpeedComboBox.getSelectedItem();
-        weakLinkStrengthUnits = (String)ProfileGliderPanel.weakLinkStrengthComboBox.getSelectedItem();
-        maxWinchingSpeedUnits = (String)ProfileGliderPanel.maxWinchingSpeedComboBox.getSelectedItem();
-        maxTensionUnits = (String)ProfileGliderPanel.maxTensionComboBox.getSelectedItem();
-        ballastWeightUnits = (String)ProfileGliderPanel.ballastWeightComboBox.getSelectedItem();
-        baggageWeightUnits = (String)ProfileGliderPanel.baggageWeightComboBox.getSelectedItem();
-        passengerWeightUnits = (String)ProfileGliderPanel.passengerWeightComboBox.getSelectedItem();       
-        avgWindSpeedUnits = (String) ProfileOtherPanel.avgWindSpeedComboBox.getSelectedItem();
-        crosswindUnits = (String) ProfileOtherPanel.crosswindComboBox.getSelectedItem();
-        densityAltitudeUnits = (String) ProfileOtherPanel.densityAltitudeComboBox.getSelectedItem();
-        gustWindSpeedUnits = (String) ProfileOtherPanel.gustWindSpeedComboBox.getSelectedItem();
-        headwindUnits = (String) ProfileOtherPanel.headwindComboBox.getSelectedItem();
-        launchWeightUnits = (String) ProfileOtherPanel.launchWeightComboBox.getSelectedItem();
-        pressureUnits = (String) ProfileOtherPanel.pressureComboBox.getSelectedItem();
-        runDirectionUnits = (String) ProfileOtherPanel.runDirectionComboBox.getSelectedItem();
-        runLengthUnits = (String) ProfileOtherPanel.runLengthComboBox.getSelectedItem();
-        temperatureUnits = (String) ProfileOtherPanel.temperatureComboBox.getSelectedItem();
-        windDirectionUnits = (String) ProfileOtherPanel.windDirectionComboBox.getSelectedItem();
+        flightWeightUnits = (String)ProfilePilotPanel.flightWeightComboBox.getValue();
+        airfieldAltitudeUnits = (String)ProfileAirfieldPanel.airfieldAltitudeComboBox.getValue();
+        gliderPosAltitudeUnits = (String)ProfileGliderPositionPanel.gliderPosAltitudeComboBox.getValue();
+        runwayMagneticHeadingUnits = (String) ProfileRunwayPanel.runwayMagneticHeadingComboBox.getValue();
+        winchPosAltitudeUnits = (String) ProfileWinchPositionPanel.winchPosAltitudeComboBox.getValue();
+        emptyWeightUnits = (String)ProfileGliderPanel.emptyWeightComboBox.getValue();
+        maxGrossWeightUnits = (String)ProfileGliderPanel.maxGrossWeightComboBox.getValue();
+        stallSpeedUnits = (String)ProfileGliderPanel.stallSpeedComboBox.getValue();
+        weakLinkStrengthUnits = (String)ProfileGliderPanel.weakLinkStrengthComboBox.getValue();
+        maxWinchingSpeedUnits = (String)ProfileGliderPanel.maxWinchingSpeedComboBox.getValue();
+        maxTensionUnits = (String)ProfileGliderPanel.maxTensionComboBox.getValue();
+        ballastWeightUnits = (String)ProfileGliderPanel.ballastWeightComboBox.getValue();
+        baggageWeightUnits = (String)ProfileGliderPanel.baggageWeightComboBox.getValue();
+        passengerWeightUnits = (String)ProfileGliderPanel.passengerWeightComboBox.getValue();
+        avgWindSpeedUnits = (String) ProfileOtherPanel.avgWindSpeedComboBox.getValue();
+        crosswindUnits = (String) ProfileOtherPanel.crosswindComboBox.getValue();
+        densityAltitudeUnits = (String) ProfileOtherPanel.densityAltitudeComboBox.getValue();
+        gustWindSpeedUnits = (String) ProfileOtherPanel.gustWindSpeedComboBox.getValue();
+        headwindUnits = (String) ProfileOtherPanel.headwindComboBox.getValue();
+        launchWeightUnits = (String) ProfileOtherPanel.launchWeightComboBox.getValue();
+        pressureUnits = (String) ProfileOtherPanel.pressureComboBox.getValue();
+        runDirectionUnits = (String) ProfileOtherPanel.runDirectionComboBox.getValue();
+        runLengthUnits = (String) ProfileOtherPanel.runLengthComboBox.getValue();
+        temperatureUnits = (String) ProfileOtherPanel.temperatureComboBox.getValue();
+        windDirectionUnits = (String) ProfileOtherPanel.windDirectionComboBox.getValue();
     }
     
     public void selectButtonClicked()
@@ -130,7 +158,6 @@ public class ProfileManagementFrame extends JFrame {
             currentData.setCurrentProfile(selectedProfile);
             parent.update();
         }
-        dispose();
     }
 
     public void saveButtonClicked()
@@ -217,8 +244,8 @@ public class ProfileManagementFrame extends JFrame {
     {
         getUnitsForProfile();
         Random randomId = new Random();
-        int temp = randomId.nextInt(100000000);
-        Operator newProfile = new Operator(temp,"{}","{}");
+        String temp = String.valueOf(randomId.nextInt(100000000));
+        Operator newProfile = new Operator(0, temp,"{}");
         newProfile.setUnitSetting("flightWeight", UnitConversionToIndexUtilities.weightUnitStringToIndex(flightWeightUnits));
         newProfile.setUnitSetting("emptyWeight", UnitConversionToIndexUtilities.weightUnitStringToIndex(emptyWeightUnits));
         newProfile.setUnitSetting("maxGrossWeight", UnitConversionToIndexUtilities.weightUnitStringToIndex(maxGrossWeightUnits));
@@ -253,22 +280,7 @@ public class ProfileManagementFrame extends JFrame {
 
     private void initProfileList() 
     {
-            names = DatabaseEntrySelect.getOperators();
-    }
-
-    /**
-    * Creates new ProfileManagementFrame
-    */
-    public ProfileManagementFrame()
-    {
-       currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
-       initProfileList();
-       initComponents();
-    }
-
-    private ProfileManagementFrame getCurrentProfileManagementFrame()
-    {
-        return this;
+        names = DatabaseEntrySelect.getOperators();
     }
 
     private void profileJListSelectionChanged(ListSelectionEvent listSelectionEvent) {
@@ -279,128 +291,128 @@ public class ProfileManagementFrame extends JFrame {
                 
                 flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
                 String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID);
-                ProfilePilotPanel.flightWeightComboBox.setSelectedItem(flightWeightUnitsString);
-                ProfilePilotPanel.flightWeightComboBox.setEnabled(true);
-                
+                ProfilePilotPanel.flightWeightComboBox.setValue(flightWeightUnitsString);
+                //ProfilePilotPanel.flightWeightComboBox.setEnabled(true);
+
                 airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
                 String airfieldAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID);
-                ProfileAirfieldPanel.airfieldAltitudeComboBox.setSelectedItem(airfieldAltitudeUnitsString);
-                ProfileAirfieldPanel.airfieldAltitudeComboBox.setEnabled(true);
+                ProfileAirfieldPanel.airfieldAltitudeComboBox.setValue(airfieldAltitudeUnitsString);
+                //ProfileAirfieldPanel.airfieldAltitudeComboBox.setEnabled(true);
                 
                 gliderPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("gliderPosAltitude");
                 String gliderPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(gliderPosAltitudeUnitsID);
-                ProfileAirfieldPanel.gliderPosAltitudeComboBox.setSelectedItem(gliderPosAltitudeUnitsString);
-                ProfileAirfieldPanel.gliderPosAltitudeComboBox.setEnabled(true);
+                ProfileGliderPositionPanel.gliderPosAltitudeComboBox.setValue(gliderPosAltitudeUnitsString);
+                //ProfileAirfieldPanel.gliderPosAltitudeComboBox.setEnabled(true);
                 
                 runwayMagneticHeadingUnitsID = currentData.getCurrentProfile().getUnitSetting("runwayMagneticHeading");
                 String runwayMagneticHeadingUnitsString = UnitLabelUtilities.degreesUnitIndexToString(runwayMagneticHeadingUnitsID);
-                ProfileAirfieldPanel.runwayMagneticHeadingComboBox.setSelectedItem(runwayMagneticHeadingUnitsString);
-                ProfileAirfieldPanel.runwayMagneticHeadingComboBox.setEnabled(true);
+                ProfileRunwayPanel.runwayMagneticHeadingComboBox.setValue(runwayMagneticHeadingUnitsString);
+                //ProfileAirfieldPanel.runwayMagneticHeadingComboBox.setEnabled(true);
                 
                 winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
                 String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
-                ProfileAirfieldPanel.winchPosAltitudeComboBox.setSelectedItem(winchPosAltitudeUnitsString);
-                ProfileAirfieldPanel.winchPosAltitudeComboBox.setEnabled(true);
+                ProfileWinchPositionPanel.winchPosAltitudeComboBox.setValue(winchPosAltitudeUnitsString);
+                //ProfileAirfieldPanel.winchPosAltitudeComboBox.setEnabled(true);
                 
                 emptyWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("emptyWeight");
                 String emptyWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(emptyWeightUnitsID);
-                ProfileGliderPanel.emptyWeightComboBox.setSelectedItem(emptyWeightUnitsString);
-                ProfileGliderPanel.emptyWeightComboBox.setEnabled(true);
+                ProfileGliderPanel.emptyWeightComboBox.setValue(emptyWeightUnitsString);
+                //ProfileGliderPanel.emptyWeightComboBox.setEnabled(true);
                 
                 maxGrossWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("maxGrossWeight");
                 String maxGrossWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(maxGrossWeightUnitsID);
-                ProfileGliderPanel.maxGrossWeightComboBox.setSelectedItem(maxGrossWeightUnitsString);
-                ProfileGliderPanel.maxGrossWeightComboBox.setEnabled(true);
+                ProfileGliderPanel.maxGrossWeightComboBox.setValue(maxGrossWeightUnitsString);
+                //ProfileGliderPanel.maxGrossWeightComboBox.setEnabled(true);
                 
                 stallSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("stallSpeed");
                 String stallSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(stallSpeedUnitsID);
-                ProfileGliderPanel.stallSpeedComboBox.setSelectedItem(stallSpeedUnitsString);
-                ProfileGliderPanel.stallSpeedComboBox.setEnabled(true);
+                ProfileGliderPanel.stallSpeedComboBox.setValue(stallSpeedUnitsString);
+                //ProfileGliderPanel.stallSpeedComboBox.setEnabled(true);
                 
                 ballastWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("ballastWeight");
                 String ballastWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(ballastWeightUnitsID);
-                ProfileGliderPanel.ballastWeightComboBox.setSelectedItem(ballastWeightUnitsString);
-                ProfileGliderPanel.ballastWeightComboBox.setEnabled(true);
+                ProfileGliderPanel.ballastWeightComboBox.setValue(ballastWeightUnitsString);
+                //ProfileGliderPanel.ballastWeightComboBox.setEnabled(true);
                 
                 baggageWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("baggageWeight");
                 String baggageWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(baggageWeightUnitsID);
-                ProfileGliderPanel.baggageWeightComboBox.setSelectedItem(baggageWeightUnitsString);
-                ProfileGliderPanel.baggageWeightComboBox.setEnabled(true);
+                ProfileGliderPanel.baggageWeightComboBox.setValue(baggageWeightUnitsString);
+                //ProfileGliderPanel.baggageWeightComboBox.setEnabled(true);
 
                 passengerWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("passengerWeight");
                 String passengerWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(passengerWeightUnitsID);
-                ProfileGliderPanel.passengerWeightComboBox.setSelectedItem(passengerWeightUnitsString);
-                ProfileGliderPanel.passengerWeightComboBox.setEnabled(true);
+                ProfileGliderPanel.passengerWeightComboBox.setValue(passengerWeightUnitsString);
+                //ProfileGliderPanel.passengerWeightComboBox.setEnabled(true);
                     
                 tensionUnitsID = currentData.getCurrentProfile().getUnitSetting("maxTension");
                 String tensionUnitsString = UnitLabelUtilities.tensionUnitIndexToString(tensionUnitsID);
-                ProfileGliderPanel.maxTensionComboBox.setSelectedItem(tensionUnitsString);
-                ProfileGliderPanel.maxTensionComboBox.setEnabled(true);
+                ProfileGliderPanel.maxTensionComboBox.setValue(tensionUnitsString);
+                //ProfileGliderPanel.maxTensionComboBox.setEnabled(true);
                 
                 weakLinkStrengthUnitsID = currentData.getCurrentProfile().getUnitSetting("weakLinkStrength");
                 String weakLinkStrengthUnitsString = UnitLabelUtilities.tensionUnitIndexToString(weakLinkStrengthUnitsID);
-                ProfileGliderPanel.weakLinkStrengthComboBox.setSelectedItem(weakLinkStrengthUnitsString);
-                ProfileGliderPanel.weakLinkStrengthComboBox.setEnabled(true);
+                ProfileGliderPanel.weakLinkStrengthComboBox.setValue(weakLinkStrengthUnitsString);
+                //ProfileGliderPanel.weakLinkStrengthComboBox.setEnabled(true);
                 
                 winchingSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("winchingSpeed");
                 String winchingSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(winchingSpeedUnitsID);
-                ProfileGliderPanel.maxWinchingSpeedComboBox.setSelectedItem(winchingSpeedUnitsString);
-                ProfileGliderPanel.maxWinchingSpeedComboBox.setEnabled(true);
+                ProfileGliderPanel.maxWinchingSpeedComboBox.setValue(winchingSpeedUnitsString);
+                //ProfileGliderPanel.maxWinchingSpeedComboBox.setEnabled(true);
                 
                 avgWindSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("avgWindSpeed");
                 String avgWindSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(avgWindSpeedUnitsID);
-                ProfileOtherPanel.avgWindSpeedComboBox.setSelectedItem(avgWindSpeedUnitsString);
-                ProfileOtherPanel.avgWindSpeedComboBox.setEnabled(true);
+                ProfileOtherPanel.avgWindSpeedComboBox.setValue(avgWindSpeedUnitsString);
+                //ProfileOtherPanel.avgWindSpeedComboBox.setEnabled(true);
                 
                 crosswindUnitsID = currentData.getCurrentProfile().getUnitSetting("crosswind");
                 String crosswindUnitsString = UnitLabelUtilities.velocityUnitIndexToString(crosswindUnitsID);
-                ProfileOtherPanel.crosswindComboBox.setSelectedItem(crosswindUnitsString);
-                ProfileOtherPanel.crosswindComboBox.setEnabled(true);
+                ProfileOtherPanel.crosswindComboBox.setValue(crosswindUnitsString);
+                //ProfileOtherPanel.crosswindComboBox.setEnabled(true);
                 
                 densityAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("densityAltitude");
                 String densityAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(densityAltitudeUnitsID);
-                ProfileOtherPanel.densityAltitudeComboBox.setSelectedItem(densityAltitudeUnitsString);
-                ProfileOtherPanel.densityAltitudeComboBox.setEnabled(true);
+                ProfileOtherPanel.densityAltitudeComboBox.setValue(densityAltitudeUnitsString);
+                //ProfileOtherPanel.densityAltitudeComboBox.setEnabled(true);
                 
                 gustWindSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("gustWindSpeed");
                 String gustWindSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(gustWindSpeedUnitsID);
-                ProfileOtherPanel.gustWindSpeedComboBox.setSelectedItem(gustWindSpeedUnitsString);
-                ProfileOtherPanel.gustWindSpeedComboBox.setEnabled(true);
+                ProfileOtherPanel.gustWindSpeedComboBox.setValue(gustWindSpeedUnitsString);
+                //ProfileOtherPanel.gustWindSpeedComboBox.setEnabled(true);
                 
                 headwindUnitsID = currentData.getCurrentProfile().getUnitSetting("headwind");
                 String headwindUnitsString = UnitLabelUtilities.velocityUnitIndexToString(headwindUnitsID);
-                ProfileOtherPanel.headwindComboBox.setSelectedItem(headwindUnitsString);
-                ProfileOtherPanel.headwindComboBox.setEnabled(true);
+                ProfileOtherPanel.headwindComboBox.setValue(headwindUnitsString);
+                //ProfileOtherPanel.headwindComboBox.setEnabled(true);
                 
                 launchWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("launchWeight");
                 String launchWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(launchWeightUnitsID);
-                ProfileOtherPanel.launchWeightComboBox.setSelectedItem(launchWeightUnitsString);
-                ProfileOtherPanel.launchWeightComboBox.setEnabled(true);
+                ProfileOtherPanel.launchWeightComboBox.setValue(launchWeightUnitsString);
+                //ProfileOtherPanel.launchWeightComboBox.setEnabled(true);
                 
                 pressureUnitsID = currentData.getCurrentProfile().getUnitSetting("pressure");
                 String pressureUnitsString = UnitLabelUtilities.pressureUnitIndexToString(pressureUnitsID);
-                ProfileOtherPanel.pressureComboBox.setSelectedItem(pressureUnitsString);
-                ProfileOtherPanel.pressureComboBox.setEnabled(true);
+                ProfileOtherPanel.pressureComboBox.setValue(pressureUnitsString);
+                //ProfileOtherPanel.pressureComboBox.setEnabled(true);
                 
                 runDirectionUnitsID = currentData.getCurrentProfile().getUnitSetting("runDirection");
                 String runDirectionUnitsString = UnitLabelUtilities.degreesUnitIndexToString(runDirectionUnitsID);
-                ProfileOtherPanel.runDirectionComboBox.setSelectedItem(runDirectionUnitsString);
-                ProfileOtherPanel.runDirectionComboBox.setEnabled(true);
+                ProfileOtherPanel.runDirectionComboBox.setValue(runDirectionUnitsString);
+                //ProfileOtherPanel.runDirectionComboBox.setEnabled(true);
                 
                 windDirectionUnitsID = currentData.getCurrentProfile().getUnitSetting("windDirection");
                 String windDirectionUnitsUnitsString = UnitLabelUtilities.degreesUnitIndexToString(windDirectionUnitsID);
-                ProfileOtherPanel.windDirectionComboBox.setSelectedItem(windDirectionUnitsUnitsString);
-                ProfileOtherPanel.windDirectionComboBox.setEnabled(true);
+                ProfileOtherPanel.windDirectionComboBox.setValue(windDirectionUnitsUnitsString);
+                //ProfileOtherPanel.windDirectionComboBox.setEnabled(true);
                 
                 runLengthUnitsID = currentData.getCurrentProfile().getUnitSetting("runLength");
                 String runLengthUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(runLengthUnitsID);
-                ProfileOtherPanel.runLengthComboBox.setSelectedItem(runLengthUnitsString);
-                ProfileOtherPanel.runLengthComboBox.setEnabled(true);
+                ProfileOtherPanel.runLengthComboBox.setValue(runLengthUnitsString);
+                //ProfileOtherPanel.runLengthComboBox.setEnabled(true);
                 
                 temperatureUnitsID = currentData.getCurrentProfile().getUnitSetting("temperature");
                 String temperatureUnitsString = UnitLabelUtilities.tempUnitIndexToString(temperatureUnitsID);
-                ProfileOtherPanel.temperatureComboBox.setSelectedItem(temperatureUnitsString);
-                ProfileOtherPanel.temperatureComboBox.setEnabled(true);
+                ProfileOtherPanel.temperatureComboBox.setValue(temperatureUnitsString);
+                //ProfileOtherPanel.temperatureComboBox.setEnabled(true);
                 
                 saveButton.setEnabled(true);
                 saveAsNewButton.setEnabled(true);
@@ -423,232 +435,203 @@ public class ProfileManagementFrame extends JFrame {
                 
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
         String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID);
-        ProfilePilotPanel.flightWeightComboBox.setSelectedItem(flightWeightUnitsString);
+        ProfilePilotPanel.flightWeightComboBox.setValue(flightWeightUnitsString);
         
         airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         String airfieldAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID);
-        ProfileAirfieldPanel.airfieldAltitudeComboBox.setSelectedItem(airfieldAltitudeUnitsString);
+        ProfileAirfieldPanel.airfieldAltitudeComboBox.setValue(airfieldAltitudeUnitsString);
 
         gliderPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("gliderPosAltitude");
         String gliderPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(gliderPosAltitudeUnitsID);
-        ProfileAirfieldPanel.gliderPosAltitudeComboBox.setSelectedItem(gliderPosAltitudeUnitsString);
+        ProfileGliderPositionPanel.gliderPosAltitudeComboBox.setValue(gliderPosAltitudeUnitsString);
 
         runwayMagneticHeadingUnitsID = currentData.getCurrentProfile().getUnitSetting("runwayMagneticHeading");
         String runwayMagneticHeadingUnitsString = UnitLabelUtilities.degreesUnitIndexToString(runwayMagneticHeadingUnitsID);
-        ProfileAirfieldPanel.runwayMagneticHeadingComboBox.setSelectedItem(runwayMagneticHeadingUnitsString);
+        ProfileRunwayPanel.runwayMagneticHeadingComboBox.setValue(runwayMagneticHeadingUnitsString);
 
         winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
-        ProfileAirfieldPanel.winchPosAltitudeComboBox.setSelectedItem(winchPosAltitudeUnitsString);
+        ProfileWinchPositionPanel.winchPosAltitudeComboBox.setValue(winchPosAltitudeUnitsString);
         
         emptyWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("emptyWeight");
         String emptyWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(emptyWeightUnitsID);
-        ProfileGliderPanel.emptyWeightComboBox.setSelectedItem(emptyWeightUnitsString);
+        ProfileGliderPanel.emptyWeightComboBox.setValue(emptyWeightUnitsString);
         
         maxGrossWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("maxGrossWeight");
         String maxGrossWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(maxGrossWeightUnitsID);
-        ProfileGliderPanel.maxGrossWeightComboBox.setSelectedItem(maxGrossWeightUnitsString);
+        ProfileGliderPanel.maxGrossWeightComboBox.setValue(maxGrossWeightUnitsString);
         
         stallSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("stallSpeed");
         String stallSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(stallSpeedUnitsID);
-        ProfileGliderPanel.stallSpeedComboBox.setSelectedItem(stallSpeedUnitsString);
+        ProfileGliderPanel.stallSpeedComboBox.setValue(stallSpeedUnitsString);
         
         ballastWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("ballastWeight");
         String ballastWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(ballastWeightUnitsID);
-        ProfileGliderPanel.ballastWeightComboBox.setSelectedItem(ballastWeightUnitsString);
+        ProfileGliderPanel.ballastWeightComboBox.setValue(ballastWeightUnitsString);
         
         baggageWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("baggageWeight");
         String baggageWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(baggageWeightUnitsID);
-        ProfileGliderPanel.baggageWeightComboBox.setSelectedItem(baggageWeightUnitsString);
+        ProfileGliderPanel.baggageWeightComboBox.setValue(baggageWeightUnitsString);
         
         passengerWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("passengerWeight");
         String passengerWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(passengerWeightUnitsID);
-        ProfileGliderPanel.passengerWeightComboBox.setSelectedItem(passengerWeightUnitsString);
+        ProfileGliderPanel.passengerWeightComboBox.setValue(passengerWeightUnitsString);
         
         tensionUnitsID = currentData.getCurrentProfile().getUnitSetting("maxTension");
         String tensionUnitsString = UnitLabelUtilities.tensionUnitIndexToString(tensionUnitsID);
-        ProfileGliderPanel.maxTensionComboBox.setSelectedItem(tensionUnitsString);
+        ProfileGliderPanel.maxTensionComboBox.setValue(tensionUnitsString);
         
         weakLinkStrengthUnitsID = currentData.getCurrentProfile().getUnitSetting("weakLinkStrength");
         String weakLinkStrengthUnitsString = UnitLabelUtilities.tensionUnitIndexToString(weakLinkStrengthUnitsID);
-        ProfileGliderPanel.weakLinkStrengthComboBox.setSelectedItem(weakLinkStrengthUnitsString);
+        ProfileGliderPanel.weakLinkStrengthComboBox.setValue(weakLinkStrengthUnitsString);
         
         winchingSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("winchingSpeed");
         String winchingSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(winchingSpeedUnitsID);
-        ProfileGliderPanel.maxWinchingSpeedComboBox.setSelectedItem(winchingSpeedUnitsString);
+        ProfileGliderPanel.maxWinchingSpeedComboBox.setValue(winchingSpeedUnitsString);
         
         avgWindSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("avgWindSpeed");
         String avgWindSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(avgWindSpeedUnitsID);
-        ProfileOtherPanel.avgWindSpeedComboBox.setSelectedItem(avgWindSpeedUnitsString);
+        ProfileOtherPanel.avgWindSpeedComboBox.setValue(avgWindSpeedUnitsString);
 
         crosswindUnitsID = currentData.getCurrentProfile().getUnitSetting("crosswind");
         String crosswindUnitsString = UnitLabelUtilities.velocityUnitIndexToString(crosswindUnitsID);
-        ProfileOtherPanel.crosswindComboBox.setSelectedItem(crosswindUnitsString);
+        ProfileOtherPanel.crosswindComboBox.setValue(crosswindUnitsString);
 
         densityAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("densityAltitude");
         String densityAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(densityAltitudeUnitsID);
-        ProfileOtherPanel.densityAltitudeComboBox.setSelectedItem(densityAltitudeUnitsString);
+        ProfileOtherPanel.densityAltitudeComboBox.setValue(densityAltitudeUnitsString);
 
         gustWindSpeedUnitsID = currentData.getCurrentProfile().getUnitSetting("gustWindSpeed");
         String gustWindSpeedUnitsString = UnitLabelUtilities.velocityUnitIndexToString(gustWindSpeedUnitsID);
-        ProfileOtherPanel.gustWindSpeedComboBox.setSelectedItem(gustWindSpeedUnitsString);
+        ProfileOtherPanel.gustWindSpeedComboBox.setValue(gustWindSpeedUnitsString);
 
         headwindUnitsID = currentData.getCurrentProfile().getUnitSetting("headwind");
         String headwindUnitsString = UnitLabelUtilities.velocityUnitIndexToString(headwindUnitsID);
-        ProfileOtherPanel.headwindComboBox.setSelectedItem(headwindUnitsString);
+        ProfileOtherPanel.headwindComboBox.setValue(headwindUnitsString);
 
         launchWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("launchWeight");
         String launchWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(launchWeightUnitsID);
-        ProfileOtherPanel.launchWeightComboBox.setSelectedItem(launchWeightUnitsString);
+        ProfileOtherPanel.launchWeightComboBox.setValue(launchWeightUnitsString);
 
         pressureUnitsID = currentData.getCurrentProfile().getUnitSetting("pressure");
         String pressureUnitsString = UnitLabelUtilities.pressureUnitIndexToString(pressureUnitsID);
-        ProfileOtherPanel.pressureComboBox.setSelectedItem(pressureUnitsString);
+        ProfileOtherPanel.pressureComboBox.setValue(pressureUnitsString);
 
         runDirectionUnitsID = currentData.getCurrentProfile().getUnitSetting("runDirection");
         String runDirectionUnitsString = UnitLabelUtilities.degreesUnitIndexToString(runDirectionUnitsID);
-        ProfileOtherPanel.runDirectionComboBox.setSelectedItem(runDirectionUnitsString);
+        ProfileOtherPanel.runDirectionComboBox.setValue(runDirectionUnitsString);
 
         windDirectionUnitsID = currentData.getCurrentProfile().getUnitSetting("windDirection");
         String windDirectionUnitsUnitsString = UnitLabelUtilities.degreesUnitIndexToString(windDirectionUnitsID);
-        ProfileOtherPanel.windDirectionComboBox.setSelectedItem(windDirectionUnitsUnitsString);
+        ProfileOtherPanel.windDirectionComboBox.setValue(windDirectionUnitsUnitsString);
 
         runLengthUnitsID = currentData.getCurrentProfile().getUnitSetting("runLength");
         String runLengthUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(runLengthUnitsID);
-        ProfileOtherPanel.runLengthComboBox.setSelectedItem(runLengthUnitsString);
+        ProfileOtherPanel.runLengthComboBox.setValue(runLengthUnitsString);
 
         temperatureUnitsID = currentData.getCurrentProfile().getUnitSetting("temperature");
         String temperatureUnitsString = UnitLabelUtilities.tempUnitIndexToString(temperatureUnitsID);
-        ProfileOtherPanel.temperatureComboBox.setSelectedItem(temperatureUnitsString);
+        ProfileOtherPanel.temperatureComboBox.setValue(temperatureUnitsString);
     }
 
-    private void initComponents() {
-        setTitle("Operator Profile");
+    @FXML
+    protected void initialize() throws IOException{
         ProfilePilotPanel = new ProfilePilotPanel();
         ProfileGliderPanel = new ProfileGliderPanel();
         ProfileAirfieldPanel = new ProfileAirfieldPanel();
+        ProfileRunwayPanel = new ProfileRunwayPanel();
+        ProfileGliderPositionPanel = new ProfileGliderPositionPanel();
+        ProfileWinchPositionPanel = new ProfileWinchPositionPanel();
         ProfileDisplayPanel = new ProfileDisplayPanel();
         ProfileOtherPanel = new ProfileOtherPanel();
         profileScrollPane = new javax.swing.JScrollPane();
+
+        //init pilot profile panel
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/ProfilePilotPanel.fxml"));
+        loader.setController(ProfilePilotPanel);
+        Parent root = loader.load();
+        profilePilotPanel.setRoot(root);
+
+        //init glider profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileGliderPanel.fxml"));
+        loader.setController(ProfileGliderPanel);
+        root = loader.load();
+        profileGliderPanel.setRoot(root);
+
+        //init airfield profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileAirfieldPanel.fxml"));
+        loader.setController(ProfileAirfieldPanel);
+        root = loader.load();
+        profileAirfieldPanel.setRoot(root);
+
+        //init runway profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileRunwayPanel.fxml"));
+        loader.setController(ProfileRunwayPanel);
+        root = loader.load();
+        profileRunwayPanel.setRoot(root);
+
+        //init glider position profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileGliderPositionPanel.fxml"));
+        loader.setController(ProfileGliderPositionPanel);
+        root = loader.load();
+        profileGliderPositionPanel.setRoot(root);
+
+        //init winch position profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileWinchPositionPanel.fxml"));
+        loader.setController(ProfileWinchPositionPanel);
+        root = loader.load();
+        profileWinchPositionPanel.setRoot(root);
+
+        //inti other profile panel
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileOtherPanel.fxml"));
+        loader.setController(ProfileOtherPanel);
+        root = loader.load();
+        profileOtherPanel.setRoot(root);
+
         profileJList = new javax.swing.JList();
-
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 1071, 704);
-        contentPane = new JPanel();
-        contentPane.setBackground(Color.WHITE);
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPane);
-
-        contentPane.add(profileScrollPane, BorderLayout.WEST);
-
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        contentPane.add(tabbedPane, BorderLayout.CENTER);
-
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        contentPane.add(panel, BorderLayout.SOUTH);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-
-        JButton selectButton = new JButton("Set as Current Profile");
-        selectButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    selectButtonClicked();
-                    }
-        });
-        selectButton.setBackground(new Color(200,200,200));
-        panel.add(selectButton);
-       
-        addNewButton = new JButton("Add New");
-        addNewButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addNewButtonClicked();
-                    }
-        });
-        addNewButton.setBackground(new Color(200,200,200));
-        panel.add(addNewButton);
-        
-        saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    saveButtonClicked();
-                    }
-        });
-        saveButton.setBackground(new Color(200,200,200));
-        saveButton.setEnabled(false);
-        panel.add(saveButton);
-
-        saveAsNewButton = new JButton("Save as new");
-        saveAsNewButton.setBackground(new Color(200,200,200));
-        saveAsNewButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    saveAsNewButtonClicked();
-                }
-        });
-        saveAsNewButton.setEnabled(false);
-        panel.add(saveAsNewButton);
-
-        profileJList.setPreferredSize(new Dimension(200,100));
+        profileJList.setPreferredSize(new Dimension(200, 100));
         DefaultListModel profileModel = new DefaultListModel();
         for(Object str: names){
             profileModel.addElement(str);
         }
         profileJList.setModel(profileModel);
-        profileJList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+        profileJList.addListSelectionListener(new ListSelectionListener()
+        {
+            public void valueChanged(ListSelectionEvent listSelectionEvent)
+            {
                 profileJListSelectionChanged(listSelectionEvent);
             }
         });
         profileScrollPane.setViewportView(profileJList);
 
-        JButton resetButton = new JButton("Reset to default");
-        resetButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    ProfilePilotPanel.flightWeightComboBox.setSelectedItem("lbs");
-                    ProfileAirfieldPanel.airfieldAltitudeComboBox.setSelectedItem("ft");
-                    ProfileAirfieldPanel.gliderPosAltitudeComboBox.setSelectedItem("ft");
-                    ProfileAirfieldPanel.runwayMagneticHeadingComboBox.setSelectedItem("magnetic");
-                    ProfileAirfieldPanel.winchPosAltitudeComboBox.setSelectedItem("ft");
-                    ProfileGliderPanel.emptyWeightComboBox.setSelectedItem("lbs");
-                    ProfileGliderPanel.maxGrossWeightComboBox.setSelectedItem("lbs");
-                    ProfileGliderPanel.stallSpeedComboBox.setSelectedItem("mph");
-                    ProfileGliderPanel.weakLinkStrengthComboBox.setSelectedItem("lbf");
-                    ProfileGliderPanel.maxWinchingSpeedComboBox.setSelectedItem("mph");;
-                    ProfileGliderPanel.maxTensionComboBox.setSelectedItem("lbf");
-                    ProfileGliderPanel.ballastWeightComboBox.setSelectedItem("lbs");
-                    ProfileGliderPanel.baggageWeightComboBox.setSelectedItem("lbs");
-                    ProfileGliderPanel.passengerWeightComboBox.setSelectedItem("lbs");
-                    ProfileOtherPanel.avgWindSpeedComboBox.setSelectedItem("mph");
-                    ProfileOtherPanel.crosswindComboBox.setSelectedItem("mph");
-                    ProfileOtherPanel.densityAltitudeComboBox.setSelectedItem("ft");
-                    ProfileOtherPanel.gustWindSpeedComboBox.setSelectedItem("mph");
-                    ProfileOtherPanel.headwindComboBox.setSelectedItem("mph");
-                    ProfileOtherPanel.launchWeightComboBox.setSelectedItem("lbs");
-                    ProfileOtherPanel.pressureComboBox.setSelectedItem("millibar");
-                    ProfileOtherPanel.runDirectionComboBox.setSelectedItem("magnetic");
-                    ProfileOtherPanel.runLengthComboBox.setSelectedItem("ft");
-                    ProfileOtherPanel.temperatureComboBox.setSelectedItem("F");
-                    ProfileOtherPanel.windDirectionComboBox.setSelectedItem("magnetic");
-                }
-        });
-        resetButton.setBackground(new Color(200,200,200));
-        panel.add(resetButton);
+        Rebuild();
+    }
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBackground(new Color(200,200,200));
-        cancelButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    dispose();
-                }
-        });
-        panel.add(cancelButton);
-
-        tabbedPane.addTab("Pilot", ProfilePilotPanel);
-        tabbedPane.addTab("Glider", ProfileGliderPanel);
-        tabbedPane.addTab("Airfield", ProfileAirfieldPanel);
-        tabbedPane.addTab("Other", ProfileOtherPanel);
-        tabbedPane.addTab("Display", ProfileDisplayPanel);  
+    public void ResetButton_Click(javafx.event.ActionEvent e) {
+        ProfilePilotPanel.flightWeightComboBox.setValue("lbs");
+        ProfileAirfieldPanel.airfieldAltitudeComboBox.setValue("ft");
+        ProfileGliderPositionPanel.gliderPosAltitudeComboBox.setValue("ft");
+        ProfileRunwayPanel.runwayMagneticHeadingComboBox.setValue("magnetic");
+        ProfileWinchPositionPanel.winchPosAltitudeComboBox.setValue("ft");
+        ProfileGliderPanel.emptyWeightComboBox.setValue("lbs");
+        ProfileGliderPanel.maxGrossWeightComboBox.setValue("lbs");
+        ProfileGliderPanel.stallSpeedComboBox.setValue("mph");
+        ProfileGliderPanel.weakLinkStrengthComboBox.setValue("lbf");
+        ProfileGliderPanel.maxWinchingSpeedComboBox.setValue("mph");;
+        ProfileGliderPanel.maxTensionComboBox.setValue("lbf");
+        ProfileGliderPanel.ballastWeightComboBox.setValue("lbs");
+        ProfileGliderPanel.baggageWeightComboBox.setValue("lbs");
+        ProfileGliderPanel.passengerWeightComboBox.setValue("lbs");
+        ProfileOtherPanel.avgWindSpeedComboBox.setValue("mph");
+        ProfileOtherPanel.crosswindComboBox.setValue("mph");
+        ProfileOtherPanel.densityAltitudeComboBox.setValue("ft");
+        ProfileOtherPanel.gustWindSpeedComboBox.setValue("mph");
+        ProfileOtherPanel.headwindComboBox.setValue("mph");
+        ProfileOtherPanel.launchWeightComboBox.setValue("lbs");
+        ProfileOtherPanel.pressureComboBox.setValue("millibar");
+        ProfileOtherPanel.runDirectionComboBox.setValue("magnetic");
+        ProfileOtherPanel.runLengthComboBox.setValue("ft");
+        ProfileOtherPanel.temperatureComboBox.setValue("F");
+        ProfileOtherPanel.windDirectionComboBox.setValue("magnetic");
     }
 }

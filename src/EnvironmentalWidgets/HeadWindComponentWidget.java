@@ -18,7 +18,7 @@ import DataObjects.Operator;
 public class HeadWindComponentWidget extends EnvironmentalWidget {
 
     public HeadWindComponentWidget() {
-        super("Headwind Component", true, false);
+        super(null, null, null);
     }
 
     @Override

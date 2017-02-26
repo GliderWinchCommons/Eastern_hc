@@ -45,7 +45,7 @@ public class Pilot {
     public int getPilotId() {
         return pilotId;
     }
-    public void setPilotId(int newId) {
+    public void setId(int newId) {
         pilotId = newId;
     }
     

@@ -5,39 +5,31 @@
  */
 package DashboardInterface;
 
-import Communications.MessagePipeline;
-import Communications.Observer;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
+//import Communications.MessagePipeline;
+//import Communications.Observer;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.dial.DialBackground;
-import org.jfree.chart.plot.dial.DialCap;
-import org.jfree.chart.plot.dial.DialPlot;
-import org.jfree.chart.plot.dial.DialTextAnnotation;
-import org.jfree.chart.plot.dial.DialValueIndicator;
-import org.jfree.chart.plot.dial.StandardDialFrame;
-import org.jfree.chart.plot.dial.StandardDialScale;
+import org.jfree.chart.plot.dial.*;
 import org.jfree.data.general.DefaultValueDataset;
 import org.jfree.ui.GradientPaintTransformType;
 import org.jfree.ui.StandardGradientPaintTransformer;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
  * @author ajacuzzi
  */
-public class CableOutSpeedDial extends JPanel implements Observer 
+public class CableOutSpeedDial extends JPanel// implements Observer
 {
     DefaultValueDataset dataset1;
     DefaultValueDataset dataset2;
     JSlider slider1;
     JSlider slider2;
-    private MessagePipeline pipe;
+    //private MessagePipeline pipe;
     JPanel parent;
+    Color fxBackgroundColor;
 
     private void updateCableOut(double cableOut)
     {
@@ -52,21 +44,21 @@ public class CableOutSpeedDial extends JPanel implements Observer
         dataset1.setValue(speed);
     }
 
-    public CableOutSpeedDial(JPanel parentIn)
+    public CableOutSpeedDial(Color fxBackgroundColor)//JPanel parentIn)
     {
         super(new BorderLayout());
-        parent = parentIn;
+        this.fxBackgroundColor = fxBackgroundColor;
+        //parent = parentIn;
         dataset1 = new DefaultValueDataset(0D);
         dataset2 = new DefaultValueDataset(0D);
-        pipe = MessagePipeline.getInstance();
-        pipe.attach(this);
+//        pipe = MessagePipeline.getInstance();
+//        pipe.attach(this);
         DialPlot dialplot = new DialPlot();
         dialplot.setView(0.0D, 0.0D, 1.0D, 1.0D);
         dialplot.setDataset(0, dataset1);
         dialplot.setDataset(1, dataset2);
-        setBackground(Color.WHITE);        
         StandardDialFrame standarddialframe = new StandardDialFrame();
-        standarddialframe.setBackgroundPaint(Color.lightGray);
+        //standarddialframe.setBackgroundPaint(Color.lightGray);
         standarddialframe.setForegroundPaint(Color.darkGray);
 
         dialplot.setDialFrame(standarddialframe);
@@ -134,24 +126,27 @@ public class CableOutSpeedDial extends JPanel implements Observer
         dialcap.setRadius(0.10000000000000001D);
         dialplot.setCap(dialcap);
 
-        Dimension size = parent.getBounds().getSize();
-        int width = parent.getWidth();
-        int height = parent.getHeight();
+        //Dimension size = parent.getBounds().getSize();
+        //int width = parent.getWidth();
+        //int height = parent.getHeight();
 
-        width = 200;
+        //width = 200;
 
         JFreeChart jfreechart = new JFreeChart(dialplot);
-        jfreechart.setBackgroundPaint(Color.WHITE);
         ChartPanel chartpanel = new ChartPanel(jfreechart);
-        chartpanel.setPreferredSize(new Dimension(width, width));
+        //chartpanel.setPreferredSize(new Dimension(width, width));
+        chartpanel.setPreferredSize(new Dimension(300, 300));
+        jfreechart.setBackgroundPaint(fxBackgroundColor);
+        //chartpanel.setBackground(Color.black);
+        //setBackground(Color.black);
 
         add(chartpanel);
     }
     
-    @Override
+    //@Override
     public void update() {}
     
-    @Override
+    //@Override
     public void update(String msg) {
         if(!msg.equals(""))
         {

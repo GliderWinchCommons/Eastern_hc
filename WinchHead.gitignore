@@ -1,7 +1,0 @@
-# Compiled source files #
-#########################
-*.class
-
-*.jar
-## DB Files ##
-*.dat

@@ -8,7 +8,10 @@ package EnvironmentalWidgets;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
-import DataObjects.Operator;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.awt.Color;
 /**
  *
@@ -16,20 +19,20 @@ import java.awt.Color;
  */
 public class PressureWidget extends EnvironmentalWidget {
 
-    public PressureWidget() {
-        super("Pressure", true, true);
+    public PressureWidget(TextField field, CheckBox edit, Label unit) {
+        super(field, edit, unit);
     }
 
     @Override
     public void update() {
-        field.setBackground(Color.WHITE);
+        //field.setBackground(Color.WHITE);
         if (manualEntry())
         {
             try{
                 float press = Float.parseFloat(field.getText()) / UnitConversionRate.convertPressureUnitIndexToFactor(unitId);
                 CurrentWidgetDataSet.getInstance().setValue("pressure", String.valueOf(press));
             }catch (NumberFormatException e){
-                field.setBackground(Color.PINK);
+                //field.setBackground(Color.PINK);
             }
         }
         else
@@ -52,8 +55,7 @@ public class PressureWidget extends EnvironmentalWidget {
 
     @Override
     public void setupUnits() {
-        Operator temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile();
-        unitId = temp.getUnitSetting("pressure");
+        unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("pressure");
         unit.setText(" " + UnitLabelUtilities.pressureUnitIndexToString(unitId));
     }
     

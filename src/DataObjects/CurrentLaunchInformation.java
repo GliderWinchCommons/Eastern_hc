@@ -4,7 +4,6 @@ import Communications.Observer;
 import Configuration.UnitConversionRate;
 import EnvironmentalWidgets.CurrentWidgetDataSet;
 import ParameterSelection.Capability;
-import ParameterSelection.Preference;
 import ParameterSelection.SailplanePanel;
 import java.util.ArrayList;
 

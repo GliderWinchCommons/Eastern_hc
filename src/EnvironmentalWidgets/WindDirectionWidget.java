@@ -11,6 +11,10 @@ import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
 import DataObjects.Operator;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.awt.Color;
 
 /**
@@ -19,13 +23,12 @@ import java.awt.Color;
  */
 public class WindDirectionWidget extends EnvironmentalWidget {
 
-    public WindDirectionWidget() {
-        super("Wind Direction", true, true);
+    public WindDirectionWidget(TextField field, CheckBox edit, Label unit) {
+        super(field, edit, unit);
     }
 
     @Override
     public void update() {
-        field.setBackground(Color.WHITE);
         if (manualEntry())
         {
             try{
@@ -40,7 +43,7 @@ public class WindDirectionWidget extends EnvironmentalWidget {
                 direction = direction % 360f;
                 CurrentWidgetDataSet.getInstance().setValue("winddirection", String.valueOf(direction));
             }catch (NumberFormatException e){
-                field.setBackground(Color.PINK);
+                //field.setBackground(Color.PINK);
             }
         }
         else

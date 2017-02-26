@@ -18,110 +18,111 @@ import java.sql.SQLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-import javax.swing.JOptionPane;
 import DataObjects.*;
 import static DatabaseUtilities.DatabaseInitialization.*;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
  * @author dbennett3
  */
-public class DatabaseImporter{
-    
+public class DatabaseImporter {
+
     private static BufferedReader br; //private global
     private static Connection connection; //private global
-    
+
     public static boolean importDatabase(File zipFile, List<String> importList) {
         connection = connect();
-        if(connection == null) {
+        if (connection == null) {
             return false;
         }
         try {
             importTable(zipFile, importList);
-            
-        }catch(IOException | ClassNotFoundException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Couldn't import", "Error", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Error creating file, Check Error Log").showAndWait();
+            logError(e);
+        } catch (ClassNotFoundException | SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Error with the database, Check Error Log").showAndWait();
             logError(e);
         }
-        
+
         return true;
     }
-    
-    
+
     private static void importTable(File file, List<String> importList)
             throws SQLException, FileNotFoundException, IOException, ClassNotFoundException {
-        
+
         //System.out.println(importList.toString());
-        
         ZipFile zip = new ZipFile(file);
         ZipInputStream zin = new ZipInputStream(new FileInputStream(file));
-        for(ZipEntry e; (e = zin.getNextEntry()) != null;) {
+        for (ZipEntry e; (e = zin.getNextEntry()) != null;) {
 
             //System.out.println(importList);
-            
             String fileName = e.toString();
             //System.out.println(fileName);
-                       
+
             InputStream is = zip.getInputStream(e);//zip.getInputStream(e);
             InputStreamReader isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-            
-            if(importList.contains(fileName)) {
-                if(fileName.contains("_VERSION_")) {
+
+            if (importList.contains(fileName)) {
+                if (fileName.contains("_VERSION_")) {
                     System.out.println("Importing VERSION");
-                    if(!importVersion()) {
+                    if (!importVersion()) {
                         connection.close();
                         return;
                     }
-                } else if(fileName.contains("_GLIDERPOSITION_")) {
+                } else if (fileName.contains("_GLIDERPOSITION_")) {
                     System.out.println("Importing GLIDERPOSITION");
                     importGliderPosition();
-                } else if(fileName.contains("_GLIDER_")) {
+                } else if (fileName.contains("_GLIDER_")) {
                     System.out.println("Importing SAILPLANE");
                     importGlider();
-                } else if(fileName.contains("_AIRFIELD_")) {
+                } else if (fileName.contains("_AIRFIELD_")) {
                     System.out.println("Importing AIRFIELD");
                     importAirfield();
-                } else if(fileName.contains("_RUNWAY_")) {
+                } else if (fileName.contains("_RUNWAY_")) {
                     System.out.println("Importing RUNWAY");
                     importRunway();
-                } else if(fileName.contains("_WINCHPOSITION_")) {
+                } else if (fileName.contains("_WINCHPOSITION_")) {
                     System.out.println("Importing WINCHPOSITION");
                     importWinchPosition();
-                } else if(fileName.contains("_PARACHUTE_")) {
+                } else if (fileName.contains("_PARACHUTE_")) {
                     System.out.println("Importing PARACHUTE");
                     importParachute();
-                } else if(fileName.contains("_PILOT_")) {
+                } else if (fileName.contains("_PILOT_")) {
                     System.out.println("Importing PILOT");
                     importPilot();
-                } else if(fileName.contains("_PROFILE_")) {
+                } else if (fileName.contains("_PROFILE_")) {
                     System.out.println("Importing PROFILE");
                     importOperator();
-                } else if(fileName.contains("_DRUM_")) {
+                } else if (fileName.contains("_DRUM_")) {
                     System.out.println("Importing Drum");
                     importDrum();
-                } else if(fileName.contains("_WINCH_")) {
+                } else if (fileName.contains("_WINCH_")) {
                     System.out.println("Importing Winch");
                     importWinch();
-                } else if(fileName.contains("_PREVIOUSLAUNCHES_")) {
+                } else if (fileName.contains("_PREVIOUSLAUNCHES_")) {
                     System.out.println("Importing PreviousLaunches");
                     importPreviousLaunches();
-                } else if(fileName.contains("_PREVIOUSARIFIELDINFO_")) {
+                } else if (fileName.contains("_PREVIOUSARIFIELDINFO_")) {
                     System.out.println("Importing PreviousAirfield");
                     importPreviousAirfieldInfo();
-                } else if(fileName.contains("_OPERATOR_")) {
+                } else if (fileName.contains("_OPERATOR_")) {
                     System.out.println("Importing operators");
                     importOperator();
                 }
             }
-            
-               
+
         }
     }
-    
+
     private static boolean importVersion() throws IOException, SQLException {
         String s;
         Statement stmt = connection.createStatement();
@@ -130,27 +131,26 @@ public class DatabaseImporter{
                 + "(db_version VARCHAR(10), "
                 + "hc_version VARCHAR(10),"
                 + "PRIMARY KEY(db_version))");
-        while((s = br.readLine()) != null) {
+        while ((s = br.readLine()) != null) {
             String[] messagesData = s.split(",", -1);
             String[] importVer = messagesData[0].split(".", -1);
             String[] curVer = HOSTCONTROLLER_VERSION.split(".", -1);
-            
-            if(importVer[0].compareTo(curVer[0]) == 0) {
-                if(importVer[1].compareTo(curVer[1]) == 0) {
+
+            if (importVer[0].compareTo(curVer[0]) == 0) {
+                if (importVer[1].compareTo(curVer[1]) == 0) {
                     PreparedStatement insertStatement = connection.prepareStatement(
-                        "INSERT INTO Version(db_version, hc_version) VALUES (?, ?)");
+                            "INSERT INTO Version(db_version, hc_version) VALUES (?, ?)");
                     insertStatement.setString(1, messagesData[0]);
                     insertStatement.setString(2, messagesData[1]);
                     insertStatement.executeUpdate();
                     insertStatement.close();
                 } else {
-                    if(JOptionPane.showConfirmDialog(null, 
-                            "The database you want to import is a different version then the current structure. "
-                                    + "Are you sure you wish to continue?",
-                            "Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
-                    {
+                    Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "The database you want "
+                            + "to import is a different version then the current structure.\n\r"
+                            + "Are you sure you wish to continue?", ButtonType.YES, ButtonType.NO).showAndWait();
+                    if (result.get() == ButtonType.YES) {
                         PreparedStatement insertStatement = connection.prepareStatement(
-                            "INSERT INTO Version(db_version, hc_version) VALUES (?, ?)");
+                                "INSERT INTO Version(db_version, hc_version) VALUES (?, ?)");
                         insertStatement.setString(1, messagesData[0]);
                         insertStatement.setString(2, messagesData[1]);
                         insertStatement.executeUpdate();
@@ -160,19 +160,18 @@ public class DatabaseImporter{
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Database incompatable!",
-                        "Error", JOptionPane.INFORMATION_MESSAGE);
+                new Alert(Alert.AlertType.ERROR, "Database incompatable").showAndWait();
                 return false;
             }
-            
+
         }
         return true;
     }
-    
+
     private static void importGlider() throws IOException {
         String s;
         cleanGlider(connection);
-        while((s = br.readLine()) != null) {
+        while ((s = br.readLine()) != null) {
             String[] gliderData = s.split(",", -1);
             int id = Integer.parseInt(gliderData[0]);
             String reg = gliderData[1];
@@ -189,18 +188,18 @@ public class DatabaseImporter{
             boolean cb = Boolean.parseBoolean(gliderData[12]);
             boolean ms = Boolean.parseBoolean(gliderData[13]);
             String optional = gliderData[14];
-            Sailplane importer = new Sailplane(id, reg, name, owner, type, 
+            Sailplane importer = new Sailplane(id, reg, name, owner, type,
                     mgw, ew, iss, mws, mwls, mt, cra, cb, ms, optional);
             DatabaseEntryInsert.addSailplaneToDB(importer);
         }
     }
-    
+
     private static void importPilot() throws IOException {
         String s;
         cleanPilot(connection);
-        while((s = br.readLine()) != null) {
-            String[] pilotData = s.split(",",-1);
-            int id = Integer.parseInt(pilotData[0]); 
+        while ((s = br.readLine()) != null) {
+            String[] pilotData = s.split(",", -1);
+            int id = Integer.parseInt(pilotData[0]);
             String first = pilotData[1];
             String last = pilotData[2];
             String middle = pilotData[3];
@@ -210,21 +209,21 @@ public class DatabaseImporter{
             String eName = pilotData[7];
             String ePhone = pilotData[8];
             String optional = pilotData[9];
-            Pilot importer = new Pilot(id, first, last, middle, weight, 
+            Pilot importer = new Pilot(id, first, last, middle, weight,
                     capabilities, preference, eName, ePhone, optional);
             DatabaseEntryInsert.addPilotToDB(importer);
-            
+
         }
     }
-    
+
     private static void importAirfield() throws IOException {
         String s;
         cleanAirfield(connection);
-        while((s = br.readLine()) != null) {
-            String[] airfieldData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] airfieldData = s.split(",", -1);
             int id = Integer.parseInt(airfieldData[0]);
             String name = airfieldData[1];
-            String designator = airfieldData[2]; 
+            String designator = airfieldData[2];
             float ele = Float.parseFloat(airfieldData[3]);
             float mv = Float.parseFloat(airfieldData[4]);
             float lat = Float.parseFloat(airfieldData[5]);
@@ -235,12 +234,12 @@ public class DatabaseImporter{
             DatabaseEntryInsert.addAirfieldToDB(importer);
         }
     }
-    
+
     private static void importRunway() throws IOException {
         String s;
         cleanRunway(connection);
-        while((s = br.readLine()) != null) {
-            String[] runwayData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] runwayData = s.split(",", -1);
             int id = Integer.parseInt(runwayData[0]);
             int pid = Integer.parseInt(runwayData[1]);
             String name = runwayData[2];
@@ -250,12 +249,12 @@ public class DatabaseImporter{
             DatabaseEntryInsert.addRunwayToDB(importer);
         }
     }
-    
+
     private static void importGliderPosition() throws IOException {
         String s;
         cleanGliderPosition(connection);
-        while((s = br.readLine()) != null) {
-            String[] gliderPositionData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] gliderPositionData = s.split(",", -1);
             int id = Integer.parseInt(gliderPositionData[0]);
             int pid = Integer.parseInt(gliderPositionData[1]);
             String name = gliderPositionData[2];
@@ -267,12 +266,12 @@ public class DatabaseImporter{
             DatabaseEntryInsert.addGliderPositionToDB(importer);
         }
     }
-    
+
     private static void importWinchPosition() throws IOException {
         String s;
         cleanWinchPosition(connection);
-        while((s = br.readLine()) != null) {
-            String[] winchPositionData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] winchPositionData = s.split(",", -1);
             int id = Integer.parseInt(winchPositionData[0]);
             int pid = Integer.parseInt(winchPositionData[1]);
             String name = winchPositionData[2];
@@ -281,32 +280,32 @@ public class DatabaseImporter{
             float lng = Float.parseFloat(winchPositionData[5]);
             String optional = winchPositionData[6];
             WinchPosition importer = new WinchPosition(id, pid, name, elv, lat, lng, optional);
-            
+
             DatabaseEntryInsert.addWinchPositionToDB(importer);
         }
     }
-    
+
     private static void importParachute() throws IOException {
         String s;
         cleanParachute(connection);
-        while((s = br.readLine()) != null) {
-            String[] parachuteData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] parachuteData = s.split(",", -1);
             int id = Integer.parseInt(parachuteData[0]);
             String name = parachuteData[1];
             float lift = Float.parseFloat(parachuteData[2]);
             float drag = Float.parseFloat(parachuteData[3]);
             float weight = Float.parseFloat(parachuteData[4]);
             String optional = parachuteData[5];
-            Parachute importer = new Parachute(id, name, lift, drag, weight, optional); 
+            Parachute importer = new Parachute(id, name, lift, drag, weight, optional);
             DatabaseEntryInsert.addParachuteToDB(importer);
         }
     }
-    
+
     private static void importOperator() throws IOException {
         String s;
         cleanOperator(connection);
-        while((s = br.readLine()) != null) {
-            String[] profileData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] profileData = s.split(",", -1);
             int id = Integer.parseInt(profileData[0]);
             String first = profileData[1];
             String middle = profileData[2];
@@ -316,8 +315,8 @@ public class DatabaseImporter{
             String hash = profileData[6];
             String optional = profileData[7];
             String settings = profileData[8];
-            
-            Operator importer = new Operator(id, first, middle, last, admin, optional, settings); 
+
+            Operator importer = new Operator(id, first, middle, last, admin, optional, settings);
             DatabaseEntryInsert.addOperatorToDB(importer, salt, hash);
         }
     }
@@ -325,22 +324,23 @@ public class DatabaseImporter{
     private static void importDrum() throws IOException {
         String s;
         cleanDrum(connection);
-        while((s = br.readLine()) != null) {
-            String[] drumData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] drumData = s.split(",", -1);
             int id = Integer.parseInt(drumData[0]);
             int wid = Integer.parseInt(drumData[1]);
             String name = drumData[2];
             int number = Integer.parseInt(drumData[3]);
             float cod = Float.parseFloat(drumData[4]);
             float kf = Float.parseFloat(drumData[5]);
-            float cal = Float.parseFloat(drumData[6]);
-            float cad = Float.parseFloat(drumData[7]);
-            float dse = Float.parseFloat(drumData[8]);
-            int nol = Integer.parseInt(drumData[9]);
-            float mwt = Float.parseFloat(drumData[10]);
+            float sc = Float.parseFloat(drumData[6]);
+            float cal = Float.parseFloat(drumData[7]);
+            float cad = Float.parseFloat(drumData[8]);
+            float dse = Float.parseFloat(drumData[9]);
+            int nol = Integer.parseInt(drumData[10]);
+            float mwt = Float.parseFloat(drumData[11]);
             String optional = drumData[11];
-            
-            Drum importer = new Drum(id, wid, name, number, cod, kf, cal, cad, dse, nol, mwt, optional); 
+
+            Drum importer = new Drum(id, wid, name, number, cod, kf, sc, cal, cad, dse, nol, mwt, optional);
             DatabaseEntryInsert.addDrumToDB(importer);
         }
     }
@@ -348,8 +348,8 @@ public class DatabaseImporter{
     private static void importWinch() throws IOException {
         String s;
         cleanWinch(connection); //also cleans Drum
-        while((s = br.readLine()) != null) {
-            String[] winchData = s.split(",",-1);
+        while ((s = br.readLine()) != null) {
+            String[] winchData = s.split(",", -1);
             int id = Integer.parseInt(winchData[0]);
             String name = winchData[2];
             String owner = winchData[2];
@@ -374,85 +374,86 @@ public class DatabaseImporter{
             int mvc = Integer.parseInt(winchData[9]);
             float rot = Float.parseFloat(winchData[8]);
             String optional = winchData[11];
-            
-            Winch importer = new Winch(id, name, owner, wcVer, w1, w2, w3, w4, 
-                    w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, mtc, 
-                    mvc, rot, optional); 
-            DatabaseEntryInsert.addWinchToDB(importer);    
+
+            Winch importer = new Winch(id, name, owner, wcVer, w1, w2, w3, w4,
+                    w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, mtc,
+                    mvc, rot, optional);
+            DatabaseEntryInsert.addWinchToDB(importer);
         }
     }
 
     private static void importPreviousLaunches() throws IOException, SQLException {
-            String s;
-            cleanPrevLaunches(connection);
-            PreparedStatement PreviousLaunchesInsert = connection.prepareStatement(
+        String s;
+        cleanPrevLaunches(connection);
+        PreparedStatement PreviousLaunchesInsert = connection.prepareStatement(
                 "INSERT INTO PreviousLaunches("
-                        + "start_timestamp, "
-                        + "end_timestamp, "
-                        //Pilot info
-                        + "first_name, "
-                        + "last_name, "
-                        + "middle_name, "
-                        + "flight_weight, "
-                        + "capability, "
-                        + "preference, "
-                        + "emergency_contact_name, "
-                        + "emergency_contact_phone, "
-                        + "pilot_optional_info, "
-                        //Glider Info
-                        + "reg_number, "
-                        + "common_name, "
-                        + "glider_owner, "
-                        + "type, "
-                        + "max_gross_weight, "
-                        + "empty_weight, "
-                        + "indicated_stall_speed, "
-                        + "max_winching_speed,"
-                        + "max_weak_link_strength,"
-                        + "max_tension,"
-                        + "cable_release_angle, "
-                        + "carry_ballast, "
-                        + "multiple_seats, "
-                        + "glider_optional_info, "
-                        //Enviroment info
-                        + "wind_direction_winch, "
-                        + "wind_average_speed_winch, " 
-                        + "wind_gust_speed_winch, " 
-                        + "wind_direction_glider, " 
-                        + "wind_average_speed_glider, " 
-                        + "wind_gust_speed_glider, " 
-                        + "density_altitude, " 
-                        + "temperature, " 
-                        + "altimeter_setting, "
-                        //Drum
-                        + "drum_name, "
-                        + "drum_number, "
-                        + "core_diameter, "
-                        + "kfactor, "
-                        + "cable_length, "
-                        + "cable_density, "
-                        + "drum_system_emass, " //Drum System Equivalent Mass
-                        + "number_of_launches, "
-                        + "maximum_working_tension, "
-                        //Parachute
-                        + "parachute_name, "
-                        + "parachute_lift, "
-                        + "parachute_drag, "
-                        + "parachute_weight, "
-                        //Additional info
-                        + "ballast, "
-                        + "baggage, "
-                        + "passenger_weight, "
-                        + "airfield_info)"
-                        + "values ("
-                        + "?,?,?,?,?,?,?,?,?,?,"//10
-                        + "?,?,?,?,?,?,?,?,?,?,"//10
-                        + "?,?,?,?,?,?,?,?,?,?,"//10
-                        + "?,?,?,?,?,?,?,?,?,?,"//10
-                        + "?,?,?,?,?,?,?,?,?,?,?)");//11
-            
-        while((s = br.readLine()) != null) {
-            String[] launchData = s.split(",",-1);
+                + "start_timestamp, "
+                + "end_timestamp, "
+                //Pilot info
+                + "first_name, "
+                + "last_name, "
+                + "middle_name, "
+                + "flight_weight, "
+                + "capability, "
+                + "preference, "
+                + "emergency_contact_name, "
+                + "emergency_contact_phone, "
+                + "pilot_optional_info, "
+                //Glider Info
+                + "reg_number, "
+                + "common_name, "
+                + "glider_owner, "
+                + "type, "
+                + "max_gross_weight, "
+                + "empty_weight, "
+                + "indicated_stall_speed, "
+                + "max_winching_speed,"
+                + "max_weak_link_strength,"
+                + "max_tension,"
+                + "cable_release_angle, "
+                + "carry_ballast, "
+                + "multiple_seats, "
+                + "glider_optional_info, "
+                //Enviroment info
+                + "wind_direction_winch, "
+                + "wind_average_speed_winch, "
+                + "wind_gust_speed_winch, "
+                + "wind_direction_glider, "
+                + "wind_average_speed_glider, "
+                + "wind_gust_speed_glider, "
+                + "density_altitude, "
+                + "temperature, "
+                + "altimeter_setting, "
+                //Drum
+                + "drum_name, "
+                + "drum_number, "
+                + "core_diameter, "
+                + "kfactor, "
+                + "spring_const, "
+                + "cable_length, "
+                + "cable_density, "
+                + "drum_system_emass, " //Drum System Equivalent Mass
+                + "number_of_launches, "
+                + "maximum_working_tension, "
+                //Parachute
+                + "parachute_name, "
+                + "parachute_lift, "
+                + "parachute_drag, "
+                + "parachute_weight, "
+                //Additional info
+                + "ballast, "
+                + "baggage, "
+                + "passenger_weight, "
+                + "airfield_info)"
+                + "values ("
+                + "?,?,?,?,?,?,?,?,?,?,"//10
+                + "?,?,?,?,?,?,?,?,?,?,"//10
+                + "?,?,?,?,?,?,?,?,?,?,"//10
+                + "?,?,?,?,?,?,?,?,?,?,"//10
+                + "?,?,?,?,?,?,?,?,?,?,?,?)");//12
+
+        while ((s = br.readLine()) != null) {
+            String[] launchData = s.split(",", -1);
             PreviousLaunchesInsert.setString(1, launchData[0]);
             PreviousLaunchesInsert.setString(2, launchData[1]);
             //Pilot
@@ -500,84 +501,85 @@ public class DatabaseImporter{
             PreviousLaunchesInsert.setFloat(41, Float.parseFloat(launchData[40]));
             PreviousLaunchesInsert.setFloat(42, Float.parseFloat(launchData[41]));
             PreviousLaunchesInsert.setFloat(43, Float.parseFloat(launchData[42]));
+            PreviousLaunchesInsert.setFloat(44, Float.parseFloat(launchData[43]));
             //Parachute
-            PreviousLaunchesInsert.setString(44, launchData[43]);
-            PreviousLaunchesInsert.setFloat(45, Float.parseFloat(launchData[44]));
+            PreviousLaunchesInsert.setString(45, launchData[44]);
             PreviousLaunchesInsert.setFloat(46, Float.parseFloat(launchData[45]));
-            PreviousLaunchesInsert.setFloat(47, Float.parseFloat(launchData[46])); 
-            //Additional info
+            PreviousLaunchesInsert.setFloat(47, Float.parseFloat(launchData[46]));
             PreviousLaunchesInsert.setFloat(48, Float.parseFloat(launchData[47]));
+            //Additional info
             PreviousLaunchesInsert.setFloat(49, Float.parseFloat(launchData[48]));
             PreviousLaunchesInsert.setFloat(50, Float.parseFloat(launchData[49]));
-            PreviousLaunchesInsert.setInt(51, Integer.parseInt(launchData[50]));
-            
+            PreviousLaunchesInsert.setFloat(51, Float.parseFloat(launchData[50]));
+            PreviousLaunchesInsert.setInt(52, Integer.parseInt(launchData[51]));
+
             PreviousLaunchesInsert.executeUpdate();
         }
         PreviousLaunchesInsert.close();
     }
 
     private static void importPreviousAirfieldInfo() throws IOException, SQLException {
-            String s;
-            cleanPrevAirfield(connection); //this will also clean previous launches
-            PreparedStatement PreviousAirfieldInsert = connection.prepareStatement(
-                    "INSERT INTO PreviousAirfieldInfo("
-                            + "table_id, "
-                            //Airfield
-                            + "airfield_name, "
-                            + "airfield_designator, "
-                            + "airfield_elevation, "
-                            + "airfield_magnetic_variation, "
-                            + "airfield_latitude, "
-                            + "airfield_longitude, "
-                            + "airfield_utc_offset, "
-                            //Runway
-                            + "runway_name, "
-                            + "runway_magnetic_heading, "
-                            //Glider Position
-                            + "glider_position_name, "
-                            + "glider_position_elevation, "
-                            + "glider_position_latitude, "
-                            + "glider_position_longitude, "
-                            //Winch
-                            + "winch_position_name, "
-                            + "winch_position_elevation, "
-                            + "winch_position_latitude, "
-                            + "winch_position_longitude, "
-                            //Winch
-                            + "winch_name, " 
-                            + "winch_owner, "
-                            + "values (?,?,?,?,?,?,?,?,?,?," //10
-                            + "?,?,?,?,?,?,?,?,?,?)"); //10
-            while((s = br.readLine()) != null) {
-                String[] airfieldData = s.split(",",-1);
-                PreviousAirfieldInsert.setInt(1, Integer.parseInt(airfieldData[0]));
+        String s;
+        cleanPrevAirfield(connection); //this will also clean previous launches
+        PreparedStatement PreviousAirfieldInsert = connection.prepareStatement(
+                "INSERT INTO PreviousAirfieldInfo("
+                + "table_id, "
                 //Airfield
-                PreviousAirfieldInsert.setString(2, airfieldData[1]);
-                PreviousAirfieldInsert.setString(3, airfieldData[2]);
-                PreviousAirfieldInsert.setFloat(4, Float.parseFloat(airfieldData[3]));
-                PreviousAirfieldInsert.setFloat(5, Float.parseFloat(airfieldData[4]));
-                PreviousAirfieldInsert.setFloat(6, Float.parseFloat(airfieldData[5]));
-                PreviousAirfieldInsert.setFloat(7, Float.parseFloat(airfieldData[6]));
-                PreviousAirfieldInsert.setFloat(8, Float.parseFloat(airfieldData[7]));
+                + "airfield_name, "
+                + "airfield_designator, "
+                + "airfield_elevation, "
+                + "airfield_magnetic_variation, "
+                + "airfield_latitude, "
+                + "airfield_longitude, "
+                + "airfield_utc_offset, "
                 //Runway
-                PreviousAirfieldInsert.setString(9, airfieldData[8]);
-                PreviousAirfieldInsert.setFloat(10, Float.parseFloat(airfieldData[9]));
+                + "runway_name, "
+                + "runway_magnetic_heading, "
                 //Glider Position
-                PreviousAirfieldInsert.setString(11, airfieldData[10]);
-                PreviousAirfieldInsert.setFloat(12, Float.parseFloat(airfieldData[11]));
-                PreviousAirfieldInsert.setFloat(13, Float.parseFloat(airfieldData[12]));
-                PreviousAirfieldInsert.setFloat(14, Float.parseFloat(airfieldData[13]));
-                //WinchPosition
-                PreviousAirfieldInsert.setString(15, airfieldData[14]);
-                PreviousAirfieldInsert.setFloat(16, Float.parseFloat(airfieldData[15]));
-                PreviousAirfieldInsert.setFloat(17, Float.parseFloat(airfieldData[16]));
-                PreviousAirfieldInsert.setFloat(18, Float.parseFloat(airfieldData[17]));
+                + "glider_position_name, "
+                + "glider_position_elevation, "
+                + "glider_position_latitude, "
+                + "glider_position_longitude, "
                 //Winch
-                PreviousAirfieldInsert.setString(19, airfieldData[18]);
-                PreviousAirfieldInsert.setString(20, airfieldData[19]);
-                
-                PreviousAirfieldInsert.executeUpdate();
-            }
-                PreviousAirfieldInsert.close();           
+                + "winch_position_name, "
+                + "winch_position_elevation, "
+                + "winch_position_latitude, "
+                + "winch_position_longitude, "
+                //Winch
+                + "winch_name, "
+                + "winch_owner, "
+                + "values (?,?,?,?,?,?,?,?,?,?," //10
+                + "?,?,?,?,?,?,?,?,?,?)"); //10
+        while ((s = br.readLine()) != null) {
+            String[] airfieldData = s.split(",", -1);
+            PreviousAirfieldInsert.setInt(1, Integer.parseInt(airfieldData[0]));
+            //Airfield
+            PreviousAirfieldInsert.setString(2, airfieldData[1]);
+            PreviousAirfieldInsert.setString(3, airfieldData[2]);
+            PreviousAirfieldInsert.setFloat(4, Float.parseFloat(airfieldData[3]));
+            PreviousAirfieldInsert.setFloat(5, Float.parseFloat(airfieldData[4]));
+            PreviousAirfieldInsert.setFloat(6, Float.parseFloat(airfieldData[5]));
+            PreviousAirfieldInsert.setFloat(7, Float.parseFloat(airfieldData[6]));
+            PreviousAirfieldInsert.setFloat(8, Float.parseFloat(airfieldData[7]));
+            //Runway
+            PreviousAirfieldInsert.setString(9, airfieldData[8]);
+            PreviousAirfieldInsert.setFloat(10, Float.parseFloat(airfieldData[9]));
+            //Glider Position
+            PreviousAirfieldInsert.setString(11, airfieldData[10]);
+            PreviousAirfieldInsert.setFloat(12, Float.parseFloat(airfieldData[11]));
+            PreviousAirfieldInsert.setFloat(13, Float.parseFloat(airfieldData[12]));
+            PreviousAirfieldInsert.setFloat(14, Float.parseFloat(airfieldData[13]));
+            //WinchPosition
+            PreviousAirfieldInsert.setString(15, airfieldData[14]);
+            PreviousAirfieldInsert.setFloat(16, Float.parseFloat(airfieldData[15]));
+            PreviousAirfieldInsert.setFloat(17, Float.parseFloat(airfieldData[16]));
+            PreviousAirfieldInsert.setFloat(18, Float.parseFloat(airfieldData[17]));
+            //Winch
+            PreviousAirfieldInsert.setString(19, airfieldData[18]);
+            PreviousAirfieldInsert.setString(20, airfieldData[19]);
+
+            PreviousAirfieldInsert.executeUpdate();
+        }
+        PreviousAirfieldInsert.close();
     }
 }

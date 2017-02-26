@@ -7,25 +7,25 @@ package DatabaseUtilities;
 
 import static Communications.ErrorLogger.logError;
 import java.sql.*;
-import javax.swing.JOptionPane;
 
 import DataObjects.*;
 import static DatabaseUtilities.DatabaseInitialization.WINCH_PRAM_VERSION;
 import static DatabaseUtilities.DatabaseInitialization.connect;
 import ParameterSelection.Capability;
 import java.security.SecureRandom;
+import javafx.scene.control.Alert;
+
 /**
  *
  * @author dbennett3
  */
-public class DatabaseEntryEdit 
-{
-    
+public class DatabaseEntryEdit {
+
     /**
      * performs the update string created in the functions below
-     * 
+     *
      * @param updateString update sql string to be executed
-     * @throws SQLException 
+     * @throws SQLException
      */
     private static boolean Update(PreparedStatement ps) throws SQLException {
         //Update the value given
@@ -33,16 +33,17 @@ public class DatabaseEntryEdit
         ps.close();
         return true;
     }
-    
+
     /**
-     * updates the pilot table in the database with the new pilot data in the object passed in
-     * 
+     * updates the pilot table in the database with the new pilot data in the
+     * object passed in
+     *
      * @param pilot pilot object that is to be updated
      * @return false if update fails
      */
     public static boolean updateEntry(Pilot pilot) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE PILOT SET "
@@ -61,30 +62,31 @@ public class DatabaseEntryEdit
             stmt.setString(8, pilot.getEmergencyPhone());
             stmt.setString(9, pilot.getOptionalInfo());
             stmt.setInt(10, pilot.getPilotId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Pilot, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the operator table in the database with the new operator data in the object passed in
-     * 
+     * updates the operator table in the database with the new operator data in
+     * the object passed in
+     *
      * @param theOperator profile object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Operator theOperator) {
         try (Connection connect = connect()) {
-            if(connect == null) {
+            if (connect == null) {
                 return false;
             }
             PreparedStatement stmt = connect.prepareStatement(
-                "UPDATE Operator SET first_name = ?, middle_name = ?, last_name = ?, "
-                        + "admin = ?, optional_info = ?, "
-                        + "unitSettings = ? WHERE operator_id = ?");
+                    "UPDATE Operator SET first_name = ?, middle_name = ?, last_name = ?, "
+                    + "admin = ?, optional_info = ?, "
+                    + "unitSettings = ? WHERE operator_id = ?");
             stmt.setString(1, theOperator.getFirst());
             stmt.setString(2, theOperator.getMiddle());
             stmt.setString(3, theOperator.getLast());
@@ -92,18 +94,18 @@ public class DatabaseEntryEdit
             stmt.setString(5, theOperator.getInfo());
             stmt.setString(6, theOperator.getUnitSettingsForStorage());
             stmt.setInt(7, theOperator.getID());
-            
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Operator, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
      * Changes the password of the operator passed in
-     * 
+     *
      * @param theOperator operator object that is to be updated
      * @param newPass new password of the current operator
      * @return false if update fails
@@ -113,46 +115,47 @@ public class DatabaseEntryEdit
         String salt = "";
         SecureRandom ran = new SecureRandom();
         ran.nextBytes(bsalt);
-        for(byte b: bsalt) {
+        for (byte b : bsalt) {
             salt += b;
         }
-        newPass = salt + newPass;     
-           
-        byte[] hashedInput = new byte[newPass.length()+224];
-     
+        newPass = salt + newPass;
+
+        byte[] hashedInput = new byte[newPass.length() + 224];
+
         Whirlpool w = new Whirlpool();
         w.NESSIEinit();
         w.NESSIEadd(newPass);
-        w.NESSIEfinalize(hashedInput); 
+        w.NESSIEfinalize(hashedInput);
         String hash = w.display(hashedInput);
-        
+
         try (Connection connect = connect()) {
-            if(connect == null) {
+            if (connect == null) {
                 return false;
             }
             PreparedStatement stmt = connect.prepareStatement(
-                "UPDATE Operator SET salt = ?, hash = ? WHERE operator_id = ?");
+                    "UPDATE Operator SET salt = ?, hash = ? WHERE operator_id = ?");
             stmt.setString(1, salt);
             stmt.setString(2, hash);
             stmt.setInt(3, theOperator.getID());
-            
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not change operator's password, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the sailplane table in the database with the new sailplane data in the object passed in
-     * 
+     * updates the sailplane table in the database with the new sailplane data
+     * in the object passed in
+     *
      * @param sailplane sailplane object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Sailplane sailplane) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE GLIDER SET "
@@ -177,24 +180,25 @@ public class DatabaseEntryEdit
             stmt.setBoolean(13, sailplane.getMultipleSeats());
             stmt.setString(14, sailplane.getOptionalInfo());
             stmt.setInt(15, sailplane.getId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Glider, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the airfield table in the database with the new airfield data in the object passed in
-     * 
+     * updates the airfield table in the database with the new airfield data in
+     * the object passed in
+     *
      * @param airfield airfield object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Airfield airfield) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE AIRFIELD SET "
@@ -202,7 +206,7 @@ public class DatabaseEntryEdit
                     + "latitude = ?, longitude = ?, utc_offset = ?, optional_info = ? "
                     + "WHERE airfield_id = ?";
             PreparedStatement stmt = conn.prepareStatement(updateString);
-        
+
             stmt.setString(1, airfield.getName());
             stmt.setString(2, airfield.getDesignator());
             stmt.setFloat(3, airfield.getElevation());
@@ -212,24 +216,25 @@ public class DatabaseEntryEdit
             stmt.setInt(7, airfield.getUTC());
             stmt.setString(8, airfield.getOptionalInfo());
             stmt.setInt(9, airfield.getId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Airfield, Check Error Log").showAndWait();
             logError(e);
         }
-        return false;    
+        return false;
     }
-    
+
     /**
-     * updates the runway table in the database with the new runway data in the object passed in
-     * 
+     * updates the runway table in the database with the new runway data in the
+     * object passed in
+     *
      * @param runway runway object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Runway runway) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE RUNWAY SET "
@@ -242,24 +247,25 @@ public class DatabaseEntryEdit
             stmt.setFloat(2, runway.getMagneticHeading());
             stmt.setString(3, runway.getOptionalInfo());
             stmt.setInt(4, runway.getId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Runway, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the GliderPosition table in the database with the new position data in the object passed in
-     * 
+     * updates the GliderPosition table in the database with the new position
+     * data in the object passed in
+     *
      * @param position GliderPosition object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(GliderPosition position) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE GLIDERPOSITION SET "
@@ -273,24 +279,25 @@ public class DatabaseEntryEdit
             stmt.setFloat(4, position.getLongitude());
             stmt.setString(5, position.getOptionalInfo());
             stmt.setInt(6, position.getId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Glider Position, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the WinchPosition table in the database with the new position data in the object passed in
-     * 
+     * updates the WinchPosition table in the database with the new position
+     * data in the object passed in
+     *
      * @param position WinchPosition object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(WinchPosition position) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE WINCHPOSITION SET "
@@ -298,31 +305,32 @@ public class DatabaseEntryEdit
                     + "longitude = ?, optional_info = ? "
                     + "WHERE winch_position_id = ? ";
             PreparedStatement stmt = conn.prepareStatement(updateString);
-        
+
             stmt.setString(1, position.getName());
             stmt.setFloat(2, position.getElevation());
             stmt.setFloat(3, position.getLatitude());
             stmt.setFloat(4, position.getLongitude());
             stmt.setString(5, position.getOptionalInfo());
             stmt.setInt(6, position.getId());
-        
+
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Winch Position, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the parachute in the database with the new parachute data in the object passed in
-     * 
+     * updates the parachute in the database with the new parachute data in the
+     * object passed in
+     *
      * @param drum drum object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Drum drum) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE DRUM SET "
@@ -330,6 +338,7 @@ public class DatabaseEntryEdit
                     + "drum_number = ?, "
                     + "core_diameter = ?, "
                     + "kfactor = ?, "
+                    + "spring_const = ?, "
                     + "cable_length = ?, "
                     + "cable_density = ?, "
                     + "drum_system_emass = ?, "
@@ -342,30 +351,32 @@ public class DatabaseEntryEdit
             stmt.setInt(2, drum.getDrumNumber());
             stmt.setFloat(3, drum.getCoreDiameter());
             stmt.setFloat(4, drum.getKFactor());
-            stmt.setFloat(5, drum.getCableLength());
-            stmt.setFloat(6, drum.getCableDensity());
-            stmt.setFloat(7, drum.getSystemEquivalentMass());
-            stmt.setInt(8, drum.getNumLaunches());
-            stmt.setFloat(9, drum.getMaxTension());
-            stmt.setString(10, drum.getOptionalInfo());
-            stmt.setInt(11, drum.getId());
+            stmt.setFloat(5, drum.getSpringConstant());
+            stmt.setFloat(6, drum.getCableLength());
+            stmt.setFloat(7, drum.getCableDensity());
+            stmt.setFloat(8, drum.getSystemEquivalentMass());
+            stmt.setInt(9, drum.getNumLaunches());
+            stmt.setFloat(10, drum.getMaxTension());
+            stmt.setString(11, drum.getOptionalInfo());
+            stmt.setInt(12, drum.getId());
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update drum, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
+
     /**
-     * updates the parachute in the database with the new parachute data in the object passed in
-     * 
-     * @param winch drum object that is to be updated
+     * updates the parachute in the database with the new parachute data in the
+     * object passed in
+     *
+     * @param winch object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Winch winch) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE Winch SET "
@@ -376,13 +387,13 @@ public class DatabaseEntryEdit
                     + "w6 = ?, w7 = ?, w8 = ?, w9 = ?, w10 = ?, "
                     + "w11 = ?, w12 = ?, w13 = ?, w14 = ?, w15 = ?, "
                     + "w16 = ?, "
-                    + "meteorological_check_time = ?, " 
+                    + "meteorological_check_time = ?, "
                     + "meteorological_verify_time = ?, "
                     + "run_orientation_tolerance = ?, "
                     + "optional_info = ? "
                     + "WHERE winch_id = ?";
             PreparedStatement stmt = conn.prepareStatement(updateString);
-            
+
             stmt.setString(1, winch.getName());
             stmt.setString(2, winch.getOwner());
             stmt.setString(3, WINCH_PRAM_VERSION);
@@ -409,23 +420,23 @@ public class DatabaseEntryEdit
             stmt.setInt(24, winch.getId());
 
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Winch, Check Error Log").showAndWait();
             logError(e);
         }
         return false;
     }
-    
-    
+
     /**
-     * updates the parachute in the database with the new parachute data in the object passed in
-     * 
+     * updates the parachute in the database with the new parachute data in the
+     * object passed in
+     *
      * @param parachute parachute object that is to be updated
      * @return false if update fails
      */
     public static boolean UpdateEntry(Parachute parachute) {
-        try(Connection conn = connect()) {
-            if(conn == null) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
                 return false;
             }
             String updateString = "UPDATE PARACHUTE SET "
@@ -440,8 +451,8 @@ public class DatabaseEntryEdit
             stmt.setString(5, parachute.getInfo());
             stmt.setInt(6, parachute.getParachuteId());
             return Update(stmt);
-        } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error executing", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not update Parachute, Check Error Log").showAndWait();
             logError(e);
         }
         return false;

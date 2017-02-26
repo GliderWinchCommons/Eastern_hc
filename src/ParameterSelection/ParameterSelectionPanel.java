@@ -1,6 +1,8 @@
 package ParameterSelection;
 
 import Communications.Observer;
+import DataObjects.GliderPosition;
+
 import java.awt.CardLayout;
 
 /*
@@ -15,7 +17,7 @@ import java.awt.CardLayout;
  */
 public class ParameterSelectionPanel extends javax.swing.JPanel implements Observer {
 
-    private final static String[] tabNames = {"PILOT","GLIDER","AIRFIELD","DRUM"};
+    private final static String[] tabNames = {"PILOT","GLIDER","AIRFIELD","DRUM", "RUNWAY", "GLIDERPOSITION", "WINCHPOSITION"};
     
     public void SetCard(int index)
     {
@@ -25,9 +27,12 @@ public class ParameterSelectionPanel extends javax.swing.JPanel implements Obser
 
     public void clear()
     {
-        pilotPanel.clear();
+        /*pilotPanel.clear();
         sailplanePanel.clear();
         airfieldPanel.clear();
+        runwayPanel.clear();
+        gliderPositionPanel.clear();
+        winchPositionPanel.clear();*/
     }
     /**
      * Creates new form ParameterSelectionPanel
@@ -44,20 +49,29 @@ public class ParameterSelectionPanel extends javax.swing.JPanel implements Obser
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        pilotPanel = new PilotPanel();
-        sailplanePanel = new SailplanePanel();
-        airfieldPanel = new AirfieldPanel();
-        drumPanel = new DrumPanel();
-        
         setLayout(new CardLayout(0, 0));
 
-        this.add(tabNames[0], pilotPanel);
+        //pilotPanel = new PilotPanel();
+        //sailplanePanel = new SailplanePanel();
+        //airfieldPanel = new AirfieldPanel((CardLayout) getLayout(), this);
+        //runwayPanel = new RunwayPanel((CardLayout) getLayout(), this);
+        //gliderPositionPanel = new GliderPositionPanel((CardLayout) getLayout(), this);
+        //winchPositionPanel = new WinchPositionPanel((CardLayout) getLayout(), this);
+        //drumPanel = new DrumPanel();
 
-        this.add(tabNames[1], sailplanePanel);
+        //this.add(tabNames[0], pilotPanel);
+
+        //this.add(tabNames[1], sailplanePanel);
         
-        this.add(tabNames[2], airfieldPanel);
+        /*this.add(tabNames[2], airfieldPanel);
         
         this.add(tabNames[3], drumPanel);
+
+        this.add(tabNames[4], runwayPanel);
+
+        this.add(tabNames[5], gliderPositionPanel);
+
+        this.add(tabNames[6], winchPositionPanel);*/
 
         
     }// </editor-fold>//GEN-END:initComponents
@@ -66,13 +80,13 @@ public class ParameterSelectionPanel extends javax.swing.JPanel implements Obser
     
     public void update()
     {
-        pilotPanel.update();
+        /*pilotPanel.update();
         sailplanePanel.update();
         airfieldPanel.update("1");
-        airfieldPanel.update("2");
-        airfieldPanel.update("3");
-        airfieldPanel.update("4");
-        drumPanel.update();
+        runwayPanel.update("2");
+        gliderPositionPanel.update("3");
+        winchPositionPanel.update("4");
+        drumPanel.update();*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -80,5 +94,8 @@ public class ParameterSelectionPanel extends javax.swing.JPanel implements Obser
     private SailplanePanel sailplanePanel;
     private AirfieldPanel airfieldPanel;
     private DrumPanel drumPanel;
+    private RunwayPanel runwayPanel;
+    private GliderPositionPanel gliderPositionPanel;
+    private WinchPositionPanel winchPositionPanel;
     // End of variables declaration//GEN-END:variables
 }

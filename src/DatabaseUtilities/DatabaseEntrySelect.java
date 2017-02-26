@@ -12,14 +12,14 @@ import ParameterSelection.Capability;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import javafx.scene.control.Alert;
 
 /**
  *
  * @author gene
  */
 public class DatabaseEntrySelect {
-    
+
     /**
      * Pulls the list of Profiles (and relevant data) from the database
      *
@@ -27,8 +27,8 @@ public class DatabaseEntrySelect {
      */
     public static List<Operator> getOperators() {
         List<Operator> profiles = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return profiles;
             }
             Statement stmt = connect.createStatement();
@@ -42,15 +42,14 @@ public class DatabaseEntrySelect {
                 boolean adimn = theProfiles.getBoolean("admin");
                 String info = theProfiles.getString("optional_info");
                 String unitSettings = theProfiles.getString("unitSettings");
-                Operator newProfile = new Operator(id, firstName, middleName, 
+                Operator newProfile = new Operator(id, firstName, middleName,
                         lastName, adimn, info, unitSettings);
                 profiles.add(newProfile);
             }
             theProfiles.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Operators",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Operators from Database").showAndWait();
             logError(e);
         }
         return profiles;
@@ -63,8 +62,8 @@ public class DatabaseEntrySelect {
      */
     public static List<Pilot> getPilots() {
         List<Pilot> pilots = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return pilots;
             }
             Statement stmt = connect.createStatement();
@@ -81,16 +80,15 @@ public class DatabaseEntrySelect {
                 String emergency_name = thePilots.getString("emergency_contact_name");
                 String emergency_phone = thePilots.getString("emergency_contact_phone");
                 String info = thePilots.getString("optional_info");
-                Pilot newPilot = new Pilot(pilotId, pilotFirstName, pilotLastName, 
-                        pilotMiddleName, weight, Capability.convertCapabilityNumToString(capability), 
+                Pilot newPilot = new Pilot(pilotId, pilotFirstName, pilotLastName,
+                        pilotMiddleName, weight, Capability.convertCapabilityNumToString(capability),
                         preference, emergency_name, emergency_phone, info);
                 pilots.add(newPilot);
             }
             thePilots.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Pilots",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Pilots from Database").showAndWait();
             logError(e);
         }
         return pilots;
@@ -103,19 +101,20 @@ public class DatabaseEntrySelect {
      */
     public static List<Drum> getDrum() {
         List<Drum> drums = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return drums;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theDrums = stmt.executeQuery("SELECT * " 
-                    + "FROM Parachute ORDER BY drum_name");
+            ResultSet theDrums = stmt.executeQuery("SELECT * "
+                    + "FROM Drum ORDER BY drum_name");
             while (theDrums.next()) {
                 int id = theDrums.getInt("drum_id");
                 String drum_name = theDrums.getString("drum_name");
                 int drum_number = theDrums.getInt("drum_number");
                 float core_diameter = theDrums.getFloat("core_diameter");
                 float kfactor = theDrums.getFloat("kfactor");
+                float spring_const = theDrums.getFloat("spring_const");
                 float cable_length = theDrums.getFloat("cable_length");
                 float cable_density = theDrums.getFloat("cable_density");
                 float drum_system_emass = theDrums.getFloat("drum_system_emass");
@@ -123,16 +122,15 @@ public class DatabaseEntrySelect {
                 float max_tension = theDrums.getFloat("maximum_working_tension");
                 int winchId = theDrums.getInt("winch_id");
                 String info = theDrums.getString("optional_info");
-                Drum newDrum = new Drum(id, winchId, drum_name, drum_number, core_diameter, 
-                        kfactor, cable_length, cable_density, drum_system_emass,
+                Drum newDrum = new Drum(id, winchId, drum_name, drum_number, core_diameter,
+                        kfactor, spring_const, cable_length, cable_density, drum_system_emass,
                         launch_number, max_tension, info);
                 drums.add(newDrum);
             }
             theDrums.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Parachutes",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Drums from Database").showAndWait();
             logError(e);
         }
         return drums;
@@ -145,12 +143,12 @@ public class DatabaseEntrySelect {
      */
     public static List<Sailplane> getSailplanes() {
         List<Sailplane> sailplanes = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return sailplanes;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theSailplanes = stmt.executeQuery("SELECT * " 
+            ResultSet theSailplanes = stmt.executeQuery("SELECT * "
                     + "FROM Glider ORDER BY common_name");
             while (theSailplanes.next()) {
                 int id = theSailplanes.getInt("glider_id");
@@ -167,17 +165,16 @@ public class DatabaseEntrySelect {
                 float cableAngle = theSailplanes.getFloat("cable_release_angle");
                 boolean ballast = theSailplanes.getBoolean("carry_ballast");
                 boolean multipleSeats = theSailplanes.getBoolean("multiple_seats");
-                Sailplane newSailplane = new Sailplane(id, regNumber, name, owner, 
-                        type, maxGrossWeight, emptyWeight, stallSpeed, maxWinchingSpeed, 
-                        maxWeakLinkStrength, maxTension, cableAngle, ballast, multipleSeats, 
+                Sailplane newSailplane = new Sailplane(id, regNumber, name, owner,
+                        type, maxGrossWeight, emptyWeight, stallSpeed, maxWinchingSpeed,
+                        maxWeakLinkStrength, maxTension, cableAngle, ballast, multipleSeats,
                         theSailplanes.getString("optional_info"));
                 sailplanes.add(newSailplane);
             }
             theSailplanes.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Gliders",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Gliders from Database").showAndWait();
             logError(e);
         }
         return sailplanes;
@@ -190,30 +187,28 @@ public class DatabaseEntrySelect {
      */
     public static List<FlightSummary> getFlights() {
         List<FlightSummary> flights = new ArrayList<>();
-        try (Connection connect = connect()){
+        try (Connection connect = connect()) {
             Statement stmt = connect.createStatement();
             ResultSet theFlights = stmt.executeQuery("SELECT start_timestamp, "
                     + "first_name, last_name, middle_name, reg_number "
                     + "FROM PreviousLaunches ORDER BY start_timestamp");
-            
-            while(theFlights.next()) {
-                Timestamp startTimestamp = theFlights.getTimestamp(1); 
+
+            while (theFlights.next()) {
+                Timestamp startTimestamp = theFlights.getTimestamp(1);
                 String pilotFirstName = theFlights.getString(2);
                 String pilotLastName = theFlights.getString(3);
                 String pilotMiddleName = theFlights.getString(4);
                 String gliderNnumber = theFlights.getString(5);
-                
-                FlightSummary newFlight = new FlightSummary(startTimestamp, 
+
+                FlightSummary newFlight = new FlightSummary(startTimestamp,
                         pilotFirstName, pilotLastName, pilotMiddleName, gliderNnumber);
                 flights.add(newFlight);
             }
             theFlights.close();
             stmt.close();
-            connect.close();
             return flights;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Flights",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Flights from Database").showAndWait();
             logError(e);
         }
         return flights;
@@ -226,12 +221,12 @@ public class DatabaseEntrySelect {
      */
     public static List<Airfield> getAirfields() {
         List<Airfield> airfields = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return airfields;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theAirfields = stmt.executeQuery("SELECT * " 
+            ResultSet theAirfields = stmt.executeQuery("SELECT * "
                     + "FROM Airfield ORDER BY name");
             while (theAirfields.next()) {
                 int id = theAirfields.getInt("airfield_id");
@@ -243,15 +238,14 @@ public class DatabaseEntrySelect {
                 float longitude = theAirfields.getFloat("longitude");
                 int utc = theAirfields.getInt("utc_offset");
                 String optional = theAirfields.getString("optional_info");
-                Airfield newAirfield = new Airfield(id, name, designator, elevation, 
+                Airfield newAirfield = new Airfield(id, name, designator, elevation,
                         magneticVariation, latitude, longitude, utc, optional);
                 airfields.add(newAirfield);
             }
             theAirfields.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Airfields",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Airfields from Database").showAndWait();
             logError(e);
         }
         return airfields;
@@ -269,10 +263,10 @@ public class DatabaseEntrySelect {
                     + "FROM PreviousLaunches "
                     + "WHERE start_timestamp = ?");
             stmt.setTimestamp(1, flightInformation.getStartTimestamp());
-            
+
             ResultSet theFlight = stmt.executeQuery();
             CurrentDataObjectSet currentDataObjectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-            if(theFlight.next()) {
+            if (theFlight.next()) {
                 //Create Pilot
                 String pilotFirstName = theFlight.getString("first_name");
                 String pilotLastName = theFlight.getString("last_name");
@@ -283,49 +277,47 @@ public class DatabaseEntrySelect {
                 String emergencyName = theFlight.getString("emergency_contact_name");
                 String emergencyPhone = theFlight.getString("emergency_contact_phone");
                 String optionalInfo = theFlight.getString("pilot_optional_info");
-                
-                Pilot newPilot = new Pilot(0, pilotFirstName, pilotLastName, pilotMiddleName, pilotWeight , 
-                        Capability.convertCapabilityNumToString(pilotCapability), pilotPreference, 
+
+                Pilot newPilot = new Pilot(0, pilotFirstName, pilotLastName, pilotMiddleName, pilotWeight,
+                        Capability.convertCapabilityNumToString(pilotCapability), pilotPreference,
                         emergencyName, emergencyPhone, optionalInfo);
                 currentDataObjectSet.setCurrentPilot(newPilot);
-                
+
                 //Create Glider
                 String gliderNNumber = theFlight.getString("reg_number");
                 String commonName = theFlight.getString("common_name");
                 String gliderOwner = theFlight.getString("glider_owner");
                 String gliderType = theFlight.getString("type");
-                
-                float gliderMaxGrossWeight = theFlight.getFloat("max_gross_weight"); 
+
+                float gliderMaxGrossWeight = theFlight.getFloat("max_gross_weight");
                 float gliderEmptyWeight = theFlight.getFloat("empty_weight");
                 float gliderStallSpeed = theFlight.getFloat("indicated_stall_speed");
                 float gliderMaxWinchingSpeed = theFlight.getFloat("max_winching_speed");
                 float gliderMaxWeakLinkStrength = theFlight.getFloat("max_weak_link_strength");
                 float gliderMaxTension = theFlight.getFloat("max_tension");
                 float gliderCableAngle = theFlight.getFloat("cable_release_angle");
-                
+
                 boolean ballast = theFlight.getBoolean("carry_ballast");
                 boolean multipleSeats = theFlight.getBoolean("multiple_seats");
                 optionalInfo = theFlight.getString("glider_optional_info");
-                
+
                 Sailplane newSailplane = new Sailplane(gliderNNumber, commonName, gliderOwner, gliderType,
-                        gliderMaxGrossWeight, gliderEmptyWeight, gliderStallSpeed, gliderMaxWinchingSpeed, 
-                        gliderMaxWeakLinkStrength, gliderMaxTension, gliderCableAngle, 
+                        gliderMaxGrossWeight, gliderEmptyWeight, gliderStallSpeed, gliderMaxWinchingSpeed,
+                        gliderMaxWeakLinkStrength, gliderMaxTension, gliderCableAngle,
                         ballast, multipleSeats, optionalInfo);
                 currentDataObjectSet.setCurrentGlider(newSailplane);
-                
-                CurrentLaunchInformation currentLaunchInformation = 
-                        CurrentLaunchInformation.getCurrentLaunchInformation();                
+
+                CurrentLaunchInformation currentLaunchInformation
+                        = CurrentLaunchInformation.getCurrentLaunchInformation();
                 currentLaunchInformation.setGliderBallast(theFlight.getFloat("ballast"));
                 currentLaunchInformation.setPassengerWeight(theFlight.getFloat("passenger_weight"));
                 currentLaunchInformation.setGliderBaggage(theFlight.getFloat("baggage"));
             }
-        }
-        catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not repopulate current data",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not repopulate current scenario,\n\rCheck Error Log").showAndWait();
             logError(e);
         }
-        
+
     }
 
     /**
@@ -335,12 +327,12 @@ public class DatabaseEntrySelect {
      */
     public static List<GliderPosition> getGliderPositions() {
         List<GliderPosition> positions = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return positions;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theGliderPositions = stmt.executeQuery("SELECT * " 
+            ResultSet theGliderPositions = stmt.executeQuery("SELECT * "
                     + "FROM GliderPosition ORDER BY position_name");
             while (theGliderPositions.next()) {
                 int id = theGliderPositions.getInt("glider_position_id");
@@ -350,20 +342,19 @@ public class DatabaseEntrySelect {
                 float latitude = theGliderPositions.getFloat("latitude");
                 float longitude = theGliderPositions.getFloat("longitude");
                 String optional = theGliderPositions.getString("optional_info");
-                GliderPosition newGliderPosition = new GliderPosition(id, runwayId, 
+                GliderPosition newGliderPosition = new GliderPosition(id, runwayId,
                         name, elevation, latitude, longitude, optional);
                 positions.add(newGliderPosition);
             }
             theGliderPositions.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Glider Positions",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Glider Positions from Database").showAndWait();
             logError(e);
         }
         return positions;
     }
-    
+
     /**
      * Pulls the list of Winch positions (and relevant data) from the database
      *
@@ -371,12 +362,12 @@ public class DatabaseEntrySelect {
      */
     public static List<WinchPosition> getWinchPositions() {
         List<WinchPosition> positions = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return positions;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theWinchPositions = stmt.executeQuery("SELECT * " 
+            ResultSet theWinchPositions = stmt.executeQuery("SELECT * "
                     + "FROM WinchPosition ORDER BY position_name");
             while (theWinchPositions.next()) {
                 int id = theWinchPositions.getInt("winch_position_id");
@@ -386,15 +377,14 @@ public class DatabaseEntrySelect {
                 float latitude = theWinchPositions.getFloat("latitude");
                 float longitude = theWinchPositions.getFloat("longitude");
                 String optional = theWinchPositions.getString("optional_info");
-                WinchPosition newWinchPosition = new WinchPosition(id, runwayId, name, 
+                WinchPosition newWinchPosition = new WinchPosition(id, runwayId, name,
                         elevation, latitude, longitude, optional);
                 positions.add(newWinchPosition);
             }
             theWinchPositions.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Winch Positions",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Winch Positions from Database").showAndWait();
             logError(e);
         }
         return positions;
@@ -407,12 +397,12 @@ public class DatabaseEntrySelect {
      */
     public static List<Runway> getRunways() {
         List<Runway> runways = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return runways;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theRunways = stmt.executeQuery("SELECT * " 
+            ResultSet theRunways = stmt.executeQuery("SELECT * "
                     + "FROM Runway ORDER BY runway_name");
             while (theRunways.next()) {
                 int id = theRunways.getInt("runway_id");
@@ -426,8 +416,7 @@ public class DatabaseEntrySelect {
             theRunways.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Runways",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Runways from Database").showAndWait();
             logError(e);
         }
         return runways;
@@ -440,12 +429,12 @@ public class DatabaseEntrySelect {
      */
     public static List<Parachute> getParachutes() {
         List<Parachute> parachutes = new ArrayList();
-        try(Connection connect = connect()) {
-            if(connect == null) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
                 return parachutes;
             }
             Statement stmt = connect.createStatement();
-            ResultSet theParachutes = stmt.executeQuery("SELECT * " 
+            ResultSet theParachutes = stmt.executeQuery("SELECT * "
                     + "FROM Parachute ORDER BY name");
             while (theParachutes.next()) {
                 int id = theParachutes.getInt("parachute_id");
@@ -460,15 +449,14 @@ public class DatabaseEntrySelect {
             theParachutes.close();
             stmt.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error, could not retreve Parachutes",
-                    "Error", JOptionPane.INFORMATION_MESSAGE);
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Parachutes from Database").showAndWait();
             logError(e);
         }
         return parachutes;
     }
-    
+
     public static List<String> getTables() throws SQLException, ClassNotFoundException {
-        try(Connection connect = DatabaseInitialization.connectEx()) {
+        try (Connection connect = DatabaseInitialization.connectEx()) {
             Statement stmt = connect.createStatement();
             ResultSet theTables = stmt.executeQuery("SELECT * FROM SYS.SYSTABLES");
             List<String> tables = new ArrayList();

@@ -19,7 +19,7 @@ public class RunLengthWidget extends EnvironmentalWidget {
 
     public RunLengthWidget() 
     {
-        super("Run Length", true, false);
+        super(null, null, null);
     }
 
     @Override

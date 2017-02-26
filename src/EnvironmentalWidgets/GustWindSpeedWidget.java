@@ -11,6 +11,10 @@ import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
 import DataObjects.Operator;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.awt.Color;
 
 /**
@@ -19,20 +23,20 @@ import java.awt.Color;
  */
 public class GustWindSpeedWidget extends EnvironmentalWidget {
 
-    public GustWindSpeedWidget() {
-        super("Gust Wind Speed", true, true);
+    public GustWindSpeedWidget(TextField field, CheckBox edit, Label unit) {
+        super(field, edit, unit);
     }
 
     @Override
     public void update() {
-        field.setBackground(Color.WHITE);
+        //field.setBackground(Color.WHITE);
         if (manualEntry())
         {
             try{
                 float speed = Float.parseFloat(field.getText()) / UnitConversionRate.convertSpeedUnitIndexToFactor(unitId);
                 CurrentWidgetDataSet.getInstance().setValue("gustwindspeed", String.valueOf(speed));
             }catch (NumberFormatException e){
-                field.setBackground(Color.PINK);
+                //field.setBackground(Color.PINK);
             }
         }
         else

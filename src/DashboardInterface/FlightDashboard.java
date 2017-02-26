@@ -46,12 +46,12 @@ public class FlightDashboard extends javax.swing.JPanel
     
     public FlightDashboard()
     {
-        initComponents();
+        //initComponents();
     }
     
     private void initComponents()
     {       
-        contentPane = new JPanel();
+        /*contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         
         graphPane = new javax.swing.JPanel();
@@ -183,5 +183,6 @@ public class FlightDashboard extends javax.swing.JPanel
         );
         
         this.add(contentPane);
+*/
     }
 }

@@ -9,7 +9,6 @@ import Configuration.UnitConversionToIndexUtilities;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
-import DataObjects.Operator;
 
 /**
  *
@@ -18,7 +17,7 @@ import DataObjects.Operator;
 public class RunDirectionWidget extends EnvironmentalWidget {
 
     public RunDirectionWidget() {
-        super("Run Direction", true, false);
+        super(null, null, null);
     }
 
     @Override
@@ -37,8 +36,7 @@ public class RunDirectionWidget extends EnvironmentalWidget {
 
     @Override
     public void setupUnits() {
-        Operator temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile();
-        unitId = temp.getUnitSetting("rundirection");
+        unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("rundirection");
         unit.setText(" degrees " + UnitLabelUtilities.degreesUnitIndexToString(unitId));
     }
     
