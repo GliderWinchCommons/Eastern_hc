@@ -81,7 +81,7 @@ public class DatabaseEntryInsert {
                     + "optional_info)"
                     + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sailplaneInsertStatement.setInt(1, theSailplane.getId());
-            sailplaneInsertStatement.setString(2, theSailplane.getRegistration());
+            sailplaneInsertStatement.setString(2, theSailplane.getRegNumber());
             sailplaneInsertStatement.setString(3, theSailplane.getName());
             sailplaneInsertStatement.setString(4, theSailplane.getOwner());
             sailplaneInsertStatement.setString(5, theSailplane.getType());
@@ -582,7 +582,7 @@ public class DatabaseEntryInsert {
             PreviousLaunchesInsert.setString(10, currentDataObjectSet.getCurrentPilot().getEmergencyPhone());
             PreviousLaunchesInsert.setString(11, currentDataObjectSet.getCurrentPilot().getOptionalInfo());
             //Glider
-            PreviousLaunchesInsert.setString(12, currentDataObjectSet.getCurrentSailplane().getRegistration());
+            PreviousLaunchesInsert.setString(12, currentDataObjectSet.getCurrentSailplane().getRegNumber());
             PreviousLaunchesInsert.setString(13, currentDataObjectSet.getCurrentSailplane().getName());
             PreviousLaunchesInsert.setString(14, currentDataObjectSet.getCurrentSailplane().getOwner());
             PreviousLaunchesInsert.setString(15, currentDataObjectSet.getCurrentSailplane().getType());

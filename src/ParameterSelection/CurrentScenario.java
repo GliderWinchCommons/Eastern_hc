@@ -157,10 +157,8 @@ public class CurrentScenario implements Observer
     {
 
         Pilot pilot = data.getCurrentPilot();
-        //Sailplane glider = data.getCurrentSailplane();
-        //Airfield airfield = data.getCurrentAirfield();
-        Sailplane glider = new Sailplane(0,"", "", "","", 0f, 0f, 0f, 0f, 0f, 0f, 0f, true, true, "");
-        Airfield airfield = new Airfield("", "", 0f, 0f, 0f, 0f, "");
+        Sailplane glider = data.getCurrentSailplane();
+        Airfield airfield = data.getCurrentAirfield();
         GliderPosition position = data.getCurrentGliderPosition();
         Runway runway = data.getCurrentRunway();
         WinchPosition winch = data.getCurrentWinchPosition();

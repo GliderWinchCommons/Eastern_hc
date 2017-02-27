@@ -16,7 +16,7 @@
    <left>
       <TableView fx:id="drumTable" prefHeight="200.0" prefWidth="210.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="Drum Name" />
+          <TableColumn prefWidth="75.0" style="-fx-alignment: CENTER;" text="Drum Name" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

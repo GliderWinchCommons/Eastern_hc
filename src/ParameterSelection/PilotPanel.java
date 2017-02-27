@@ -51,9 +51,9 @@ public class PilotPanel implements Observer {
     @FXML
     protected void initialize() {
         TableColumn firstCol = (TableColumn) pilotTable.getColumns().get(0);
-        firstCol.setCellValueFactory(new PropertyValueFactory<>("First Name"));
+        firstCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         TableColumn lastCol = (TableColumn) pilotTable.getColumns().get(1);
-        lastCol.setCellValueFactory(new PropertyValueFactory<>("Last Name"));
+        lastCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
         pilotTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getPilots()));
         pilotTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {

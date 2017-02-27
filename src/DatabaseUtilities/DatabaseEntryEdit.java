@@ -165,7 +165,7 @@ public class DatabaseEntryEdit {
                     + "cable_release_angle = ?, carry_ballast = ?, multiple_seats = ?, optional_info = ? "
                     + "WHERE glider_id = ?";
             PreparedStatement stmt = conn.prepareStatement(updateString);
-            stmt.setString(1, sailplane.getRegistration());
+            stmt.setString(1, sailplane.getRegNumber());
             stmt.setString(2, sailplane.getName());
             stmt.setString(3, sailplane.getOwner());
             stmt.setString(4, sailplane.getType());

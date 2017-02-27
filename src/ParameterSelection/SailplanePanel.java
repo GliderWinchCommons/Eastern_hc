@@ -110,7 +110,7 @@ public class SailplanePanel implements Observer {
     @FXML
     protected void initialize() {
         TableColumn registrationCol = (TableColumn) gliderTable.getColumns().get(0);
-        registrationCol.setCellValueFactory(new PropertyValueFactory<>("Registration"));
+        registrationCol.setCellValueFactory(new PropertyValueFactory<>("regNumber"));
 
         gliderTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getSailplanes()));
         gliderTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
@@ -125,7 +125,7 @@ public class SailplanePanel implements Observer {
 
     public void loadData() {
         if (currentData.getCurrentSailplane() != null) {
-            registrationNumberLabel.setText("" + currentData.getCurrentSailplane().getRegistration());
+            registrationNumberLabel.setText("" + currentData.getCurrentSailplane().getRegNumber());
             ownerLabel.setText("" + currentData.getCurrentSailplane().getOwner());
             emptyWeightLabel.setText("" + currentData.getCurrentSailplane().getEmptyWeight());
             maxGrossWeightLabel.setText("" + currentData.getCurrentSailplane().getMaxGrossWeight());

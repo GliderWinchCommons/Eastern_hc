@@ -91,7 +91,7 @@ public class Sailplane {
         return id;
     }
     
-    public String getRegistration() {
+    public String getRegNumber() {
         return regNumber;
     }
     
