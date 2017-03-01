@@ -14,7 +14,7 @@
 
 <BorderPane fx:id="gliderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <TableView fx:id="gliderTable" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: CENTER;" BorderPane.alignment="CENTER">
+      <TableView fx:id="gliderTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn prefWidth="100.0" style="-fx-alignment: CENTER;" text="Registration Number" />
          </columns>

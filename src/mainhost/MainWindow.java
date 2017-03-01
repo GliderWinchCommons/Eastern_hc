@@ -2,6 +2,7 @@ package mainhost;
 
 import Configuration.DatabaseExportFrame;
 import Configuration.DatabaseImportFrame;
+import Configuration.OperatorLoginPanel;
 import Configuration.ProfileManagementFrame;
 import DashboardInterface.CableOutSpeedDial;
 import DashboardInterface.FlightDashboard;
@@ -56,7 +57,7 @@ public class MainWindow {
 
     private void initializeDefaultProfile()
     {
-        Operator defaultProfile = new Operator(0, "Default", "{}");
+        Operator defaultProfile = new Operator(0, "First", "Middle", "Last", true, "", "{}");
         defaultProfile.setUnitSetting("flightWeight", 1);
 
         defaultProfile.setUnitSetting("emptyWeight", 1);
@@ -99,7 +100,8 @@ public class MainWindow {
 
     //==============================================================================================================================================================================================
 
-    @FXML SubScene currentScenario;
+    @FXML SubScene loginSubScene;
+    @FXML SubScene currentScenario;    
     @FXML SubScene environmentalWindowScene;
     @FXML SubScene profileManagementFrame;
 
@@ -145,9 +147,14 @@ public class MainWindow {
             }
         });
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ParameterSelection/CurrentScenario.fxml"));
-        loader.setController(new CurrentScenario());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/OperatorLoginPanel.fxml"));
+        loader.setController(new OperatorLoginPanel(loginSubScene));
         Parent root = loader.load();
+        loginSubScene.setRoot(root);
+        
+        loader = new FXMLLoader(getClass().getResource("/ParameterSelection/CurrentScenario.fxml"));
+        loader.setController(new CurrentScenario());
+        root = loader.load();
         currentScenario.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/EnvironmentalWindowScene.fxml"));

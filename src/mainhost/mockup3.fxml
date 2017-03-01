@@ -282,5 +282,10 @@
           <Region />
         </root>
       </SubScene>
+      <SubScene fx:id="loginSubScene" height="628.0" width="800.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
    </children>
 </Pane>
