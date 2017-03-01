@@ -5,26 +5,17 @@
  */
 package EnvironmentalWidgets;
 
-import java.awt.BorderLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import Communications.Observer;
-import DataObjects.CurrentLaunchInformation;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javax.swing.Timer;
 
 /**
  *
@@ -35,12 +26,42 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
     protected CheckBox isEditable;
     protected Label unit;
     protected int unitId;
+    private Timer resetTimer;
     
     public EnvironmentalWidget(TextField field, CheckBox edit, Label unit)
     {
         this.field = field;
         this.isEditable = edit;
         this.unit = unit;
+        if(edit != null)
+        {            
+            field.focusedProperty().addListener(new ChangeListener<Boolean>(){
+                @Override
+                public void changed(ObservableValue<? extends Boolean> ov, Boolean oldValue, Boolean newValue) {
+                    if(field.editableProperty().getValue())
+                    {
+                        if(newValue == true)
+                        {
+                            field.setStyle("");
+                            resetTimer.stop();
+                        }
+                        else
+                        {
+                            resetTimer.start();
+                        }
+                    }
+                }        
+            });
+
+            ActionListener action = new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    field.setStyle("-fx-border-color: red;");
+                }          
+            };
+            resetTimer = new Timer(5000, action);
+            resetTimer.start();        
+        }
         setupUnits();
     }
     
