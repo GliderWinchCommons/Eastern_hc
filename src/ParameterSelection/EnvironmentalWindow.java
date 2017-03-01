@@ -9,21 +9,13 @@ import DataObjects.CurrentDataObjectSet;
 import EnvironmentalWidgets.EnvironmentalWidget;
 import EnvironmentalWidgets.LaunchWeightWidget;
 import Communications.MessagePipeline;
-import java.awt.Dimension;
-import javax.swing.BoxLayout;
 import Communications.Observer;
 import DataObjects.CurrentLaunchInformation;
 import EnvironmentalWidgets.AvgWindSpeedWidget;
-import EnvironmentalWidgets.CrossWindComponentWidget;
-import EnvironmentalWidgets.CurrentWidgetDataSet;
 import EnvironmentalWidgets.DensityAltitudeWidget;
 import EnvironmentalWidgets.GustWindSpeedWidget;
-import EnvironmentalWidgets.HeadWindComponentWidget;
 import EnvironmentalWidgets.HumidityWidget;
 import EnvironmentalWidgets.PressureWidget;
-import EnvironmentalWidgets.RunDirectionWidget;
-import EnvironmentalWidgets.RunLengthWidget;
-import EnvironmentalWidgets.RunSlopeWidget;
 import EnvironmentalWidgets.TemperatureWidget;
 import EnvironmentalWidgets.WindDirectionWidget;
 import javafx.fxml.FXML;
@@ -32,12 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JLabel;
 
 /**
  *
