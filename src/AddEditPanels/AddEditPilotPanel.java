@@ -9,13 +9,12 @@ import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Random;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-
 import javax.swing.*;
-import java.util.Optional;
-import java.util.Random;
 
 public class AddEditPilotPanel extends AddEditPanel {
 
@@ -137,7 +136,7 @@ public class AddEditPilotPanel extends AddEditPanel {
                 }
                 currentData.setCurrentPilot(newPilot);
                 //TODO
-                //parent.update();
+                parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"

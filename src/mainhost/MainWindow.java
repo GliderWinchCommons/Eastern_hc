@@ -2,6 +2,7 @@ package mainhost;
 
 import Configuration.DatabaseExportFrame;
 import Configuration.DatabaseImportFrame;
+import Configuration.NewOperatorPanel;
 import Configuration.OperatorLoginPanel;
 import Configuration.ProfileManagementFrame;
 import DashboardInterface.CableOutSpeedDial;
@@ -13,39 +14,39 @@ import ParameterSelection.CurrentScenario;
 import ParameterSelection.DEBUGWinchEditPanel;
 import ParameterSelection.EnvironmentalWindow;
 import ParameterSelection.ParameterSelectionPanel;
+import java.awt.*;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 
 public class MainWindow {
+
     private String version = "2.0.1";
     private static Stage theStage;
 
-    private String                  currentProfile;
+    private String currentProfile;
     private ParameterSelectionPanel ParameterSelectionPanel_;
-    private ProfileManagementFrame  ProfileManagementFrame;
-    private FlightDashboard         FlightDashboard_;
-    private DatabaseExportFrame     DatabaseExportFrame;
-    private DatabaseImportFrame     DatabaseImportFrame;
-    private EnvironmentalWindow     EnvironmentalWindow_;
-    private CurrentDataObjectSet    currentData;
+    private ProfileManagementFrame ProfileManagementFrame;
+    private FlightDashboard FlightDashboard_;
+    private DatabaseExportFrame DatabaseExportFrame;
+    private DatabaseImportFrame DatabaseImportFrame;
+    private EnvironmentalWindow EnvironmentalWindow_;
+    private CurrentDataObjectSet currentData;
 
     private DEBUGWinchEditPanel winchPanel;
 
-    public MainWindow(Stage primaryStage)
-    {
+    public MainWindow(Stage primaryStage) {
         theStage = primaryStage;
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
 
@@ -55,8 +56,7 @@ public class MainWindow {
         FlightDashboard_ = new FlightDashboard();
     }
 
-    private void initializeDefaultProfile()
-    {
+    private void initializeDefaultProfile() {
         Operator defaultProfile = new Operator(0, "First", "Middle", "Last", true, "", "{}");
         defaultProfile.setUnitSetting("flightWeight", 1);
 
@@ -69,15 +69,15 @@ public class MainWindow {
         defaultProfile.setUnitSetting("maxTension", 1);
         defaultProfile.setUnitSetting("weakLinkStrength", 1);
         defaultProfile.setUnitSetting("winchingSpeed", 1);
-        
+
         defaultProfile.setUnitSetting("airfieldAltitude", 1);
         defaultProfile.setUnitSetting("gliderPosAltitude", 1);
         defaultProfile.setUnitSetting("runwayMagneticHeading", 1);
         defaultProfile.setUnitSetting("winchPosAltitude", 1);
-        
+
         defaultProfile.setUnitSetting("cableLength", 1);
         defaultProfile.setUnitSetting("coreDiameter", 6);
-        
+
         defaultProfile.setUnitSetting("avgWindSpeed", 1);
         defaultProfile.setUnitSetting("crosswind", 1);
         defaultProfile.setUnitSetting("gustWindSpeed", 1);
@@ -89,7 +89,7 @@ public class MainWindow {
         defaultProfile.setUnitSetting("temperature", 1);
         defaultProfile.setUnitSetting("runDirection", 1);
         defaultProfile.setUnitSetting("windDirection", 1);
-                
+
         currentData.setCurrentProfile(defaultProfile);
     }
 
@@ -99,27 +99,38 @@ public class MainWindow {
     }
 
     //==============================================================================================================================================================================================
-
-    @FXML SubScene loginSubScene;
-    @FXML SubScene currentScenario;    
-    @FXML SubScene environmentalWindowScene;
-    @FXML SubScene profileManagementFrame;
-
-    @FXML LineChart lineChart;
-    @FXML SwingNode cableOutSpeedSwingNode;
-    @FXML SwingNode stateMachineSwingNode;
-
-    @FXML Pane      mainPane;
-    @FXML TextField wp1TextField;
-
-    public static final int BASE_WIDTH = 1100, BASE_HEIGHT = 825, WIDTH_OFFSET = 16, HEIGHT_OFFSET = 39;
-    public static final double  WIDTH_TO_HEIGHT_RATIO = .75;
-    public static final double  HEIGHT_TO_WIDTH_RATIO = 1.25;
-    private             boolean isScaling             = false;
+    @FXML
+    TabPane tabPane;
+    @FXML
+    SubScene loginSubScene;
+    @FXML
+    SubScene newOperatorScene;
+    @FXML
+    SubScene currentScenario;
+    @FXML
+    SubScene environmentalWindowScene;
+    @FXML
+    SubScene profileManagementFrame;
 
     @FXML
-    protected void initialize() throws IOException
-    {
+    LineChart lineChart;
+    @FXML
+    SwingNode cableOutSpeedSwingNode;
+    @FXML
+    SwingNode stateMachineSwingNode;
+
+    @FXML
+    Pane mainPane;
+    @FXML
+    TextField wp1TextField;
+
+    public static final int BASE_WIDTH = 1100, BASE_HEIGHT = 825, WIDTH_OFFSET = 16, HEIGHT_OFFSET = 39;
+    public static final double WIDTH_TO_HEIGHT_RATIO = .75;
+    public static final double HEIGHT_TO_WIDTH_RATIO = 1.25;
+    private boolean isScaling = false;
+
+    @FXML
+    protected void initialize() throws IOException {
         initializeDefaultProfile();
 
         JPanel stateMachine = new StateMachineDiagram();
@@ -134,24 +145,26 @@ public class MainWindow {
         });
 
         wp1TextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && oldValue)
-            {
-                try
-                {
+            if (!newValue && oldValue) {
+                try {
                     wp1TextField.setText("" + DecimalFormat.getInstance().parse(wp1TextField.getText()));
-                }
-                catch (ParseException e)
-                {
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
         });
 
+        OperatorLoginPanel olp = new OperatorLoginPanel(tabPane, loginSubScene);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/OperatorLoginPanel.fxml"));
-        loader.setController(new OperatorLoginPanel(loginSubScene));
+        loader.setController(olp);
         Parent root = loader.load();
         loginSubScene.setRoot(root);
-        
+
+        loader = new FXMLLoader(getClass().getResource("/Configuration/NewOperatorPanel.fxml"));
+        loader.setController(new NewOperatorPanel(olp, newOperatorScene));
+        root = loader.load();
+        newOperatorScene.setRoot(root);
+
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/CurrentScenario.fxml"));
         loader.setController(new CurrentScenario());
         root = loader.load();
@@ -169,16 +182,14 @@ public class MainWindow {
         profileManagementFrame.setRoot(root);
 
         mainPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            if (theStage.getWidth() > 0)
-            {
+            if (theStage.getWidth() > 0) {
                 double scale = (theStage.getWidth() - WIDTH_OFFSET) / BASE_WIDTH;
                 mainPane.setScaleX(scale);
                 mainPane.setTranslateX(-(mainPane.getWidth() - scale * mainPane.getWidth()) / 2);
             }
         });
         mainPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            if (theStage.getHeight() > 0)
-            {
+            if (theStage.getHeight() > 0) {
                 double scale = (theStage.getHeight() - HEIGHT_OFFSET) / BASE_HEIGHT;
                 mainPane.setScaleY(scale);
                 mainPane.setTranslateY(-(mainPane.getHeight() - scale * mainPane.getHeight()) / 2);

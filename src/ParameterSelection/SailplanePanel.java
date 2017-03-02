@@ -1,20 +1,17 @@
 package ParameterSelection;
 
-import DataObjects.CurrentDataObjectSet;
-import DataObjects.Sailplane;
-
-import java.awt.Color;
-import javax.swing.DefaultListModel;
-import javax.swing.JTextField;
-import javafx.event.ActionEvent;
-
+import AddEditPanels.AddEditGlider;
 import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
+import DataObjects.Sailplane;
 import DatabaseUtilities.DatabaseEntrySelect;
+import java.awt.Color;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
@@ -23,10 +20,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
 
 public class SailplanePanel implements Observer {
 
     private CurrentDataObjectSet currentData;
+    private AddEditGlider editFrame;
 
     @FXML
     TableView gliderTable;
@@ -99,12 +99,13 @@ public class SailplanePanel implements Observer {
     /**
      * Creates new form sailplanePanel
      */
-    public SailplanePanel(SubScene editSailplanePanel, GridPane scenarioHomePane) {
+    public SailplanePanel(SubScene editSailplanePanel, GridPane scenarioHomePane, AddEditGlider editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         launchInfo = CurrentLaunchInformation.getCurrentLaunchInformation();
         launchInfo.setSailplanePanel(this);
         this.editSailplanePanel = editSailplanePanel;
         this.scenarioHomePane = scenarioHomePane;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -145,7 +146,10 @@ public class SailplanePanel implements Observer {
         DefaultListModel sailplaneModel = new DefaultListModel();
         sailplaneModel.clear();
 
-        Sailplane currentSailplane = currentData.getCurrentSailplane();
+        gliderTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getSailplanes()));
+        if (currentData.getCurrentSailplane() != null) {
+            gliderTable.getSelectionModel().select(currentData.getCurrentSailplane());
+        }
 
     }
 
@@ -166,6 +170,13 @@ public class SailplanePanel implements Observer {
 
     @FXML
     public void NewSailplaneButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editSailplanePanel.toFront();
+    }
+
+    @FXML
+    public void EditSailplaneButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentSailplane());
         editSailplanePanel.toFront();
     }
 

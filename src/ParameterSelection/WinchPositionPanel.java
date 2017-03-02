@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditWinchPosFrame;
 import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -11,10 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.layout.GridPane;
 import javax.swing.*;
 
 /**
@@ -24,6 +23,7 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     private CurrentDataObjectSet currentData;
     private int winchPosAltitudeUnitsID;
+    private AddEditWinchPosFrame editFrame;
 
     SubScene editWinchPositionPanel;
     GridPane scenarioHomePane;
@@ -47,10 +47,11 @@ public class WinchPositionPanel extends JPanel implements Observer {
     @FXML
     Label latitudeUnitLabel;
 
-    public WinchPositionPanel(SubScene editWinchPositionPanel, GridPane scenarioHomePane) {
+    public WinchPositionPanel(SubScene editWinchPositionPanel, GridPane scenarioHomePane, AddEditWinchPosFrame editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.editWinchPositionPanel = editWinchPositionPanel;
         this.scenarioHomePane = scenarioHomePane;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -86,7 +87,10 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
-
+        winchPositionTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getWinchPositions()));
+        if (currentData.getCurrentWinchPosition() != null) {
+            winchPositionTable.getSelectionModel().select(currentData.getCurrentWinchPosition());
+        }
     }
 
     @Override
@@ -109,6 +113,13 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     @FXML
     public void NewWinchPositionButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editWinchPositionPanel.toFront();
+    }
+
+    @FXML
+    public void EditWinchPositionButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentWinchPosition());
         editWinchPositionPanel.toFront();
     }
 }

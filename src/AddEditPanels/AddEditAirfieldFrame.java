@@ -4,8 +4,8 @@ package AddEditPanels;
 import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
-import DataObjects.CurrentDataObjectSet;
 import DataObjects.Airfield;
+import DataObjects.CurrentDataObjectSet;
 import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
@@ -87,7 +87,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
                 objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
                 objectSet.clearAirfield();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update("1");
+                parent.update();
             }
         }
     }
@@ -129,7 +129,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
                     }
                 }
                 objectSet.setCurrentAirfield(newAirfield);
-                parent.update("1");
+                parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"

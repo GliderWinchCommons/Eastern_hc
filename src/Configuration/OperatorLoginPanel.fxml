@@ -35,17 +35,17 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#NewAdminButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="New Admin" wrapText="true">
+                  <Button fx:id="newAdminButton" mnemonicParsing="false" onAction="#NewAdminButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="New Admin" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#EditButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Edit">
+                  <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Edit">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#LoginButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Login">
+                  <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#LoginButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Login">
                      <font>
                         <Font size="16.0" />
                      </font>

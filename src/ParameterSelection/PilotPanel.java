@@ -1,10 +1,10 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditPilotPanel;
 import Communications.Observer;
+import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Pilot;
-import javax.swing.DefaultListModel;
-import Configuration.UnitLabelUtilities;
 import DatabaseUtilities.DatabaseEntrySelect;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,11 +18,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
+import javax.swing.DefaultListModel;
 
 public class PilotPanel implements Observer {
 
     private Boolean shown;
     private CurrentDataObjectSet currentData;
+    private AddEditPilotPanel editFrame;
 
     GridPane scenarioHomePane;
     SubScene editPilotPanel;
@@ -42,10 +44,11 @@ public class PilotPanel implements Observer {
 
     private int flightWeightUnitsID;
 
-    public PilotPanel(SubScene editPilotPanel, GridPane scenarioHomePane) {
+    public PilotPanel(SubScene editPilotPanel, GridPane scenarioHomePane, AddEditPilotPanel editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.editPilotPanel = editPilotPanel;
         this.scenarioHomePane = scenarioHomePane;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -116,8 +119,10 @@ public class PilotPanel implements Observer {
         setupUnits();
         DefaultListModel pilotModel = new DefaultListModel();
         pilotModel.clear();
-
-        Pilot currentPilot = currentData.getCurrentPilot();
+        pilotTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getPilots()));
+        if (currentData.getCurrentPilot() != null) {
+            pilotTable.getSelectionModel().select(currentData.getCurrentPilot());
+        }
     }
 
     private Observer getObserver() {
@@ -140,6 +145,13 @@ public class PilotPanel implements Observer {
 
     @FXML
     public void NewPilotButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editPilotPanel.toFront();
+    }
+
+    @FXML
+    public void EditPilotButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentPilot());
         editPilotPanel.toFront();
     }
 }

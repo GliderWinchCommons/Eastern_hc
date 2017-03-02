@@ -5,16 +5,14 @@
  */
 package mainhost;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.util.concurrent.atomic.AtomicInteger;
+import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class Main extends Application {
 
@@ -30,6 +29,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //DatabaseInitialization.buildDatabase(DatabaseInitialization.connect());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mockup3.fxml"));
         MainWindow mainWindow = new MainWindow(primaryStage);
         loader.setController(mainWindow);
@@ -43,7 +43,7 @@ public class Main extends Application {
         /*MessagePipeline pipe = MessagePipeline.getInstance();
         Thread pipeThread = new Thread(pipe);
         pipeThread.start();//runs in background, not connected yet*/
-        System.getProperties().setProperty("swing.jlf.contentPaneTransparent", "true");
+        //System.getProperties().setProperty("swing.jlf.contentPaneTransparent", "true");
 
         /*primaryStage.widthProperty().addListener(new ChangeListener<Number>()
         {

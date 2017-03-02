@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditGliderPosFrame;
 import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -11,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javax.swing.*;
 
 /**
@@ -24,6 +23,7 @@ public class GliderPositionPanel extends JPanel implements Observer {
     private int gliderPosAltitudeUnitsID;
 
     private CurrentDataObjectSet currentData;
+    private AddEditGliderPosFrame editFrame;
 
     SubScene editGliderPositionPanel;
     SubScene winchPosPane;
@@ -47,10 +47,11 @@ public class GliderPositionPanel extends JPanel implements Observer {
     @FXML
     Label latitudeUnitLabel;
 
-    public GliderPositionPanel(SubScene editGliderPositionPanel, SubScene winchPosPane) {
+    public GliderPositionPanel(SubScene editGliderPositionPanel, SubScene winchPosPane, AddEditGliderPosFrame editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.editGliderPositionPanel = editGliderPositionPanel;
         this.winchPosPane = winchPosPane;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -88,7 +89,10 @@ public class GliderPositionPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
-
+        gliderPositionTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getGliderPositions()));
+        if (currentData.getCurrentGliderPosition() != null) {
+            gliderPositionTable.getSelectionModel().select(currentData.getCurrentGliderPosition());
+        }
     }
 
     @Override
@@ -111,6 +115,13 @@ public class GliderPositionPanel extends JPanel implements Observer {
 
     @FXML
     public void NewGliderPositionButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editGliderPositionPanel.toFront();
+    }
+
+    @FXML
+    public void EditGliderPositionButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentGliderPosition());
         editGliderPositionPanel.toFront();
     }
 }

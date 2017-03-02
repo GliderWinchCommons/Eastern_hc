@@ -50,7 +50,7 @@
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="120.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" onAction="#EditGliderPositionButton_Click" prefHeight="60.0" prefWidth="120.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>

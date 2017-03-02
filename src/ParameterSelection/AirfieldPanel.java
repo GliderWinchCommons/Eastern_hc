@@ -12,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javax.swing.JPanel;
 
 public class AirfieldPanel extends JPanel implements Observer {
@@ -113,10 +111,11 @@ public class AirfieldPanel extends JPanel implements Observer {
     }
 
     @Override
-    public void update(String s) {
+    public void update() {
         setupUnits();
-        if (s.equals("1")) {
-            airfieldTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getAirfields()));
+        airfieldTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getAirfields()));
+        if (currentData.getCurrentAirfield() != null) {
+            airfieldTable.getSelectionModel().select(currentData.getCurrentAirfield());
         }
     }
 
@@ -149,7 +148,7 @@ public class AirfieldPanel extends JPanel implements Observer {
     }
 
     @Override
-    public void update() {
+    public void update(String s) {
 
     }
 }

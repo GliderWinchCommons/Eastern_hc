@@ -81,7 +81,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="flightWeightField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="flightWeightField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="flightWeightUnitsLabel" text="units" />
          </children>
       </FlowPane>
@@ -109,9 +109,9 @@
                </font>
             </Label>
             <Label text="Name" />
-            <TextField fx:id="emergencyContactNameField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="emergencyContactNameField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Phone Number" />
-            <TextField fx:id="emergencyContactPhoneField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="emergencyContactPhoneField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />

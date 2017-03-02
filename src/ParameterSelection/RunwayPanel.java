@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditRunwayFrame;
 import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.*;
@@ -10,9 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javax.swing.*;
 
 /**
@@ -22,9 +21,10 @@ public class RunwayPanel extends JPanel implements Observer {
 
     private int runwayMagneticHeadingUnitsID;
     private CurrentDataObjectSet currentData;
+    private AddEditRunwayFrame editFrame;
 
     SubScene editRunwayPanel;
-    SubScene gliderPosPane;
+    SubScene runwayPane;
 
     @FXML
     TableView runwayTable;
@@ -34,10 +34,11 @@ public class RunwayPanel extends JPanel implements Observer {
     @FXML
     Label magneticHeadingUnitLabel;
 
-    public RunwayPanel(SubScene editRunwayPanel, SubScene gliderPosPane) {
+    public RunwayPanel(SubScene editRunwayPanel, SubScene runwaySubScene, AddEditRunwayFrame editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.editRunwayPanel = editRunwayPanel;
-        this.gliderPosPane = gliderPosPane;
+        this.runwayPane = runwaySubScene;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -72,7 +73,10 @@ public class RunwayPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
-
+        runwayTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getRunways()));
+        if (currentData.getCurrentRunway() != null) {
+            runwayTable.getSelectionModel().select(currentData.getCurrentRunway());
+        }
     }
 
     @Override
@@ -90,11 +94,18 @@ public class RunwayPanel extends JPanel implements Observer {
 
     @FXML
     public void ChooseGliderPosButton_Click(ActionEvent e) {
-        gliderPosPane.toFront();
+        runwayPane.toFront();
     }
 
     @FXML
     public void NewRunwayButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editRunwayPanel.toFront();
+    }
+
+    @FXML
+    public void EditRunwayButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentRunway());
         editRunwayPanel.toFront();
     }
 

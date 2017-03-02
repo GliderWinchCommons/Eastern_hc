@@ -8,16 +8,12 @@ import DataObjects.Sailplane;
 import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
-import javafx.fxml.FXML;
-import javafx.scene.SubScene;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditGlider extends AddEditPanel {
 
@@ -192,7 +188,7 @@ public class AddEditGlider extends AddEditPanel {
                 }
                 currentData.setCurrentGlider(newGlider);
                 //TODO
-                //parent.update();
+                parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"

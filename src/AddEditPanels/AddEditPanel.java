@@ -13,40 +13,44 @@ import javafx.scene.SubScene;
  * @author micha
  */
 public abstract class AddEditPanel {
-    
+
     SubScene displayPanel;
     protected static final String redBackground = "-fx-control-inner-background: pink;";
     protected static final String whiteBackground = "";
-    
-    public AddEditPanel(SubScene displayPanel)
-    {
+
+    public AddEditPanel(SubScene displayPanel) {
         this.displayPanel = displayPanel;
     }
-    
+
     protected abstract void clearData();
+
     protected abstract boolean submitData();
+
     protected abstract void deleteCommand();
-    
-    @FXML public void CancelButton_Click(javafx.event.ActionEvent e) { 
+
+    @FXML
+    public void CancelButton_Click(javafx.event.ActionEvent e) {
         clearData();
-        displayPanel.toFront(); 
+        displayPanel.toFront();
     }
-    
-    @FXML public void SubmitButton_Click(javafx.event.ActionEvent e) {
-        if(submitData()) 
-        {
+
+    @FXML
+    public void SubmitButton_Click(javafx.event.ActionEvent e) {
+        if (submitData()) {
             clearData();
             displayPanel.toFront();
         }
     }
-    
-    @FXML public void ClearButton_Click(javafx.event.ActionEvent e) { 
-        clearData(); 
+
+    @FXML
+    public void ClearButton_Click(javafx.event.ActionEvent e) {
+        clearData();
     }
-    
-    @FXML public void DeleteButton_Click(javafx.event.ActionEvent e) { 
+
+    @FXML
+    public void DeleteButton_Click(javafx.event.ActionEvent e) {
         deleteCommand();
         clearData();
         displayPanel.toFront();
-    }    
+    }
 }

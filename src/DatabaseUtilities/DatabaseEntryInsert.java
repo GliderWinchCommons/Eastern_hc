@@ -460,7 +460,7 @@ public class DatabaseEntryInsert {
                 return false;
             }
             PreparedStatement ProfileInsertStatement = connect.prepareStatement(
-                    "INSERT INTO Operator(id, first_name, middle_name, last_name, admin,"
+                    "INSERT INTO Operator(operator_id, first_name, middle_name, last_name, admin,"
                     + "salt, hash, optional_info, unitSettings)"
                     + "values (?,?,?,?,?,?,?,?,?)");
             ProfileInsertStatement.setInt(1, operator.getID());
