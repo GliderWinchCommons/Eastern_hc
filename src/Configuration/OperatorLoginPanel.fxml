@@ -30,27 +30,27 @@
          <children>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="450.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <children>
-                  <Button fx:id="newOperatorButton" mnemonicParsing="false" onAction="#NewOperatorButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="New Operator" wrapText="true">
+                  <Button fx:id="newOperatorButton" mnemonicParsing="false" onAction="#NewOperatorButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="New Operator" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="newAdminButton" mnemonicParsing="false" onAction="#NewAdminButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="New Admin" wrapText="true">
+                  <Button fx:id="newAdminButton" mnemonicParsing="false" onAction="#NewAdminButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="New Admin" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Edit">
+                  <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Edit">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#LoginButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Login">
+                  <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#LoginButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Login">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" onAction="#CancelButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Cancel">
+                  <Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" onAction="#CancelButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Cancel">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -59,7 +59,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
                <children>
-                  <Label style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="Info">
+                  <Label style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Info">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -69,12 +69,12 @@
             </FlowPane>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <children>
-                  <Label fx:id="nameLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Name">
+                  <Label fx:id="nameLabel" style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Name">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label fx:id="adminLabel" style="-fx-font-size: 1.33em; -fx-font-family: SansSerif;" text="(Administrator)">
+                  <Label fx:id="adminLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="(Administrator)">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -85,7 +85,7 @@
       </GridPane>
    </center>
    <left>
-      <TableView fx:id="operatorTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="operatorTable" prefHeight="200.0" prefWidth="200.0" style="-fx-font-size: 1.16em;" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn editable="false" prefWidth="75.0" style="-fx-alignment: CENTER;" text="First Name" />
           <TableColumn prefWidth="75.0" style="-fx-alignment: CENTER;" text="Last Name" />

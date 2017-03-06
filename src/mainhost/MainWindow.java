@@ -154,19 +154,22 @@ public class MainWindow {
             }
         });
 
-        OperatorLoginPanel olp = new OperatorLoginPanel(tabPane, loginSubScene);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/OperatorLoginPanel.fxml"));
-        loader.setController(olp);
+        NewOperatorPanel newOperatorPanel = new NewOperatorPanel(newOperatorScene);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/NewOperatorPanel.fxml"));
+        loader.setController(newOperatorPanel);
         Parent root = loader.load();
-        loginSubScene.setRoot(root);
-
-        loader = new FXMLLoader(getClass().getResource("/Configuration/NewOperatorPanel.fxml"));
-        loader.setController(new NewOperatorPanel(olp, newOperatorScene));
-        root = loader.load();
         newOperatorScene.setRoot(root);
 
+        OperatorLoginPanel operatorLoginPanel = new OperatorLoginPanel(tabPane, loginSubScene, newOperatorPanel);
+        newOperatorPanel.attach(operatorLoginPanel);
+        loader = new FXMLLoader(getClass().getResource("/Configuration/OperatorLoginPanel.fxml"));
+        loader.setController(operatorLoginPanel);
+        root = loader.load();
+        loginSubScene.setRoot(root);
+
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/CurrentScenario.fxml"));
-        loader.setController(new CurrentScenario());
+        CurrentScenario currScenario = new CurrentScenario();
+        loader.setController(currScenario);
         root = loader.load();
         currentScenario.setRoot(root);
 
@@ -177,7 +180,10 @@ public class MainWindow {
         environmentalWindowScene.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileManagementFrame.fxml"));
-        loader.setController(new ProfileManagementFrame());
+        ProfileManagementFrame managementFrame = new ProfileManagementFrame(operatorLoginPanel);
+        operatorLoginPanel.attach(managementFrame);
+        managementFrame.setParent(currScenario);
+        loader.setController(managementFrame);
         root = loader.load();
         profileManagementFrame.setRoot(root);
 

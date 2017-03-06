@@ -9,13 +9,11 @@ import DataObjects.GliderPosition;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
 import java.sql.SQLException;
-import javafx.fxml.FXML;
-import javafx.scene.SubScene;
-
-import javafx.scene.control.*;
-
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditGliderPosFrame extends AddEditPanel {
 
@@ -29,7 +27,6 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     private TextField nameField;
     @FXML
     private TextArea optionalInformationArea;
-    private CurrentDataObjectSet objectSet;
     private GliderPosition currentGliderPos;
     private boolean isEditEntry;
     private Observer parent;
@@ -38,7 +35,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     private int gliderPosAltitudeUnitsID;
 
     public void setupUnits() {
-        gliderPosAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("gliderPosAltitude");
+        gliderPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("gliderPosAltitude");
         String GliderPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(gliderPosAltitudeUnitsID);
         gliderPosAltitudeUnitsLabel.setText(GliderPosAltitudeUnitsString);
     }
@@ -52,7 +49,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     }
 
     public void edit(GliderPosition editGliderPos) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editGliderPos != null;
@@ -75,8 +72,8 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.cleafGliderPosition();
+                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+                currentData.cleafGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
                 parent.update("3");
             }
@@ -86,7 +83,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     @Override
     protected boolean submitData() {
         if (isComplete()) {
-            objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+            currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
             String gliderPosName = nameField.getText();
             float altitude = Float.parseFloat(altitudeField.getText())
                     / UnitConversionRate.convertDistanceUnitIndexToFactor(gliderPosAltitudeUnitsID);
@@ -96,7 +93,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
             int runwayParentId;
 
             try {
-                runwayParentId = objectSet.getCurrentRunway().getId();
+                runwayParentId = currentData.getCurrentRunway().getId();
             } catch (NullPointerException e) {
                 new Alert(Alert.AlertType.ERROR, "Could not find a Runway to link to").showAndWait();
                 return false;
@@ -127,7 +124,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentGliderPosition(newGliderPos);
+                currentData.setCurrentGliderPosition(newGliderPos);
                 //TODO
                 //parent.update("3");
                 return true;

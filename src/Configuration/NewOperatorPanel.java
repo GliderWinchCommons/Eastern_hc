@@ -5,9 +5,16 @@
  */
 package Configuration;
 
+import Communications.Observer;
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.Operator;
+import DatabaseUtilities.DatabaseEntryEdit;
+import static DatabaseUtilities.DatabaseEntryIdCheck.matchPassword;
 import DatabaseUtilities.DatabaseEntryInsert;
+import java.sql.SQLException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
@@ -37,36 +44,71 @@ public class NewOperatorPanel {
     @FXML
     private PasswordField retypedPassword;
 
-    public NewOperatorPanel(OperatorLoginPanel loginScene, SubScene operatorPanel) {
+    private Observer parent;
+    private Operator theOperator;
+    private CurrentDataObjectSet currentData;
+
+    public NewOperatorPanel(SubScene operatorPanel) {
         NewOperatorPanel.isAdmin = false;
-        this.login = loginScene;
         NewOperatorPanel.newOperatorPanel = operatorPanel;
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
     }
 
-    public static void addOperator(boolean admin) {
+    public void addOperator(boolean admin, Operator operator, String pass) {
         isAdmin = admin;
+        theOperator = operator;
+        loadData(pass);
         newOperatorPanel.toFront();
+    }
+
+    public void attach(Observer o) {
+        this.parent = o;
+    }
+
+    private void loadData(String pass) {
+        if (theOperator != null) {
+            firstNameTextField.setText(theOperator.getFirst());
+            middleNameTextField.setText(theOperator.getMiddle());
+            lastNameTextField.setText(theOperator.getLast());
+            password.setText(pass);
+            retypedPassword.setText(pass);
+        }
     }
 
     @FXML
     public void CreateButton_Click(ActionEvent e) {
         if (validate()) {
-            Random randomId = new Random();
-            Operator o = new Operator(randomId.nextInt(100000000),
-                    firstNameTextField.getText(),
-                    middleNameTextField.getText(),
-                    lastNameTextField.getText(),
-                    isAdmin, infoBox.getText(),
-                    "{}");
-            DatabaseEntryInsert.addOperatorToDB(o, password.getText());
-            login.toFront(o);
+            if (theOperator == null) {
+                Random randomId = new Random();
+                theOperator = new Operator(randomId.nextInt(100000000),
+                        firstNameTextField.getText(),
+                        middleNameTextField.getText(),
+                        lastNameTextField.getText(),
+                        isAdmin, infoBox.getText(),
+                        "{}");
+                DatabaseEntryInsert.addOperatorToDB(theOperator, password.getText());
+                currentData.setCurrentProfile(theOperator);
+            } else {
+                try {
+                    theOperator = new Operator(theOperator.getID(), theOperator.getFirst(), theOperator.getMiddle(), theOperator.getLast(), theOperator.getAdmin(), theOperator.getInfo(), theOperator.getUnitSettingsForStorage());
+                    if (!matchPassword(theOperator, password.getText())) {
+                        DatabaseEntryEdit.ChangePassword(theOperator, password.getText());
+                    }
+                    DatabaseEntryEdit.UpdateEntry(theOperator);
+                } catch (SQLException ex) {
+                    Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            parent.update();
         }
     }
 
     @FXML
     public void CancelButton_Click(ActionEvent e) {
         clear();
-        login.toFront(null);
+        parent.update();
     }
 
     private boolean validate() {

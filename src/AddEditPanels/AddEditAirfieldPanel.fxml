@@ -48,9 +48,9 @@
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
-            <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Altitude" />
+            <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Elevation" />
             <TextField fx:id="airfieldAltitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
-            <Label fx:id="airfieldAltitudeUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
+            <Label fx:id="airfieldElevationUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">

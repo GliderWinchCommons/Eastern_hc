@@ -14,8 +14,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.awt.Color;
-
 /**
  *
  * @author jtroxel
@@ -29,19 +27,16 @@ public class DensityAltitudeWidget extends EnvironmentalWidget {
     @Override
     public void update() {
         //field.setBackground(Color.WHITE);
-        if (manualEntry())
-        {
-            try{
+        if (manualEntry()) {
+            try {
                 float alt = Float.parseFloat(field.getText()) / UnitConversionRate.convertDistanceUnitIndexToFactor(unitId);
                 CurrentWidgetDataSet.getInstance().setValue("densityaltitude", String.valueOf(alt));
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 //field.setBackground(Color.PINK);
             }
-        }
-        else
-        {
+        } else {
             float alt = CurrentLaunchInformation.getCurrentLaunchInformation().getCalculatedDensityAltitude() * UnitConversionRate.convertDistanceUnitIndexToFactor(unitId);
-            field.setText(String.format("%.2f", alt));
+            //field.setText(String.format("%.2f", alt));
         }
     }
 
@@ -55,5 +50,5 @@ public class DensityAltitudeWidget extends EnvironmentalWidget {
         unitId = temp.getUnitSetting("densityaltitude");
         unit.setText(" " + UnitLabelUtilities.lenghtUnitIndexToString(unitId));
     }
-    
+
 }

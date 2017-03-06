@@ -14,6 +14,7 @@ import java.util.Random;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 import javax.swing.*;
 
 public class AddEditPilotPanel extends AddEditPanel {
@@ -37,10 +38,11 @@ public class AddEditPilotPanel extends AddEditPanel {
     private Pilot currentPilot;
     private boolean isEditEntry;
     private Observer parent;
-    private CurrentDataObjectSet currentData;
     private int flightWeightUnitsID;
     @FXML
     private Label flightWeightUnitsLabel;
+    @FXML
+    Slider preferenceSlider;
 
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
@@ -54,6 +56,39 @@ public class AddEditPilotPanel extends AddEditPanel {
 
     public AddEditPilotPanel(SubScene pilotPanel) {
         super(pilotPanel);
+    }
+
+    @FXML
+    public void initialize() {
+        preferenceSlider.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double d) {
+                if (d == 0) {
+                    return "Mild";
+                }
+                if (d == .5) {
+                    return "Nominal";
+                }
+                if (d == 1) {
+                    return "Aggressive";
+                }
+                return d.toString();
+            }
+
+            @Override
+            public Double fromString(String string) {
+                if (string.equalsIgnoreCase("Student")) {
+                    return 0.0;
+                }
+                if (string.equalsIgnoreCase("Proficient")) {
+                    return 0.5;
+                }
+                if (string.equalsIgnoreCase("Advanced")) {
+                    return 1.0;
+                }
+                return Double.parseDouble(string);
+            }
+        });
     }
 
     public void edit(Pilot editPilot) {

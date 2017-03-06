@@ -5,6 +5,7 @@
  */
 package Configuration;
 
+import Communications.Observer;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Operator;
 import static DatabaseUtilities.DatabaseEntryIdCheck.matchPassword;
@@ -39,7 +40,7 @@ import javafx.scene.layout.FlowPane;
  *
  * @author micha
  */
-public class OperatorLoginPanel {
+public class OperatorLoginPanel implements Observer {
 
     //TODO: Use this to observe the newOperator panel
     private TabPane currentScenarioTabPane;
@@ -63,12 +64,20 @@ public class OperatorLoginPanel {
     @FXML
     private Button newAdminButton;
 
-    private CurrentDataObjectSet currentData;
+    private NewOperatorPanel newOperatorPanel;
 
-    public OperatorLoginPanel(TabPane currentScenarioTabPane, SubScene loginSubScene) {
+    private CurrentDataObjectSet currentData;
+    private Observer parent;
+
+    public OperatorLoginPanel(TabPane currentScenarioTabPane, SubScene loginSubScene, NewOperatorPanel newOperatorPanel) {
         this.currentScenarioTabPane = currentScenarioTabPane;
         this.loginSubScene = loginSubScene;
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+        this.newOperatorPanel = newOperatorPanel;
+    }
+
+    public void attach(Observer o) {
+        this.parent = o;
     }
 
     @FXML
@@ -108,7 +117,7 @@ public class OperatorLoginPanel {
 
     @FXML
     private void NewOperatorButton_Click(ActionEvent e) {
-        NewOperatorPanel.addOperator(false);
+        newOperatorPanel.addOperator(false, null, "");
     }
 
     @FXML
@@ -118,10 +127,10 @@ public class OperatorLoginPanel {
             Optional<String> passwordResult = dialogBox.showAndWait();
 
             passwordResult.ifPresent(password -> {
-                NewOperatorPanel.addOperator(true);
+                newOperatorPanel.addOperator(true, null, "");
             });
         } else {
-            NewOperatorPanel.addOperator(true);
+            newOperatorPanel.addOperator(true, null, "");
         }
     }
 
@@ -131,7 +140,7 @@ public class OperatorLoginPanel {
         Optional<String> passwordResult = dialogBox.showAndWait();
 
         passwordResult.ifPresent(password -> {
-            //edit
+            newOperatorPanel.addOperator(false, currentData.getCurrentProfile(), password);
         });
     }
 
@@ -149,6 +158,7 @@ public class OperatorLoginPanel {
         passwordResult.ifPresent(password -> {
             cancelButton.disableProperty().set(false);
             currentScenarioTabPane.toFront();
+            parent.update();
         });
     }
 
@@ -157,7 +167,7 @@ public class OperatorLoginPanel {
         dialog.setTitle("Login");
         //create a flow pane to contain all custom items
         FlowPane pane = new FlowPane();
-        pane.setPrefSize(300, 100);
+        pane.setPrefSize(300, 120);
         pane.setOrientation(Orientation.VERTICAL);
         pane.setAlignment(Pos.CENTER);
         pane.setColumnHalignment(HPos.CENTER);
@@ -171,8 +181,14 @@ public class OperatorLoginPanel {
 
         pane.getChildren().add(new Label("Password"));
         PasswordField password = new PasswordField();
+        password.alignmentProperty().set(Pos.CENTER);
         //password.textProperty().
         pane.getChildren().add(password);
+
+        Label errorLabel = new Label("Incorrect Password!");
+        errorLabel.setStyle("-fx-text-fill:red;");
+        errorLabel.setVisible(false);
+        pane.getChildren().add(errorLabel);
 
         //create custom login button
         ButtonType login = new ButtonType("Login", ButtonData.OK_DONE);
@@ -192,8 +208,13 @@ public class OperatorLoginPanel {
             //consume if the password does not match
             //display error message or red box or something
             try {
-                matchPassword(currentData.getCurrentProfile(), password.getText());
+                if (!matchPassword(currentData.getCurrentProfile(), password.getText())) {
+                    errorLabel.setVisible(true);
+                    event.consume();
+                }
             } catch (SQLException | ClassNotFoundException e) {
+                errorLabel.setText("Error with database");
+                errorLabel.setVisible(true);
                 event.consume();
             }
         });
@@ -212,7 +233,9 @@ public class OperatorLoginPanel {
         return dialog;
     }
 
-    public void toFront(Operator currOperator) {
+    @Override
+    public void update() {
+        Operator currOperator = currentData.getCurrentProfile();
         if (currOperator != null) {
             if (!operatorTable.getItems().contains(currOperator)) {
                 operatorTable.getItems().add(currOperator);
@@ -220,7 +243,14 @@ public class OperatorLoginPanel {
             operatorTable.getSelectionModel().select(currOperator);
             newOperatorButton.disableProperty().set(false);
             loginButton.disableProperty().set(false);
+        } else {
+            operatorTable.getSelectionModel().selectFirst();
         }
         loginSubScene.toFront();
+    }
+
+    @Override
+    public void update(String msg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

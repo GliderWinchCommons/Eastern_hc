@@ -1,10 +1,14 @@
 package AddEditPanels;
 
 import Communications.Observer;
+import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Runway;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Random;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
@@ -12,22 +16,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.sql.SQLException;
-import java.util.Optional;
-import java.util.Random;
-
 public class AddEditRunwayFrame extends AddEditPanel {
 
     @FXML
     private TextField magneticHeadingField;
     @FXML
     private TextField nameField;
-    private CurrentDataObjectSet objectSet;
     private Runway currentRunway;
     private boolean isEditEntry;
     private Observer parent;
     @FXML
     private Label magneticHeadingUnitsLabel;
+    private int magneticHeadingUnitsID;
 
     public void attach(Observer o) {
         parent = o;
@@ -38,8 +38,6 @@ public class AddEditRunwayFrame extends AddEditPanel {
     }
 
     public void edit(Runway editRunway) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-
         isEditEntry = editRunway != null;
         currentRunway = editRunway;
 
@@ -59,8 +57,8 @@ public class AddEditRunwayFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentRunway)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearRunway();
+                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+                currentData.clearRunway();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
                 parent.update("2");
             }
@@ -70,13 +68,13 @@ public class AddEditRunwayFrame extends AddEditPanel {
     @Override
     protected boolean submitData() {
         if (isComplete()) {
-            objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+            currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
             String name = nameField.getText();
             float magneticHeading = Float.parseFloat(magneticHeadingField.getText());
 
             int parentId;
             try {
-                parentId = objectSet.getCurrentAirfield().getId();
+                parentId = currentData.getCurrentAirfield().getId();
             } catch (NullPointerException e) {
                 new Alert(Alert.AlertType.ERROR, "Could not find a Airfield to link to").showAndWait();
                 return false;
@@ -87,7 +85,7 @@ public class AddEditRunwayFrame extends AddEditPanel {
 
             try {
                 if (isEditEntry) {
-                    newRunway.setId(objectSet.getCurrentRunway().getId());
+                    newRunway.setId(currentData.getCurrentRunway().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newRunway)) {
                         return false;
                     }
@@ -106,7 +104,7 @@ public class AddEditRunwayFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentRunway(newRunway);
+                currentData.setCurrentRunway(newRunway);
                 //TODO
                 //parent.update("2");
                 return true;
@@ -156,6 +154,13 @@ public class AddEditRunwayFrame extends AddEditPanel {
 
         nameField.setStyle(whiteBackground);
         magneticHeadingField.setStyle(whiteBackground);
+    }
+
+    @Override
+    protected void setupUnits() {
+        magneticHeadingUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
+        String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(magneticHeadingUnitsID);
+        magneticHeadingUnitsLabel.setText(flightWeightUnitsString);
     }
 
 }

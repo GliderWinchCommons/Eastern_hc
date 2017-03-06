@@ -72,13 +72,13 @@ public class PilotPanel implements Observer {
             @Override
             public String toString(Double d) {
                 if (d == 0) {
-                    return "Student";
+                    return "Mild";
                 }
                 if (d == .5) {
-                    return "Proficient";
+                    return "Nominal";
                 }
                 if (d == 1) {
-                    return "Advanced";
+                    return "Aggressive";
                 }
                 return d.toString();
             }
@@ -111,7 +111,8 @@ public class PilotPanel implements Observer {
 
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
-        flightWeightUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(flightWeightUnitsID));
+        flightWeightUnitLabel.setText(UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
+        System.out.println();
     }
 
     @Override

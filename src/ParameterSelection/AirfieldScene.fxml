@@ -13,7 +13,7 @@
 
 <BorderPane fx:id="airfieldPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <TableView fx:id="airfieldTable" prefHeight="200.0" prefWidth="210.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="airfieldTable" prefHeight="200.0" prefWidth="210.0" style="-fx-font-size: 1.16em;" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn editable="false" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Airfield" />
             <TableColumn editable="false" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Designator" />
@@ -40,16 +40,16 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="70.0" prefWidth="171.0" style="-fx-font-size: 4em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#NewAirfieldButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Airfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" onAction="#EditAirfieldButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Airfield" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="nextRunwayButton" mnemonicParsing="false" onAction="#ChooseRunwayButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Next: Runways" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#NewAirfieldButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Airfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#EditAirfieldButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Airfield" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="nextRunwayButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ChooseRunwayButton_Click" prefHeight="60.0" prefWidth="140.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Next: Runways" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="140.0" prefWidth="324.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <children>
-                  <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="20.0" prefWidth="266.0">
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="90.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Designator:" />
-                        <Label fx:id="designatorLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="designator">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Designator:" />
+                        <Label fx:id="designatorLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="designator">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>
@@ -59,10 +59,10 @@
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="3.0" prefWidth="200.0">
+                  <FlowPane alignment="CENTER">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="69.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Altitude:" />           
-                        <Label fx:id="altitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="altitude">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Elevation:" />           
+                        <Label fx:id="altitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="elevation">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>
@@ -70,67 +70,67 @@
                               <Insets left="2.0" />
                            </padding>                           
                         </Label>
-                        <Label fx:id="altitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="units">
+                        <Label fx:id="altitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="units">
                            <padding>
                               <Insets left="2.0" />
                            </padding>                           
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="1.0" prefWidth="266.0">
+                  <FlowPane alignment="CENTER">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Magnetic Variation:" />                           
-                        <Label fx:id="magneticVariationLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="variation">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Magnetic Variation:" />                           
+                        <Label fx:id="magneticVariationLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="variation">
                            <padding>
                               <Insets left="2.0" />
                            </padding>                           
                         </Label>
-                        <Label fx:id="magneticVariationUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="units">
+                        <Label fx:id="magneticVariationUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="units">
                            <padding>
                               <Insets left="2.0" />
                            </padding>                           
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
+                  <FlowPane alignment="CENTER">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude:" />
-                        <Label fx:id="longitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="longitude">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude:" />
+                        <Label fx:id="longitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="longitude">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="longitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="units">
+                        <Label fx:id="longitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="units">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="7.0" prefWidth="200.0">
+                  <FlowPane alignment="CENTER">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude:" />
-                        <Label fx:id="latitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="latitude">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude:" />
+                        <Label fx:id="latitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="latitude">
                            <padding>
                               <Insets left="2.0" />
                            </padding>                           
                         </Label>
-                        <Label fx:id="latitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="units">
+                        <Label fx:id="latitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="units">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
                         </Label>
                      </children>
                   </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="0.0" prefWidth="200.0">
+                  <FlowPane alignment="CENTER">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="UTC Offset:" />
-                        <Label fx:id="UTCOffsetLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="offset">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="UTC Offset:" />
+                        <Label fx:id="UTCOffsetLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="offset">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="UTCOffsetUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="units">
+                        <Label fx:id="UTCOffsetUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="units">
                            <padding>
                               <Insets left="2.0" />
                            </padding>

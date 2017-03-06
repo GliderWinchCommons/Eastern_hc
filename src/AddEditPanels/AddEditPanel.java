@@ -5,6 +5,8 @@
  */
 package AddEditPanels;
 
+import Communications.Observer;
+import DataObjects.CurrentDataObjectSet;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 
@@ -12,14 +14,16 @@ import javafx.scene.SubScene;
  *
  * @author micha
  */
-public abstract class AddEditPanel {
+public abstract class AddEditPanel implements Observer {
 
     SubScene displayPanel;
     protected static final String redBackground = "-fx-control-inner-background: pink;";
     protected static final String whiteBackground = "";
+    protected CurrentDataObjectSet currentData;
 
     public AddEditPanel(SubScene displayPanel) {
         this.displayPanel = displayPanel;
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
     }
 
     protected abstract void clearData();
@@ -27,6 +31,8 @@ public abstract class AddEditPanel {
     protected abstract boolean submitData();
 
     protected abstract void deleteCommand();
+
+    protected abstract void setupUnits();
 
     @FXML
     public void CancelButton_Click(javafx.event.ActionEvent e) {
@@ -52,5 +58,17 @@ public abstract class AddEditPanel {
         deleteCommand();
         clearData();
         displayPanel.toFront();
+    }
+
+    @Override
+    public void update() {
+        if (currentData.getCurrentProfile() != null) {
+            setupUnits();
+        }
+    }
+
+    @Override
+    public void update(String msg) {
+        //Not doing anything with this message
     }
 }

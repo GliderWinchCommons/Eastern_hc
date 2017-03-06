@@ -7,13 +7,12 @@ import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.WinchPosition;
 import DatabaseUtilities.DatabaseEntryIdCheck;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.SubScene;
-
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditWinchPosFrame extends AddEditPanel {
 
@@ -27,7 +26,6 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     private TextField nameField;
     @FXML
     private TextArea optionalInformationArea;
-    private CurrentDataObjectSet objectSet;
     private WinchPosition currentWinchPos;
     private boolean isEditEntry;
     private Observer parent;
@@ -36,7 +34,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     private int winchPosAltitudeUnitsID;
 
     public void setupUnits() {
-        winchPosAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("winchPosAltitude");
+        winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
         winchPosAltitudeUnitsLabel.setText(winchPosAltitudeUnitsString);
     }
@@ -50,7 +48,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     }
 
     public void edit(WinchPosition editWinchPos) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editWinchPos != null;
@@ -73,8 +71,8 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.cleafGliderPosition();
+                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+                currentData.cleafGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
                 parent.update("4");
             }
@@ -84,7 +82,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     @Override
     protected boolean submitData() {
         if (isComplete()) {
-            objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+            currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
             String winchPosId = nameField.getText();
             float altitude = Float.parseFloat(altitudeField.getText())
                     / UnitConversionRate.convertDistanceUnitIndexToFactor(winchPosAltitudeUnitsID);
@@ -94,7 +92,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
             int runwayParentId;
 
             try {
-                runwayParentId = objectSet.getCurrentRunway().getId();
+                runwayParentId = currentData.getCurrentRunway().getId();
             } catch (NullPointerException e) {
                 new Alert(Alert.AlertType.ERROR, "Could not find a Runway to link to").showAndWait();
                 return false;
@@ -125,7 +123,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentWinchPosition(newWinchPos);
+                currentData.setCurrentWinchPosition(newWinchPos);
                 //TODO
                 //parent.update("4");
                 return true;

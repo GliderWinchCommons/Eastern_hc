@@ -34,17 +34,16 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     private TextArea optionalInformationArea;
 
     private Airfield currentAirfield;
-    private CurrentDataObjectSet objectSet;
     private boolean isEditEntry;
     private Observer parent;
     @FXML
-    private Label airfieldAltitudeUnitsLabel;
+    private Label airfieldElevationUnitsLabel;
     private int airfieldAltitudeUnitsID;
 
     public void setupUnits() {
-        airfieldAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("airfieldAltitude");
+        airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         String airfieldAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID);
-        airfieldAltitudeUnitsLabel.setText(airfieldAltitudeUnitsString);
+        airfieldElevationUnitsLabel.setText(airfieldAltitudeUnitsString);
     }
 
     public void attach(Observer o) {
@@ -56,7 +55,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     }
 
     public void edit(Airfield editAirfield) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editAirfield != null;
@@ -84,8 +83,8 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (!DatabaseEntryDelete.DeleteEntry(currentAirfield)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearAirfield();
+                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+                currentData.clearAirfield();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
                 parent.update();
             }
@@ -107,9 +106,9 @@ public class AddEditAirfieldFrame extends AddEditPanel {
                     magneticVariation, airfieldLatitude, airfieldLongitude, "");
 
             try {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newAirfield.setId(objectSet.getCurrentAirfield().getId());
+                    newAirfield.setId(currentData.getCurrentAirfield().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newAirfield)) {
                         return false;
                     }
@@ -128,7 +127,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentAirfield(newAirfield);
+                currentData.setCurrentAirfield(newAirfield);
                 parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
@@ -215,5 +214,4 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         airfieldLongitudeField.setStyle(whiteBackground);
 
     }
-
 }

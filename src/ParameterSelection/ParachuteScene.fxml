@@ -16,7 +16,7 @@
    <left>
       <TableView fx:id="parachuteTable" prefHeight="200.0" prefWidth="210.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn prefWidth="75.0" style="-fx-alignment: CENTER;" text="Parachute Name" />
+            <TableColumn prefWidth="75.0" style="-fx-alignment: CENTER; -fx-font-size: 1.16em;" text="Parachute Name" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -40,17 +40,17 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label style="-fx-font-size: 4em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Parachute Name" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Label style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Parachute Name" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font name="SansSerif Bold" size="38.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Add New Parachute" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Add New Parachute" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Parachute" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Parachute" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
@@ -59,12 +59,12 @@
                <children>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Lift:" textAlignment="CENTER">
+                        <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Lift:" textAlignment="CENTER">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="liftLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="liftLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -72,7 +72,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="liftUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit">
+                        <Label fx:id="liftUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Unit">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -84,12 +84,12 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Drag:">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Drag:">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="dragLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="dragLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -97,7 +97,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="dragUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit">
+                        <Label fx:id="dragUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Unit">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -114,7 +114,7 @@
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="weightLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="weightLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -122,7 +122,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="weightUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit">
+                        <Label fx:id="weightUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Unit">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -134,7 +134,7 @@
                   </FlowPane>
                </children>
             </FlowPane>
-            <Button mnemonicParsing="false" onAction="#FinishButton_Click" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Finish" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" onAction="#FinishButton_Click" prefHeight="60.0" prefWidth="146.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Finish" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>

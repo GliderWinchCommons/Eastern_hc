@@ -14,7 +14,7 @@
 
 <BorderPane fx:id="gliderPosPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <TableView fx:id="gliderPositionTable" prefHeight="200.0" prefWidth="210.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="gliderPositionTable" prefHeight="200.0" prefWidth="210.0" style="-fx-font-size: 1.16em;" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn prefWidth="75.0" style="-fx-alignment: CENTER;" text="Designator" />
          </columns>
@@ -27,9 +27,9 @@
       <GridPane BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
@@ -40,22 +40,22 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="70.0" prefWidth="342.0" style="-fx-font-size: 4em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider Position" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label alignment="CENTER" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider Position" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font name="SansSerif Bold" size="38.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#NewGliderPositionButton_Click" prefHeight="60.0" prefWidth="120.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" onAction="#NewGliderPositionButton_Click" prefHeight="60.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#EditGliderPositionButton_Click" prefHeight="60.0" prefWidth="120.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button mnemonicParsing="false" onAction="#EditGliderPositionButton_Click" prefHeight="60.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="nextWinchPosButton" mnemonicParsing="false" onAction="#ChooseWinchPosButton_Click" prefHeight="60.0" prefWidth="120.0" style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Next: Winch Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <Button fx:id="nextWinchPosButton" mnemonicParsing="false" onAction="#ChooseWinchPosButton_Click" prefHeight="60.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Next: Winch Position" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
@@ -64,12 +64,12 @@
                <children>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Position Name:">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Position Name:">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="positionNameLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="positionNameLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -81,12 +81,12 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Altitude:">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Elevation:">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="altitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="altitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -94,7 +94,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="altitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="altitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -106,12 +106,12 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude:">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude:">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="longitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="longitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -119,7 +119,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="longitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="longitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -131,12 +131,12 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="11.0" prefWidth="200.0">
                      <children>
-                        <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude:">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude:">
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="latitudeLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="latitudeLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>
@@ -144,7 +144,7 @@
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="latitudeUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="latitudeUnitLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <padding>
                               <Insets left="2.0" />
                            </padding>

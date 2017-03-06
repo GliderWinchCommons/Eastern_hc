@@ -42,7 +42,6 @@ public class AddEditGlider extends AddEditPanel {
     private Sailplane currentGlider;
     private boolean isEditEntry;
     private Observer parent;
-    private CurrentDataObjectSet currentData;
     @FXML
     private Label emptyWeightUnitsLabel;
     @FXML

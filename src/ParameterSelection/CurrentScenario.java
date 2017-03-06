@@ -10,6 +10,7 @@ import Communications.Observer;
 import Configuration.ProfileManagementFrame;
 import DataObjects.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -77,6 +78,7 @@ public class CurrentScenario implements Observer {
 
     private CurrentDataObjectSet data;
     private ProfileManagementFrame ProfileManagementFrame;
+    private ArrayList<Observer> observers;
 
     /**
      * Creates new form CurrentScenario
@@ -84,6 +86,7 @@ public class CurrentScenario implements Observer {
     public CurrentScenario() throws IOException {
         data = CurrentDataObjectSet.getCurrentDataObjectSet();
         data.attach(this);
+        observers = new ArrayList<Observer>();
     }
 
     @FXML
@@ -113,26 +116,38 @@ public class CurrentScenario implements Observer {
         AddEditAirfieldFrame editAirfield = new AddEditAirfieldFrame(airfieldPanel);
         AirfieldPanel airfield = new AirfieldPanel(airfieldAddEditPanel, runwayPanel, editAirfield);
         editAirfield.attach(airfield);
+        observers.add(editAirfield);
+        observers.add(airfield);
 
         AddEditRunwayFrame editRunway = new AddEditRunwayFrame(runwayPanel);
         RunwayPanel runway = new RunwayPanel(runwayAddEditPanel, gliderPosPanel, editRunway);
         editRunway.attach(runway);
+        observers.add(editRunway);
+        observers.add(runway);
 
         AddEditGliderPosFrame editGliderPos = new AddEditGliderPosFrame(gliderPosPanel);
         GliderPositionPanel gliderPos = new GliderPositionPanel(gliderPositionAddEditPanel, winchPosPanel, editGliderPos);
         editGliderPos.attach(gliderPos);
+        observers.add(editGliderPos);
+        observers.add(gliderPos);
 
         AddEditWinchPosFrame editWinchPos = new AddEditWinchPosFrame(winchPosPanel);
         WinchPositionPanel winchPos = new WinchPositionPanel(winchPositionAddEditPanel, scenarioHomePanel, editWinchPos);
         editWinchPos.attach(winchPos);
+        observers.add(editWinchPos);
+        observers.add(winchPos);
 
         AddEditPilotPanel editPilot = new AddEditPilotPanel(pilotPanel);
         PilotPanel pilot = new PilotPanel(pilotAddEditPanel, scenarioHomePanel, editPilot);
         editPilot.attach(pilot);
+        observers.add(editPilot);
+        observers.add(pilot);
 
         AddEditGlider editGlider = new AddEditGlider(gliderPanel);
         SailplanePanel sailplane = new SailplanePanel(gliderAddEditPanel, scenarioHomePanel, editGlider);
         editGlider.attach(sailplane);
+        observers.add(editGlider);
+        observers.add(sailplane);
 
         //Load the display panes
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ParameterSelection/PilotScene.fxml"));
@@ -261,13 +276,9 @@ public class CurrentScenario implements Observer {
             drumLabel.setText(drum.toString());*/
         }
 
-        /*if(profile == null) {
-            profileLabel.setText("Default Profile");
-            profileLabel.setForeground(Color.RED);
-        } else {
-            profileLabel.setText(profile.toString());
-            profileLabel.setForeground(new Color(0,128,0));
-        }*/
+        for (Observer o : observers) {
+            o.update();
+        }
     }
 
     public void update() {
