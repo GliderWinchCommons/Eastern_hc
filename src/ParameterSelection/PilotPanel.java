@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
-import javax.swing.DefaultListModel;
 
 public class PilotPanel implements Observer {
 
@@ -34,6 +33,8 @@ public class PilotPanel implements Observer {
     @FXML
     Slider preferenceSlider;
 
+    @FXML
+    Label pilotNameLabel;
     @FXML
     Label flightWeightLabel;
     @FXML
@@ -101,28 +102,37 @@ public class PilotPanel implements Observer {
 
     public void loadData() {
         if (currentData.getCurrentPilot() != null) {
+            pilotNameLabel.setText(currentData.getCurrentPilot().getFirstName() + " " + currentData.getCurrentPilot().getMiddleName() + " " + currentData.getCurrentPilot().getLastName());
             flightWeightLabel.setText("" + currentData.getCurrentPilot().getWeight());
             //TODO
             //capabiltiyLabel.setText("" + currentData.getCurrentPilot().getCapability());
             preferenceSlider.adjustValue(currentData.getCurrentPilot().getPreference());
-            setupUnits();
+        } else {
+            pilotNameLabel.setText("");
+            flightWeightLabel.setText("");
+            preferenceSlider.adjustValue(0.5);
         }
+        setupUnits();
     }
 
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
         flightWeightUnitLabel.setText(UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
-        System.out.println();
     }
 
     @Override
     public void update() {
         setupUnits();
-        DefaultListModel pilotModel = new DefaultListModel();
-        pilotModel.clear();
-        pilotTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getPilots()));
-        if (currentData.getCurrentPilot() != null) {
-            pilotTable.getSelectionModel().select(currentData.getCurrentPilot());
+        Pilot selected = (Pilot) pilotTable.getSelectionModel().getSelectedItem();
+        Pilot currPilot = currentData.getCurrentPilot();
+        if (currPilot == null && selected != null) {
+            pilotTable.getItems().remove(selected);
+        } else if (currPilot != selected) {
+            if (!pilotTable.getItems().contains(currPilot)) {
+                pilotTable.getItems().add(currPilot);
+            } else {
+                pilotTable.getSelectionModel().select(currPilot);
+            }
         }
     }
 

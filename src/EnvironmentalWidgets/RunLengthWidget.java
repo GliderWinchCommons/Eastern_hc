@@ -17,16 +17,15 @@ import DataObjects.Operator;
  */
 public class RunLengthWidget extends EnvironmentalWidget {
 
-    public RunLengthWidget() 
-    {
+    public RunLengthWidget() {
         super(null, null, null);
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         float length = (CurrentLaunchInformation.getCurrentLaunchInformation().getRunLength()) * UnitConversionRate.convertDistanceUnitIndexToFactor(unitId);
         field.setText(String.format("%.2f", length));
+        setupUnits();
     }
 
     @Override
@@ -39,5 +38,5 @@ public class RunLengthWidget extends EnvironmentalWidget {
         unitId = temp.getUnitSetting("runlength");
         unit.setText(" " + UnitLabelUtilities.lenghtUnitIndexToString(unitId));
     }
-    
+
 }

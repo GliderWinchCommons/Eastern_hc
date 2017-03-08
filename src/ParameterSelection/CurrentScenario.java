@@ -8,6 +8,7 @@ package ParameterSelection;
 import AddEditPanels.*;
 import Communications.Observer;
 import Configuration.ProfileManagementFrame;
+import Configuration.UnitLabelUtilities;
 import DataObjects.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,57 +27,76 @@ import javafx.scene.shape.Rectangle;
 public class CurrentScenario implements Observer {
 
     @FXML
-    SubScene pilotPanel;
+    private SubScene pilotPanel;
     @FXML
-    SubScene gliderPanel;
+    private SubScene gliderPanel;
     @FXML
-    SubScene airfieldPanel;
+    private SubScene airfieldPanel;
     @FXML
-    SubScene runwayPanel;
+    private SubScene runwayPanel;
     @FXML
-    SubScene gliderPosPanel;
+    private SubScene gliderPosPanel;
     @FXML
-    SubScene winchPosPanel;
+    private SubScene winchPosPanel;
     @FXML
-    SubScene drumPanel;
+    private SubScene drumPanel;
     @FXML
-    SubScene parachutePanel;
+    private SubScene parachutePanel;
     @FXML
-    GridPane scenarioHomePanel;
+    private GridPane scenarioHomePanel;
     @FXML
-    AnchorPane flightDashboardPanel;
+    private AnchorPane flightDashboardPanel;
 
     @FXML
-    SubScene pilotAddEditPanel;
+    private SubScene pilotAddEditPanel;
     @FXML
-    SubScene gliderAddEditPanel;
+    private SubScene gliderAddEditPanel;
     @FXML
-    SubScene airfieldAddEditPanel;
+    private SubScene airfieldAddEditPanel;
     @FXML
-    SubScene runwayAddEditPanel;
+    private SubScene runwayAddEditPanel;
     @FXML
-    SubScene gliderPositionAddEditPanel;
+    private SubScene gliderPositionAddEditPanel;
     @FXML
-    SubScene winchPositionAddEditPanel;
+    private SubScene winchPositionAddEditPanel;
 
     @FXML
-    Button pilotButton;
+    private Rectangle pilotGridBackground;
     @FXML
-    Button gliderButton;
+    private Rectangle gliderGridBackground;
     @FXML
-    Button airfieldButton;
+    private Rectangle runDescriptionGridBackground;
     @FXML
-    Button drumButton;
-    @FXML
-    Rectangle pilotGridBackground;
-    @FXML
-    Rectangle gliderGridBackground;
-    @FXML
-    Rectangle runDescriptionGridBackground;
-    @FXML
-    Rectangle drumGridBackground;
+    private Rectangle drumGridBackground;
 
-    private CurrentDataObjectSet data;
+    @FXML
+    private Label pilotNameLabel;
+    @FXML
+    private Label nNumberLabel;
+    @FXML
+    private Label totalWeightLabel;
+    @FXML
+    private Label totalWeightUnitsLabel;
+    @FXML
+    private Label maxWeakLinkStrengthLabel;
+    @FXML
+    private Label maxWeakLinkStrengthUnitsLabel;
+    @FXML
+    private Label airfieldNameLabel;
+    @FXML
+    private Label designatorLabel;
+    @FXML
+    private Label airfieldElevationLabel;
+    @FXML
+    private Label airfieldElevationUnitsLabel;
+    @FXML
+    private Label runwayLabel;
+    @FXML
+    private Label gliderPositionLabel;
+    @FXML
+    private Label winchPositionLabel;
+
+    private CurrentDataObjectSet currentData;
     private ProfileManagementFrame ProfileManagementFrame;
     private ArrayList<Observer> observers;
 
@@ -84,8 +104,8 @@ public class CurrentScenario implements Observer {
      * Creates new form CurrentScenario
      */
     public CurrentScenario() throws IOException {
-        data = CurrentDataObjectSet.getCurrentDataObjectSet();
-        data.attach(this);
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData.attach(this);
         observers = new ArrayList<Observer>();
     }
 
@@ -115,39 +135,21 @@ public class CurrentScenario implements Observer {
         //then attach the view panels to the add edit panels so they can be updated
         AddEditAirfieldFrame editAirfield = new AddEditAirfieldFrame(airfieldPanel);
         AirfieldPanel airfield = new AirfieldPanel(airfieldAddEditPanel, runwayPanel, editAirfield);
-        editAirfield.attach(airfield);
-        observers.add(editAirfield);
-        observers.add(airfield);
 
         AddEditRunwayFrame editRunway = new AddEditRunwayFrame(runwayPanel);
         RunwayPanel runway = new RunwayPanel(runwayAddEditPanel, gliderPosPanel, editRunway);
-        editRunway.attach(runway);
-        observers.add(editRunway);
-        observers.add(runway);
 
         AddEditGliderPosFrame editGliderPos = new AddEditGliderPosFrame(gliderPosPanel);
         GliderPositionPanel gliderPos = new GliderPositionPanel(gliderPositionAddEditPanel, winchPosPanel, editGliderPos);
-        editGliderPos.attach(gliderPos);
-        observers.add(editGliderPos);
-        observers.add(gliderPos);
 
         AddEditWinchPosFrame editWinchPos = new AddEditWinchPosFrame(winchPosPanel);
         WinchPositionPanel winchPos = new WinchPositionPanel(winchPositionAddEditPanel, scenarioHomePanel, editWinchPos);
-        editWinchPos.attach(winchPos);
-        observers.add(editWinchPos);
-        observers.add(winchPos);
 
         AddEditPilotPanel editPilot = new AddEditPilotPanel(pilotPanel);
         PilotPanel pilot = new PilotPanel(pilotAddEditPanel, scenarioHomePanel, editPilot);
-        editPilot.attach(pilot);
-        observers.add(editPilot);
-        observers.add(pilot);
 
         AddEditGlider editGlider = new AddEditGlider(gliderPanel);
         SailplanePanel sailplane = new SailplanePanel(gliderAddEditPanel, scenarioHomePanel, editGlider);
-        editGlider.attach(sailplane);
-        observers.add(editGlider);
-        observers.add(sailplane);
 
         //Load the display panes
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ParameterSelection/PilotScene.fxml"));
@@ -221,19 +223,34 @@ public class CurrentScenario implements Observer {
         root = loader.load();
         winchPositionAddEditPanel.setRoot(root);
 
+        editAirfield.attach(airfield);
+        currentData.attach(editAirfield);
+        currentData.attach(airfield);
+
+        editRunway.attach(runway);
+        currentData.attach(editRunway);
+        currentData.attach(runway);
+
+        editGliderPos.attach(gliderPos);
+        currentData.attach(editGliderPos);
+        currentData.attach(gliderPos);
+
+        editWinchPos.attach(winchPos);
+        currentData.attach(editWinchPos);
+        currentData.attach(winchPos);
+
+        editPilot.attach(pilot);
+        currentData.attach(editPilot);
+        currentData.attach(pilot);
+
+        editGlider.attach(sailplane);
+        currentData.attach(editGlider);
+        currentData.attach(sailplane);
+
         loadScenario();
     }
 
     private void loadScenario() {
-
-        Pilot pilot = data.getCurrentPilot();
-        Sailplane glider = data.getCurrentSailplane();
-        Airfield airfield = data.getCurrentAirfield();
-        GliderPosition position = data.getCurrentGliderPosition();
-        Runway runway = data.getCurrentRunway();
-        WinchPosition winch = data.getCurrentWinchPosition();
-        Drum drum = data.getCurrentDrum();
-        Operator profile = data.getCurrentProfile();
         //Stop light red
         Color unstartedBackground = Color.web("#fb122f");
         //traffic light green
@@ -241,40 +258,80 @@ public class CurrentScenario implements Observer {
         //Luminious Vivid Amber
         Color incompleteBackground = Color.web("#FFBF00");
 
+        Pilot pilot = currentData.getCurrentPilot();
         if (pilot == null) {
+            pilotNameLabel.setText("");
             pilotGridBackground.setFill(unstartedBackground);
         } else {
+            pilotNameLabel.setText(pilot.getFirstName() + " " + pilot.getMiddleName() + " " + pilot.getLastName());
             pilotGridBackground.setFill(completeBackground);
         }
 
-        if (airfield == null && runway == null && position == null && winch == null) {
-            runDescriptionGridBackground.setFill(unstartedBackground);
-        } else if (airfield != null && runway != null && position != null && winch != null) {
-            runDescriptionGridBackground.setFill(completeBackground);
-        } else {
-            runDescriptionGridBackground.setFill(incompleteBackground);
-        }
-
+        Sailplane glider = currentData.getCurrentSailplane();
         if (glider == null) {
+            nNumberLabel.setText("");
+            totalWeightLabel.setText("");
+            totalWeightUnitsLabel.setText("");
+            maxWeakLinkStrengthLabel.setText("");
+            maxWeakLinkStrengthUnitsLabel.setText("");
             gliderGridBackground.setFill(unstartedBackground);
         } else {
+            nNumberLabel.setText(glider.getRegNumber());
+            //totalWeightLabel.setText();
+            //totalWeightUnitsLabel.setText("");
+            maxWeakLinkStrengthLabel.setText(Float.toString(glider.getMaxWeakLinkStrength()));
+            //maxWeakLinkStrengthUnitsLabel.setText("");
             gliderGridBackground.setFill(completeBackground);
         }
-
+        Airfield airfield = currentData.getCurrentAirfield();
+        Runway runway = currentData.getCurrentRunway();
+        GliderPosition position = currentData.getCurrentGliderPosition();
+        WinchPosition winch = currentData.getCurrentWinchPosition();
+        if (airfield == null) {
+            airfieldNameLabel.setText("");
+            designatorLabel.setText("");
+            airfieldElevationLabel.setText("");
+            airfieldElevationUnitsLabel.setText("");
+            runwayLabel.setText("");
+            gliderPositionLabel.setText("");
+            winchPositionLabel.setText("");
+            runDescriptionGridBackground.setFill(unstartedBackground);
+        } else {
+            runDescriptionGridBackground.setFill(incompleteBackground);
+            airfieldNameLabel.setText(airfield.getName());
+            designatorLabel.setText(airfield.getDesignator());
+            airfieldElevationLabel.setText(Float.toString(airfield.getElevation()));
+            int airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
+            airfieldElevationUnitsLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID));
+            if (runway == null) {
+                runwayLabel.setText("");
+                gliderPositionLabel.setText("");
+                winchPositionLabel.setText("");
+            } else {
+                runwayLabel.setText(Float.toString(runway.getMagneticHeading()));
+                if (position == null) {
+                    gliderPositionLabel.setText("");
+                } else {
+                    gliderPositionLabel.setText(position.getName());
+                }
+                if (winch == null) {
+                    winchPositionLabel.setText("");
+                } else {
+                    winchPositionLabel.setText(winch.getName());
+                }
+                if (winch != null && position != null) {
+                    runDescriptionGridBackground.setFill(completeBackground);
+                }
+            }
+        }
+        Drum drum = currentData.getCurrentDrum();
+        //TODO update summary panel information for drums and parachutes
         if (drum == null) {
             drumGridBackground.setFill(unstartedBackground);
         } else {
             drumGridBackground.setFill(completeBackground);
-            /*if (drum.getParachute() == null)
-            {
-                drumLabel.setForeground(new Color(255, 102, 0));
-            }
-            else
-            {
-                drumLabel.setForeground(new Color(0, 128, 0));
-            }
-            drumLabel.setText(drum.toString());*/
         }
+        Operator profile = currentData.getCurrentProfile();
 
         for (Observer o : observers) {
             o.update();

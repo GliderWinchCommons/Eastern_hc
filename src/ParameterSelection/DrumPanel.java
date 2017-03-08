@@ -1,17 +1,17 @@
 package ParameterSelection;
 
 import Communications.Observer;
-import DataObjects.CurrentDataObjectSet;
 import Configuration.UnitLabelUtilities;
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.Drum;
 import DatabaseUtilities.DatabaseEntrySelect;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class DrumPanel implements Observer {
@@ -105,6 +105,17 @@ public class DrumPanel implements Observer {
     @Override
     public void update() {
         setupUnits();
+        Drum selected = (Drum) drumTable.getSelectionModel().getSelectedItem();
+        Drum currDrum = currentData.getCurrentDrum();
+        if (currDrum == null && selected != null) {
+            drumTable.getItems().remove(selected);
+        } else if (currDrum != selected) {
+            if (!drumTable.getItems().contains(currDrum)) {
+                drumTable.getItems().add(currDrum);
+            } else {
+                drumTable.getSelectionModel().select(currDrum);
+            }
+        }
     }
 
     private Observer getObserver() {

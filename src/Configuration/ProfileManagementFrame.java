@@ -168,7 +168,6 @@ public class ProfileManagementFrame implements Observer {
         currentProfile_.setUnitSetting("runDirection", UnitConversionToIndexUtilities.degreesUnitStringToIndex(runDirectionUnits));
         currentProfile_.setUnitSetting("windDirection", UnitConversionToIndexUtilities.degreesUnitStringToIndex(windDirectionUnits));
         currentData.setCurrentProfile(currentProfile_);
-        parent.update();
         try {
             DatabaseEntryEdit.UpdateEntry(currentProfile_);
         } catch (Exception e) {

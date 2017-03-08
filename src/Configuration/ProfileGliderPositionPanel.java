@@ -8,15 +8,15 @@ import javafx.scene.control.ChoiceBox;
 /**
  * Created by micha on 1/30/2017.
  */
-public class ProfileGliderPositionPanel
-{
-    private   CurrentDataObjectSet currentData;
-    @FXML protected ChoiceBox gliderPosAltitudeComboBox;
+public class ProfileGliderPositionPanel {
+
+    private CurrentDataObjectSet currentData;
+    @FXML
+    protected ChoiceBox gliderPosAltitudeComboBox;
 
     @FXML
-    protected void initialize()
-    {
+    protected void initialize() {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
-        gliderPosAltitudeComboBox.setItems(FXCollections.observableArrayList("ft", "m", "km", "mi"));
+        gliderPosAltitudeComboBox.setItems(FXCollections.observableArrayList("m", "ft", "mm", "cm", "km", "mi", "in"));
     }
 }

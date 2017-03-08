@@ -32,6 +32,8 @@ public class AirfieldPanel extends JPanel implements Observer {
     TableView airfieldTable;
 
     @FXML
+    Label airfieldNameLabel;
+    @FXML
     Label designatorLabel;
     @FXML
     Label altitudeLabel;
@@ -83,21 +85,30 @@ public class AirfieldPanel extends JPanel implements Observer {
 
     public void loadData() {
         if (currentData.getCurrentAirfield() != null) {
-            designatorLabel.setText("" + currentData.getCurrentAirfield().getDesignator());
-            altitudeLabel.setText("" + currentData.getCurrentAirfield().getElevation());
-            magneticVariationLabel.setText("" + currentData.getCurrentAirfield().getMagneticVariation());
-            longitudeLabel.setText("" + currentData.getCurrentAirfield().getLongitude());
-            latitudeLabel.setText("" + currentData.getCurrentAirfield().getLatitude());
-            UTCOffsetLabel.setText("" + currentData.getCurrentAirfield().getUTC());
-            setupUnits();
+            airfieldNameLabel.setText(currentData.getCurrentAirfield().getName());
+            designatorLabel.setText(currentData.getCurrentAirfield().getDesignator());
+            altitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getElevation()));
+            magneticVariationLabel.setText(Float.toString(currentData.getCurrentAirfield().getMagneticVariation()));
+            longitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getLongitude()));
+            latitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getLatitude()));
+            UTCOffsetLabel.setText(Integer.toString(currentData.getCurrentAirfield().getUTC()));
+        } else {
+            airfieldNameLabel.setText("");
+            designatorLabel.setText("");
+            altitudeLabel.setText("");
+            magneticVariationLabel.setText("");
+            longitudeLabel.setText("");
+            latitudeLabel.setText("");
+            UTCOffsetLabel.setText("");
         }
+        setupUnits();
     }
 
     public void setupUnits() {
         airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         altitudeUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID));
 
-        magneticVariationUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldMagneticVariation");
+        /*magneticVariationUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldMagneticVariation");
         magneticVariationUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(magneticVariationUnitsID));
 
         longitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldLongitude");
@@ -105,17 +116,25 @@ public class AirfieldPanel extends JPanel implements Observer {
 
         latitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldLatitude");
         latitudeUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(latitudeUnitsID));
-
         UTCUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldUTC");
         UTCOffsetUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(UTCUnitsID));
+         */
     }
 
     @Override
     public void update() {
         setupUnits();
-        airfieldTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getAirfields()));
-        if (currentData.getCurrentAirfield() != null) {
-            airfieldTable.getSelectionModel().select(currentData.getCurrentAirfield());
+        airfieldTable.getItems().clear();
+        Airfield selected = (Airfield) airfieldTable.getSelectionModel().getSelectedItem();
+        Airfield currAirfield = currentData.getCurrentAirfield();
+        if (currAirfield == null && selected != null) {
+            airfieldTable.getItems().remove(selected);
+        } else if (currAirfield != selected) {
+            if (!airfieldTable.getItems().contains(currAirfield)) {
+                airfieldTable.getItems().add(currAirfield);
+            } else {
+                airfieldTable.getSelectionModel().select(currAirfield);
+            }
         }
     }
 

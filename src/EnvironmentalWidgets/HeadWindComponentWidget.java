@@ -25,6 +25,7 @@ public class HeadWindComponentWidget extends EnvironmentalWidget {
     public void update() {
         float speed = (CurrentLaunchInformation.getCurrentLaunchInformation().getHeadwindComponent()) * UnitConversionRate.convertSpeedUnitIndexToFactor(unitId);
         field.setText(String.format("%.2f", speed));
+        setupUnits();
     }
 
     @Override
@@ -37,5 +38,5 @@ public class HeadWindComponentWidget extends EnvironmentalWidget {
         unitId = temp.getUnitSetting("headwind");
         unit.setText(" " + UnitLabelUtilities.velocityUnitIndexToString(unitId));
     }
-    
+
 }

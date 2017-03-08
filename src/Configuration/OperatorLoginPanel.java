@@ -158,7 +158,7 @@ public class OperatorLoginPanel implements Observer {
         passwordResult.ifPresent(password -> {
             cancelButton.disableProperty().set(false);
             currentScenarioTabPane.toFront();
-            parent.update();
+            //parent.update();
         });
     }
 

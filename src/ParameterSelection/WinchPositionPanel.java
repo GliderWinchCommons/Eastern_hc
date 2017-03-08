@@ -34,14 +34,14 @@ public class WinchPositionPanel extends JPanel implements Observer {
     @FXML
     Label positionNameLabel;
     @FXML
-    Label altitudeLabel;
+    Label elevationLabel;
     @FXML
     Label longitudeLabel;
     @FXML
     Label latitudeLabel;
 
     @FXML
-    Label altitudeUnitLabel;
+    Label elevationUnitLabel;
     @FXML
     Label longitudeUnitLabel;
     @FXML
@@ -61,7 +61,7 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
         winchPositionTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getWinchPositions()));
         winchPositionTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
-            if (newValue != null) {
+            if (newValue != null && currentData.getCurrentWinchPosition() != (WinchPosition) newValue) {
                 currentData.setCurrentWinchPosition((WinchPosition) newValue);
                 loadData();
             }
@@ -73,7 +73,7 @@ public class WinchPositionPanel extends JPanel implements Observer {
     public void loadData() {
         if (currentData.getCurrentWinchPosition() != null) {
             positionNameLabel.setText("" + currentData.getCurrentWinchPosition().getName());
-            altitudeLabel.setText("" + currentData.getCurrentWinchPosition().getElevation());
+            elevationLabel.setText("" + currentData.getCurrentWinchPosition().getElevation());
             longitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLongitude());
             latitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLatitude());
             setupUnits();
@@ -83,13 +83,21 @@ public class WinchPositionPanel extends JPanel implements Observer {
     public void setupUnits() {
         winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
+        elevationUnitLabel.setText(winchPosAltitudeUnitsString);
     }
 
     @Override
     public void update() {
-        winchPositionTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getWinchPositions()));
-        if (currentData.getCurrentWinchPosition() != null) {
-            winchPositionTable.getSelectionModel().select(currentData.getCurrentWinchPosition());
+        WinchPosition selected = (WinchPosition) winchPositionTable.getSelectionModel().getSelectedItem();
+        WinchPosition currWinchPosition = currentData.getCurrentWinchPosition();
+        if (currWinchPosition == null && selected != null) {
+            winchPositionTable.getItems().remove(selected);
+        } else if (currWinchPosition != selected) {
+            if (!winchPositionTable.getItems().contains(currWinchPosition)) {
+                winchPositionTable.getItems().add(currWinchPosition);
+            } else {
+                winchPositionTable.getSelectionModel().select(currWinchPosition);
+            }
         }
     }
 

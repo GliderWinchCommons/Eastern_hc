@@ -21,7 +21,8 @@ public class LaunchWeightWidget extends EnvironmentalWidget {
     @Override
     public void update() {
         float weight = (CurrentLaunchInformation.getCurrentLaunchInformation().getGliderLaunchMass()) * UnitConversionRate.convertWeightUnitIndexToFactor(unitId);
-        //field.setText(String.format("%.2f", weight));
+        field.setText(String.format("%.2f", weight));
+        setupUnits();
     }
 
     @Override

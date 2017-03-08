@@ -14,10 +14,9 @@ import ParameterSelection.CurrentScenario;
 import ParameterSelection.DEBUGWinchEditPanel;
 import ParameterSelection.EnvironmentalWindow;
 import ParameterSelection.ParameterSelectionPanel;
+import Winch.WinchPanel;
 import java.awt.*;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +24,6 @@ import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.swing.*;
@@ -111,6 +109,8 @@ public class MainWindow {
     SubScene environmentalWindowScene;
     @FXML
     SubScene profileManagementFrame;
+    @FXML
+    SubScene winchSubScene;
 
     @FXML
     LineChart lineChart;
@@ -121,8 +121,6 @@ public class MainWindow {
 
     @FXML
     Pane mainPane;
-    @FXML
-    TextField wp1TextField;
 
     public static final int BASE_WIDTH = 1100, BASE_HEIGHT = 825, WIDTH_OFFSET = 16, HEIGHT_OFFSET = 39;
     public static final double WIDTH_TO_HEIGHT_RATIO = .75;
@@ -144,16 +142,6 @@ public class MainWindow {
             stateMachineSwingNode.getContent().setBackground(awtBackground);
         });
 
-        wp1TextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && oldValue) {
-                try {
-                    wp1TextField.setText("" + DecimalFormat.getInstance().parse(wp1TextField.getText()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         NewOperatorPanel newOperatorPanel = new NewOperatorPanel(newOperatorScene);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Configuration/NewOperatorPanel.fxml"));
         loader.setController(newOperatorPanel);
@@ -169,6 +157,7 @@ public class MainWindow {
 
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/CurrentScenario.fxml"));
         CurrentScenario currScenario = new CurrentScenario();
+        currentData.attach(currScenario);
         loader.setController(currScenario);
         root = loader.load();
         currentScenario.setRoot(root);
@@ -179,13 +168,21 @@ public class MainWindow {
         root = loader.load();
         environmentalWindowScene.setRoot(root);
 
+        loader = new FXMLLoader(getClass().getResource("/Winch/WinchPanel.fxml"));
+        WinchPanel wp = new WinchPanel();
+        loader.setController(wp);
+        root = loader.load();
+        winchSubScene.setRoot(root);
+
         loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileManagementFrame.fxml"));
         ProfileManagementFrame managementFrame = new ProfileManagementFrame(operatorLoginPanel);
-        operatorLoginPanel.attach(managementFrame);
-        managementFrame.setParent(currScenario);
+        currentData.attach(managementFrame);
+        //operatorLoginPanel.attach(managementFrame);
         loader.setController(managementFrame);
         root = loader.load();
         profileManagementFrame.setRoot(root);
+
+        loginSubScene.toFront();
 
         mainPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             if (theStage.getWidth() > 0) {

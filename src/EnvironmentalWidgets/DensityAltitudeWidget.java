@@ -36,8 +36,9 @@ public class DensityAltitudeWidget extends EnvironmentalWidget {
             }
         } else {
             float alt = CurrentLaunchInformation.getCurrentLaunchInformation().getCalculatedDensityAltitude() * UnitConversionRate.convertDistanceUnitIndexToFactor(unitId);
-            //field.setText(String.format("%.2f", alt));
+            field.setText(String.format("%.2f", alt));
         }
+        setupUnits();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -36,22 +35,17 @@ public class AddEditPilotPanel extends AddEditPanel {
     @FXML
     private TextArea optionalInfoField;
     private Pilot currentPilot;
-    private boolean isEditEntry;
-    private Observer parent;
     private int flightWeightUnitsID;
     @FXML
     private Label flightWeightUnitsLabel;
     @FXML
     Slider preferenceSlider;
 
+    @Override
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
         String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID);
         flightWeightUnitsLabel.setText(flightWeightUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditPilotPanel(SubScene pilotPanel) {
@@ -118,11 +112,10 @@ public class AddEditPilotPanel extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseEntryDelete.DeleteEntry(currentPilot)) {
+            if (DatabaseEntryDelete.DeleteEntry(currentPilot)) {
                 CurrentDataObjectSet objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
                 objectSet.clearPilot();
-                new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update();
+                new Alert(Alert.AlertType.INFORMATION, "Pilot removed").showAndWait();
             }
         }
     }

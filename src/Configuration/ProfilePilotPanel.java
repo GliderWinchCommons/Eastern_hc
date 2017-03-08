@@ -12,7 +12,7 @@ public class ProfilePilotPanel {
 
     @FXML
     protected void initialize() {
-        flightWeightComboBox.setItems(FXCollections.observableArrayList("lbs", "kg"));
+        flightWeightComboBox.setItems(FXCollections.observableArrayList("kg", "lbs"));
 
     }
 }

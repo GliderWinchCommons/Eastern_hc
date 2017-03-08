@@ -12,7 +12,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.awt.Color;
 /**
  *
  * @author jtroxel
@@ -26,27 +25,22 @@ public class PressureWidget extends EnvironmentalWidget {
     @Override
     public void update() {
         //field.setBackground(Color.WHITE);
-        if (manualEntry())
-        {
-            try{
+        if (manualEntry()) {
+            try {
                 float press = Float.parseFloat(field.getText()) / UnitConversionRate.convertPressureUnitIndexToFactor(unitId);
                 CurrentWidgetDataSet.getInstance().setValue("pressure", String.valueOf(press));
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 //field.setBackground(Color.PINK);
             }
-        }
-        else
-        {
-            if (CurrentWidgetDataSet.getInstance().getValue("pressure").equals(""))
-            {
+        } else {
+            if (CurrentWidgetDataSet.getInstance().getValue("pressure").equals("")) {
                 field.setText("");
-            }
-            else
-            {
+            } else {
                 float press = (Float.parseFloat(CurrentWidgetDataSet.getInstance().getValue("pressure")) * UnitConversionRate.convertPressureUnitIndexToFactor(unitId));
                 field.setText(String.format("%.2f", press));
             }
         }
+        setupUnits();
     }
 
     @Override
@@ -58,5 +52,5 @@ public class PressureWidget extends EnvironmentalWidget {
         unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("pressure");
         unit.setText(" " + UnitLabelUtilities.pressureUnitIndexToString(unitId));
     }
-    
+
 }

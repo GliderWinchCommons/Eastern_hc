@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import Communications.Observer;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Parachute;
 import DatabaseUtilities.DatabaseEntrySelect;
@@ -15,7 +16,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Created by micha on 2/2/2017.
  */
-public class ParachutePanel {
+public class ParachutePanel implements Observer {
 
     GridPane scenarioHome;
     CurrentDataObjectSet currentData;
@@ -79,5 +80,26 @@ public class ParachutePanel {
     @FXML
     public void FinishButton_Click(javafx.event.ActionEvent e) {
         scenarioHome.toFront();
+    }
+
+    @Override
+    public void update() {
+        setupUnits();
+        Parachute selected = (Parachute) parachuteTable.getSelectionModel().getSelectedItem();
+        Parachute currParachute = null;//currentData.getCurrentParachute();
+        if (currParachute == null && selected != null) {
+            parachuteTable.getItems().remove(selected);
+        } else if (currParachute != selected) {
+            if (!parachuteTable.getItems().contains(currParachute)) {
+                parachuteTable.getItems().add(currParachute);
+            } else {
+                parachuteTable.getSelectionModel().select(currParachute);
+            }
+        }
+    }
+
+    @Override
+    public void update(String msg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

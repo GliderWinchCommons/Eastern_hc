@@ -1,7 +1,6 @@
 //Should be successful if entries in DB are set in the CurrentDataObjectSet
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -28,20 +27,15 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     @FXML
     private TextArea optionalInformationArea;
     private GliderPosition currentGliderPos;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label gliderPosAltitudeUnitsLabel;
     private int gliderPosAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
         gliderPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("gliderPosAltitude");
         String GliderPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(gliderPosAltitudeUnitsID);
         gliderPosAltitudeUnitsLabel.setText(GliderPosAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditGliderPosFrame(SubScene gliderPosPanel) {
@@ -71,11 +65,10 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
+            if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 currentData.cleafGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
-                parent.update("3");
             }
         }
     }

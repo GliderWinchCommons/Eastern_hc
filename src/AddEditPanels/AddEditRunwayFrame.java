@@ -1,6 +1,5 @@
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Runway;
@@ -23,15 +22,9 @@ public class AddEditRunwayFrame extends AddEditPanel {
     @FXML
     private TextField nameField;
     private Runway currentRunway;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label magneticHeadingUnitsLabel;
     private int magneticHeadingUnitsID;
-
-    public void attach(Observer o) {
-        parent = o;
-    }
 
     public AddEditRunwayFrame(SubScene runwayPanel) {
         super(runwayPanel);
@@ -56,11 +49,10 @@ public class AddEditRunwayFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentRunway)) {
+            if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentRunway)) {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 currentData.clearRunway();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update("2");
             }
         }
     }

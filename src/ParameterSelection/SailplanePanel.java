@@ -20,7 +20,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 
 public class SailplanePanel implements Observer {
@@ -143,14 +142,17 @@ public class SailplanePanel implements Observer {
     public void update() {
         setupUnits();
         loadData();
-        DefaultListModel sailplaneModel = new DefaultListModel();
-        sailplaneModel.clear();
-
-        gliderTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getSailplanes()));
-        if (currentData.getCurrentSailplane() != null) {
-            gliderTable.getSelectionModel().select(currentData.getCurrentSailplane());
+        Sailplane selected = (Sailplane) gliderTable.getSelectionModel().getSelectedItem();
+        Sailplane currSailplane = currentData.getCurrentSailplane();
+        if (currSailplane == null && selected != null) {
+            gliderTable.getItems().remove(selected);
+        } else if (currSailplane != selected) {
+            if (!gliderTable.getItems().contains(currSailplane)) {
+                gliderTable.getItems().add(currSailplane);
+            } else {
+                gliderTable.getSelectionModel().select(currSailplane);
+            }
         }
-
     }
 
     private void updateLaunchInfo(JTextField textField) {

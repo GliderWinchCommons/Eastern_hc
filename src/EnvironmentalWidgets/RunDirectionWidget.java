@@ -23,11 +23,12 @@ public class RunDirectionWidget extends EnvironmentalWidget {
     @Override
     public void update() {
         float direction = (CurrentLaunchInformation.getCurrentLaunchInformation().getRunHeading());
-        if (unitId == UnitConversionToIndexUtilities.degreesUnitStringToIndex("true")){
+        if (unitId == UnitConversionToIndexUtilities.degreesUnitStringToIndex("true")) {
             direction -= CurrentLaunchInformation.getCurrentLaunchInformation().getAirfieldMagneticVariation();
             direction = direction % 360f;
         }
         field.setText(String.format("%.2f", direction));
+        setupUnits();
     }
 
     @Override
@@ -39,5 +40,5 @@ public class RunDirectionWidget extends EnvironmentalWidget {
         unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("rundirection");
         unit.setText(" degrees " + UnitLabelUtilities.degreesUnitIndexToString(unitId));
     }
-    
+
 }

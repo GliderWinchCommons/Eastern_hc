@@ -1,7 +1,6 @@
 //Successful
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.Airfield;
@@ -34,20 +33,15 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     private TextArea optionalInformationArea;
 
     private Airfield currentAirfield;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label airfieldElevationUnitsLabel;
     private int airfieldAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
         airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         String airfieldAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID);
         airfieldElevationUnitsLabel.setText(airfieldAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditAirfieldFrame(SubScene airfieldPanel) {
@@ -82,11 +76,10 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseEntryDelete.DeleteEntry(currentAirfield)) {
+            if (DatabaseEntryDelete.DeleteEntry(currentAirfield)) {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 currentData.clearAirfield();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update();
             }
         }
     }

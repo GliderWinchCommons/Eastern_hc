@@ -1,7 +1,6 @@
 //Should be successful if entries in DB are set in the CurrentDataObjectSet
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -27,20 +26,15 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     @FXML
     private TextArea optionalInformationArea;
     private WinchPosition currentWinchPos;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label winchPosAltitudeUnitsLabel;
     private int winchPosAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
         winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
         winchPosAltitudeUnitsLabel.setText(winchPosAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditWinchPosFrame(SubScene winchPosPanel) {
@@ -70,11 +64,10 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
+            if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 currentData.cleafGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
-                parent.update("4");
             }
         }
     }

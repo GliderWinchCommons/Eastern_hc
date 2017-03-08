@@ -30,6 +30,8 @@ public class RunwayPanel extends JPanel implements Observer {
     TableView runwayTable;
 
     @FXML
+    Label runwayNameLabel;
+    @FXML
     Label magneticHeadingLabel;
     @FXML
     Label magneticHeadingUnitLabel;
@@ -61,21 +63,33 @@ public class RunwayPanel extends JPanel implements Observer {
     public void loadData() {
 
         if (currentData.getCurrentRunway() != null) {
-            magneticHeadingLabel.setText("" + currentData.getCurrentRunway().getMagneticHeading());
-            setupUnits();
+            runwayNameLabel.setText(currentData.getCurrentRunway().getName());
+            magneticHeadingLabel.setText(Float.toString(currentData.getCurrentRunway().getMagneticHeading()));
+        } else {
+            runwayNameLabel.setText("");
+            magneticHeadingLabel.setText("");
         }
+        setupUnits();
     }
 
     public void setupUnits() {
         runwayMagneticHeadingUnitsID = currentData.getCurrentProfile().getUnitSetting("runwayMagneticHeading");
         String runwayMagneticHeadingUnitsString = UnitLabelUtilities.degreesUnitIndexToString(runwayMagneticHeadingUnitsID);
+        magneticHeadingUnitLabel.setText(runwayMagneticHeadingUnitsString);
     }
 
     @Override
     public void update() {
-        runwayTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getRunways()));
-        if (currentData.getCurrentRunway() != null) {
-            runwayTable.getSelectionModel().select(currentData.getCurrentRunway());
+        Runway selected = (Runway) runwayTable.getSelectionModel().getSelectedItem();
+        Runway currRunway = currentData.getCurrentRunway();
+        if (currRunway == null && selected != null) {
+            runwayTable.getItems().remove(selected);
+        } else if (currRunway != selected) {
+            if (!runwayTable.getItems().contains(currRunway)) {
+                runwayTable.getItems().add(currRunway);
+            } else {
+                runwayTable.getSelectionModel().select(currRunway);
+            }
         }
     }
 

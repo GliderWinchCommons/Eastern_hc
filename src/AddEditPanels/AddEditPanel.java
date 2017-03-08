@@ -20,10 +20,17 @@ public abstract class AddEditPanel implements Observer {
     protected static final String redBackground = "-fx-control-inner-background: pink;";
     protected static final String whiteBackground = "";
     protected CurrentDataObjectSet currentData;
+    protected Observer parent;
+    protected boolean isEditEntry;
 
     public AddEditPanel(SubScene displayPanel) {
         this.displayPanel = displayPanel;
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
+        this.parent = null;
+    }
+
+    public void attach(Observer o) {
+        this.parent = o;
     }
 
     protected abstract void clearData();
@@ -62,7 +69,7 @@ public abstract class AddEditPanel implements Observer {
 
     @Override
     public void update() {
-        if (currentData.getCurrentProfile() != null) {
+        if (currentData.getCurrentProfile() != null && this.parent != null) {
             setupUnits();
         }
     }
