@@ -93,13 +93,13 @@ public class AddEditGlider extends AddEditPanel {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
-        nNumberField.setText(sailplaneEdited.getRegNumber());
-        ownerField.setText(sailplaneEdited.getOwner());
-
         isEditEntry = sailplaneEdited != null;
         currentGlider = sailplaneEdited;
 
         if (isEditEntry) {
+            nNumberField.setText(sailplaneEdited.getRegNumber());
+            ownerField.setText(sailplaneEdited.getOwner());
+
             stallSpeedField.setText("" + currentGlider.getIndicatedStallSpeed()
                     * UnitConversionRate.convertSpeedUnitIndexToFactor(stallSpeedUnitsID));
             grossWeightField.setText("" + currentGlider.getMaximumGrossWeight()
@@ -113,6 +113,16 @@ public class AddEditGlider extends AddEditPanel {
             releaseAngleField.setText("" + currentGlider.getCableReleaseAngle());
             winchingSpeedField.setText("" + currentGlider.getMaxWinchingSpeed()
                     * UnitConversionRate.convertSpeedUnitIndexToFactor(winchingSpeedUnitsID));
+        } else {
+            nNumberField.setText("");
+            ownerField.setText("");
+            stallSpeedField.setText("");
+            grossWeightField.setText("");
+            emptyWeightField.setText("");
+            weakLinkField.setText("");
+            tensionField.setText("");
+            releaseAngleField.setText("");
+            winchingSpeedField.setText("");
         }
     }
 
