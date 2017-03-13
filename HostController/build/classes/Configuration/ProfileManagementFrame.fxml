@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -38,12 +39,12 @@
       <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Label text="Operator Name" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+      <Label fx:id="operatorNameLabel" style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Operator Name" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
-      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="2" GridPane.rowSpan="6">
+      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-font-size: 1.5em;" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="2" GridPane.rowSpan="6">
          <tabs>
             <Tab text="Pilot">
                <content>
@@ -138,17 +139,20 @@
             </Tab>
          </tabs>
       </TabPane>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="New Profile" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Choose Different Profile" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Save" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="8" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ResetButton_Click" prefHeight="50.0" prefWidth="100.0" text="Reset to default" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.rowIndex="8">
-         <contextMenu>
-            <ContextMenu>
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-               </items>
-            </ContextMenu>
-         </contextMenu>
-      </Button>
+      <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SwitchProfileButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Choose Different Profile" textAlignment="CENTER" wrapText="true" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Save" textAlignment="CENTER" wrapText="true" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ResetButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Reset to default" textAlignment="CENTER" wrapText="true">
+               <contextMenu>
+                  <ContextMenu>
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                     </items>
+                  </ContextMenu>
+               </contextMenu>
+            </Button>
+         </children>
+      </FlowPane>
    </children>
 </GridPane>

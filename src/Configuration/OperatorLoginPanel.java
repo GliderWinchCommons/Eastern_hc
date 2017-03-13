@@ -243,6 +243,7 @@ public class OperatorLoginPanel implements Observer {
             operatorTable.getSelectionModel().select(currOperator);
             newOperatorButton.disableProperty().set(false);
             loginButton.disableProperty().set(false);
+            editButton.disableProperty().set(false);
         } else {
             operatorTable.getSelectionModel().selectFirst();
         }

@@ -671,7 +671,7 @@ public class DatabaseInitialization {
                 + "last_name VARCHAR(30), "
                 + "admin BOOLEAN,"
                 + "salt VARCHAR(30),"
-                + "hash VARCHAR(512), "
+                + "hash VARCHAR(1024), "
                 + "optional_info LONG VARCHAR, "
                 + "unitSettings LONG VARCHAR, "
                 + "PRIMARY KEY (operator_id))";

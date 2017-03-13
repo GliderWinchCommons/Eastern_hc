@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.SubScene?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SubScene fx:id="winchPositionAddEditPanel" height="599.0" width="800.0">
         <root>
@@ -85,7 +86,7 @@
             <Region />
          </root>
       </SubScene>
-      <GridPane fx:id="scenarioHomePanel" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;">
+      <GridPane fx:id="scenarioHomePanel" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: whitesmoke;">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -101,11 +102,20 @@
                   <Label layoutX="5.0" layoutY="-2.0" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Pilot" />
                   <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutX="5.0" layoutY="43.0" orientation="VERTICAL" prefHeight="199.0" prefWidth="335.0">
                      <children>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Pilot Name">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Button fx:id="pilotButton" mnemonicParsing="false" onAction="#PilotButton_Click" style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Pilot">
+                        <FlowPane alignment="CENTER" prefHeight="25.0" prefWidth="334.0">
+                           <children>
+                              <Label alignment="CENTER" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Pilot Name:">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="pilotNameLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" />
+                           </children>
+                           <FlowPane.margin>
+                              <Insets bottom="10.0" />
+                           </FlowPane.margin>
+                        </FlowPane>
+                        <Button fx:id="pilotButton" mnemonicParsing="false" onAction="#PilotButton_Click" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Pilot">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Button>
@@ -119,15 +129,51 @@
                   <Label layoutX="210.0" layoutY="-2.0" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider" />
                   <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutX="5.0" layoutY="43.0" orientation="VERTICAL" prefHeight="199.0" prefWidth="335.0">
                      <children>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="N-Number">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Total Weight">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Button fx:id="gliderButton" mnemonicParsing="false" onAction="#GliderButton_Click" style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Glider">
+                        <GridPane alignment="CENTER" prefHeight="63.0" prefWidth="330.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="217.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="113.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="N-Number:">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Total Weight:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="nNumberLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" />
+                              <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label fx:id="totalWeightLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" />
+                                    <Label fx:id="totalWeightUnitsLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Units" />
+                                 </children>
+                              </FlowPane>
+                              <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label fx:id="maxWeakLinkStrengthLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" />
+                                    <Label fx:id="maxWeakLinkStrengthUnitsLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Units" />
+                                 </children>
+                              </FlowPane>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Max Weak Link Strength:" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <FlowPane.margin>
+                              <Insets bottom="10.0" />
+                           </FlowPane.margin>
+                        </GridPane>
+                        <Button fx:id="gliderButton" mnemonicParsing="false" onAction="#GliderButton_Click" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Glider">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Button>
@@ -138,26 +184,67 @@
             <Group GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <children>
                   <Rectangle fx:id="runDescriptionGridBackground" arcHeight="5.0" arcWidth="5.0" fill="#dfe0e1" height="250.0" stroke="BLACK" strokeType="INSIDE" width="345.0" />
-                  <Label layoutX="3.0" layoutY="203.0" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Run Description" />
+                  <Label layoutX="3.0" layoutY="203.0" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Run" />
                   <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutX="5.0" layoutY="7.0" orientation="VERTICAL" prefHeight="199.0" prefWidth="335.0">
                      <children>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield Name  -   Designator">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Magnetic Heading">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider Position">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Winch Position">
-                           <font>
-                              <Font name="SansSerif Bold" size="14.0" />
-                           </font></Label>
-                        <Button fx:id="airfieldButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#EditAirFieldButton_Click" style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Run Description">
+                        <GridPane prefHeight="134.0" prefWidth="334.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="215.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="119.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield Name:">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Designator:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Runway:" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider Position:" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Winch Position:" GridPane.rowIndex="5">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="airfieldNameLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" />
+                              <Label fx:id="designatorLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="runwayLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label fx:id="gliderPositionLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label fx:id="winchPositionLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield Elevation:" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label fx:id="airfieldElevationLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Value" />
+                                    <Label fx:id="airfieldElevationUnitsLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Units" />
+                                 </children>
+                              </FlowPane>
+                           </children>
+                        </GridPane>
+                        <Button fx:id="airfieldButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#EditAirFieldButton_Click" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Run Description">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Button>
@@ -171,15 +258,15 @@
                   <Label layoutX="221.0" layoutY="203.0" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Drum" />
                   <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutX="5.0" layoutY="7.0" orientation="VERTICAL" prefHeight="199.0" prefWidth="335.0">
                      <children>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Drum Info">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Drum Info">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Label>
-                        <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Parachute Info">
+                        <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Parachute Info">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Label>
-                        <Button fx:id="drumButton" mnemonicParsing="false" onAction="#DrumButton_Click" style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Drum">
+                        <Button fx:id="drumButton" mnemonicParsing="false" onAction="#DrumButton_Click" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select Drum">
                            <font>
                               <Font name="SansSerif Bold" size="14.0" />
                            </font></Button>

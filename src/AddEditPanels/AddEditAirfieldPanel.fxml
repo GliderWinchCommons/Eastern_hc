@@ -35,49 +35,49 @@
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Airfield Name" />
-            <TextField fx:id="airfieldNameField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="airfieldNameField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Label" visible="false" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Designator" />
-            <TextField fx:id="designatorField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="designatorField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Label" visible="false" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Elevation" />
-            <TextField fx:id="airfieldAltitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="airfieldAltitudeField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="airfieldElevationUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Magnetic Variation" />
-            <TextField fx:id="magneticVariationField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="magneticVariationField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude" />
-            <TextField fx:id="airfieldLongitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="airfieldLongitudeField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude" />
-            <TextField fx:id="airfieldLatitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="airfieldLatitudeField" alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="UTC Offset" />
-            <TextField alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField alignment="CENTER" prefWidth="160.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
@@ -98,7 +98,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="137.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Delete">
+            <Button mnemonicParsing="false" onAction="#DeleteButton_Click" prefWidth="137.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Delete">
                <font>
                   <Font size="18.0" />
                </font>

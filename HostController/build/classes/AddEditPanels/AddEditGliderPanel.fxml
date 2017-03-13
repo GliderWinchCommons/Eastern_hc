@@ -30,63 +30,63 @@
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Registration Number" />
-            <TextField fx:id="nNumberField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="nNumberField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Label" visible="false" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Owner" />
-            <TextField fx:id="ownerField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="ownerField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Label" visible="false" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Empty Weight" />
-            <TextField fx:id="emptyWeightField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="emptyWeightField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="emptyWeightUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Max Gross Weight" />
-            <TextField fx:id="grossWeightField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="grossWeightField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="maxGrossWeightUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Indicated Stall Speed" />
-            <TextField fx:id="stallSpeedField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="stallSpeedField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="stallSpeedUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Max Winching Speed" />
-            <TextField fx:id="winchingSpeedField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="winchingSpeedField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="winchingSpeedUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Max Weak Link Strength" />
-            <TextField fx:id="weakLinkField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="weakLinkField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="weakLinkStrengthUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Max Tension" />
-            <TextField fx:id="tensionField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="tensionField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="tensionUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
             <Label style="-fx-font-size: 1.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Cable Release Angle" />
-            <TextField fx:id="releaseAngleField" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="releaseAngleField" alignment="CENTER" maxWidth="150.0" prefWidth="150.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>

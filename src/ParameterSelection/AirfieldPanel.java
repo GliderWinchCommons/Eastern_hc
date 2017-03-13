@@ -124,7 +124,6 @@ public class AirfieldPanel extends JPanel implements Observer {
     @Override
     public void update() {
         setupUnits();
-        airfieldTable.getItems().clear();
         Airfield selected = (Airfield) airfieldTable.getSelectionModel().getSelectedItem();
         Airfield currAirfield = currentData.getCurrentAirfield();
         if (currAirfield == null && selected != null) {

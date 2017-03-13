@@ -72,7 +72,18 @@ public class NewOperatorPanel {
             lastNameTextField.setText(theOperator.getLast());
             password.setText(pass);
             retypedPassword.setText(pass);
+        } else {
+            firstNameTextField.setText("");
+            middleNameTextField.setText("");
+            lastNameTextField.setText("");
+            password.setText("");
+            retypedPassword.setText("");
         }
+        password.setStyle("");
+        retypedPassword.setStyle("");
+        firstNameTextField.setStyle("");
+        middleNameTextField.setStyle("");
+        lastNameTextField.setStyle("");
     }
 
     @FXML

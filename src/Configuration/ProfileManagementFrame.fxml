@@ -39,7 +39,7 @@
       <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Label style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Operator Name" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+      <Label fx:id="operatorNameLabel" style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Operator Name" GridPane.columnSpan="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <font>
             <Font size="48.0" />
          </font>

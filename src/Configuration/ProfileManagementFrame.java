@@ -10,23 +10,26 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
+import javafx.scene.control.Label;
 
 public class ProfileManagementFrame implements Observer {
 
     @FXML
-    SubScene profilePilotPanel;
+    private SubScene profilePilotPanel;
     @FXML
-    SubScene profileGliderPanel;
+    private SubScene profileGliderPanel;
     @FXML
-    SubScene profileAirfieldPanel;
+    private SubScene profileAirfieldPanel;
     @FXML
-    SubScene profileRunwayPanel;
+    private SubScene profileRunwayPanel;
     @FXML
-    SubScene profileGliderPositionPanel;
+    private SubScene profileGliderPositionPanel;
     @FXML
-    SubScene profileWinchPositionPanel;
+    private SubScene profileWinchPositionPanel;
     @FXML
-    SubScene profileOtherPanel;
+    private SubScene profileOtherPanel;
+    @FXML
+    private Label operatorNameLabel;
 
     private Observer parent;
     private ProfilePilotPanel ProfilePilotPanel;
@@ -178,6 +181,8 @@ public class ProfileManagementFrame implements Observer {
     }
 
     public void Rebuild() {
+
+        operatorNameLabel.setText(currentData.getCurrentProfile().getFirst() + " " + currentData.getCurrentProfile().getMiddle() + " " + currentData.getCurrentProfile().getLast());
 
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
         String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID);
