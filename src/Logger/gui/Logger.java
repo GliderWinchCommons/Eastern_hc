@@ -46,6 +46,15 @@ public class Logger {
     private LogThread logThread;
     private List<MessageListenerThread> system_listener_threads;
 
+    @FXML
+    public void initialize() {
+        try {
+            start_logging();
+        } catch (Exception e) {
+
+        };
+    }
+
     /*@FXML
     void embedded_connect(ActionEvent event)
     {
