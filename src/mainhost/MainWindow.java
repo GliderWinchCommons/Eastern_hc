@@ -10,6 +10,7 @@ import DashboardInterface.FlightDashboard;
 import DashboardInterface.StateMachineDiagram;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Operator;
+import Logger.gui.Logger;
 import ParameterSelection.CurrentScenario;
 import ParameterSelection.DEBUGWinchEditPanel;
 import ParameterSelection.EnvironmentalWindow;
@@ -108,6 +109,8 @@ public class MainWindow {
     @FXML
     SubScene environmentalWindowScene;
     @FXML
+    SubScene loggerScene;
+    @FXML
     SubScene profileManagementFrame;
     @FXML
     SubScene winchSubScene;
@@ -173,6 +176,11 @@ public class MainWindow {
         loader.setController(wp);
         root = loader.load();
         winchSubScene.setRoot(root);
+
+        loader = new FXMLLoader(getClass().getResource("/Logger/gui/loggerui.fxml"));
+        loader.setController(new Logger());
+        root = loader.load();
+        loggerScene.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileManagementFrame.fxml"));
         ProfileManagementFrame managementFrame = new ProfileManagementFrame(operatorLoginPanel);

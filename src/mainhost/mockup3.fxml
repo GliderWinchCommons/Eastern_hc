@@ -22,6 +22,50 @@
 
 <Pane fx:id="mainPane" cache="true" cacheHint="SCALE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="933.0" prefHeight="825.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <VBox alignment="CENTER" layoutX="800.0" layoutY="28.0" prefHeight="797.0" prefWidth="300.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="300.0" stroke="#fffdfd" strokeType="INSIDE" strokeWidth="2.0" width="300.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="300.0" stroke="#fffdfd" strokeType="INSIDE" strokeWidth="2.0" width="300.0" />
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="294.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="264.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="21.0" prefHeight="95.0" prefWidth="298.0" text="Current State" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="135.0" layoutY="39.0" prefHeight="94.0" prefWidth="298.0" text="System Messages" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </VBox>
+      <Button layoutX="801.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="298.0" text="Camera Dashboard" />
+      <SubScene fx:id="environmentalWindowScene" height="197.0" layoutX="-1.0" layoutY="628.0" width="798.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
+      <SubScene fx:id="newOperatorScene" height="628.0" width="800.0">
+         <root>
+            <Region />
+         </root>
+      </SubScene>
+      <SubScene fx:id="loginSubScene" height="628.0" width="800.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
       <TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab fx:id="currentScenarioTab" text="Current Scenario">
@@ -103,7 +147,11 @@
             </Tab>
             <Tab text="Logger">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: whitesmoke;" />
+                  <SubScene fx:id="loggerScene" height="600.0" width="800.0">
+                    <root>
+                      <Region />
+                    </root>
+                  </SubScene>
                </content>
             </Tab>
             <Tab text="Operator Settings">
@@ -121,54 +169,10 @@
             </Tab>
             <Tab text="Replays">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: whitesmoke;" />
               </content>
             </Tab>
          </tabs>
       </TabPane>
-      <VBox alignment="CENTER" layoutX="800.0" layoutY="28.0" prefHeight="797.0" prefWidth="300.0">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="300.0" stroke="#fffdfd" strokeType="INSIDE" strokeWidth="2.0" width="300.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="300.0" stroke="#fffdfd" strokeType="INSIDE" strokeWidth="2.0" width="300.0" />
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="294.0">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="264.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="21.0" prefHeight="95.0" prefWidth="298.0" text="Current State" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="135.0" layoutY="39.0" prefHeight="94.0" prefWidth="298.0" text="System Messages" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-         </children>
-      </VBox>
-      <Button layoutX="801.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="298.0" text="Camera Dashboard" />
-      <SubScene fx:id="environmentalWindowScene" height="197.0" layoutX="-1.0" layoutY="628.0" width="798.0">
-        <root>
-          <Region />
-        </root>
-      </SubScene>
-      <SubScene fx:id="newOperatorScene" height="628.0" width="800.0">
-         <root>
-            <Region />
-         </root>
-      </SubScene>
-      <SubScene fx:id="loginSubScene" height="628.0" width="800.0">
-        <root>
-          <Region />
-        </root>
-      </SubScene>
    </children>
 </Pane>
