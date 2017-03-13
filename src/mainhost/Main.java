@@ -5,6 +5,7 @@
  */
 package mainhost;
 
+import Communications.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -40,9 +41,12 @@ public class Main extends Application {
         isScaling = new AtomicInteger(0);
         widthCount = 0;
 
-        /*MessagePipeline pipe = MessagePipeline.getInstance();
+        MessagePipeline pipe = MessagePipeline.getInstance();
+        pipe.connect("127.0.0.1", 32123);
+       // pipe.run();
         Thread pipeThread = new Thread(pipe);
-        pipeThread.start();//runs in background, not connected yet*/
+        pipeThread.start();//runs in background, not connected yet
+       
         System.getProperties().setProperty("swing.jlf.contentPaneTransparent", "true");
 
         /*primaryStage.widthProperty().addListener(new ChangeListener<Number>()
