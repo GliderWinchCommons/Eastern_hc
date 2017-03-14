@@ -92,7 +92,7 @@ public class Airfield {
     }
     
     //check for valid data
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("") && !this.designator.equals("");
     }
 }

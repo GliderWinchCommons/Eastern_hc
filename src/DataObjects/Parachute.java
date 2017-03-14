@@ -103,7 +103,7 @@ public class Parachute {
     }
     
     //check if parachute is valid
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("");
     }
 }

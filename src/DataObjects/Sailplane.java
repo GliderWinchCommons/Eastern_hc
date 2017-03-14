@@ -165,7 +165,7 @@ public class Sailplane {
     }
     
     //check for valid glider
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("") && !regNumber.equals("");
     }
 }

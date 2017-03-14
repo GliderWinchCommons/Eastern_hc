@@ -83,7 +83,7 @@ public class GliderPosition {
     }
     
     //check for valid object
-    public boolean check() {
+    public boolean validate() {
         return !positionName.equals("");
     }
 }

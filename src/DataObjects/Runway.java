@@ -70,7 +70,7 @@ public class Runway {
     } 
     
     //check to see if the object is valid
-    public boolean check() {
+    public boolean validate() {
         return !runwayName.equals("");
     }
 }

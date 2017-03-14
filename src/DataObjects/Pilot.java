@@ -91,7 +91,7 @@ public class Pilot {
     }
     
     //check if pilot is set
-    public boolean check() {
+    public boolean validate() {
         return !lastName.equals("") && !firstName.equals("") && flightWeight != 0;
     }
     

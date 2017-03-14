@@ -85,7 +85,7 @@ public class WinchPosition {
     }
     
     //check to see if object is valid
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("");
     }
 }

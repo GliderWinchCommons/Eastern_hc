@@ -159,7 +159,7 @@ public class Drum {
         }
     }
 
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("") && para != null;
     }
 }

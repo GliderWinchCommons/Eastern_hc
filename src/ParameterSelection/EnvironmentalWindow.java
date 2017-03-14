@@ -5,26 +5,25 @@
  */
 package ParameterSelection;
 
-import DataObjects.CurrentDataObjectSet;
-import EnvironmentalWidgets.EnvironmentalWidget;
-import EnvironmentalWidgets.LaunchWeightWidget;
 import Communications.MessagePipeline;
 import Communications.Observer;
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
 import EnvironmentalWidgets.AvgWindSpeedWidget;
 import EnvironmentalWidgets.DensityAltitudeWidget;
+import EnvironmentalWidgets.EnvironmentalWidget;
 import EnvironmentalWidgets.GustWindSpeedWidget;
 import EnvironmentalWidgets.HumidityWidget;
+import EnvironmentalWidgets.LaunchWeightWidget;
 import EnvironmentalWidgets.PressureWidget;
 import EnvironmentalWidgets.TemperatureWidget;
 import EnvironmentalWidgets.WindDirectionWidget;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -33,10 +32,10 @@ import java.util.ArrayList;
 public class EnvironmentalWindow implements Observer {
 
     private MessagePipeline pipe;
-    private ArrayList<EnvironmentalWidget> widgets;
+    private static ArrayList<EnvironmentalWidget> widgets;
     private CurrentDataObjectSet data;
     private CurrentLaunchInformation info;
-    
+
     public EnvironmentalWindow() {
         data = CurrentDataObjectSet.getCurrentDataObjectSet();
         data.attach(this);
@@ -45,18 +44,14 @@ public class EnvironmentalWindow implements Observer {
         pipe = MessagePipeline.getInstance();
         widgets = new ArrayList<>();
     }
-    
-    private void addWidget(EnvironmentalWidget ew)
-    {
+
+    private void addWidget(EnvironmentalWidget ew) {
         widgets.add(ew);
     }
 
-
     @Override
-    public void update()
-    {
-        for(EnvironmentalWidget ew : widgets)
-        {
+    public void update() {
+        for (EnvironmentalWidget ew : widgets) {
             ew.update();
             ew.setupUnits();
         }
@@ -67,9 +62,8 @@ public class EnvironmentalWindow implements Observer {
     }
 
     //=================================================================================================================================================================================
-
     @FXML
-    protected void initialize(){
+    protected void initialize() {
         addWidget(new LaunchWeightWidget(launchWeightTextField, launchWeightUnitLabel));
         //addWidget(new RunLengthWidget());
         //addWidget(new RunDirectionWidget());
@@ -86,37 +80,59 @@ public class EnvironmentalWindow implements Observer {
     }
 
     //TextFields
-    @FXML TextField launchWeightTextField;
-    @FXML TextField windDirectionTextField;
-    @FXML TextField avgWindSpeedTextField;
-    @FXML TextField gustWindSpeedTextField;
-    @FXML TextField densityAltitudeTextField;
-    @FXML TextField temperatureTextField;
-    @FXML TextField pressureTextField;
-    @FXML TextField humidityTextField;
+    @FXML
+    TextField launchWeightTextField;
+    @FXML
+    TextField windDirectionTextField;
+    @FXML
+    TextField avgWindSpeedTextField;
+    @FXML
+    TextField gustWindSpeedTextField;
+    @FXML
+    TextField densityAltitudeTextField;
+    @FXML
+    TextField temperatureTextField;
+    @FXML
+    TextField pressureTextField;
+    @FXML
+    TextField humidityTextField;
 
     //Units
-    @FXML Label launchWeightUnitLabel;
-    @FXML Label windDirectionUnitLabel;
-    @FXML Label avgWindSpeedUnitLabel;
-    @FXML Label gustWindSpeedUnitLabel;
-    @FXML Label densityAltitudeUnitLabel;
-    @FXML Label temperatureUnitLabel;
-    @FXML Label pressureUnitLabel;
-    @FXML Label humidityUnitLabel;
+    @FXML
+    Label launchWeightUnitLabel;
+    @FXML
+    Label windDirectionUnitLabel;
+    @FXML
+    Label avgWindSpeedUnitLabel;
+    @FXML
+    Label gustWindSpeedUnitLabel;
+    @FXML
+    Label densityAltitudeUnitLabel;
+    @FXML
+    Label temperatureUnitLabel;
+    @FXML
+    Label pressureUnitLabel;
+    @FXML
+    Label humidityUnitLabel;
 
     //TextFields
-    @FXML CheckBox windDirectionCheckBox;
-    @FXML CheckBox avgWindSpeedCheckBox;
-    @FXML CheckBox gustWindSpeedCheckBox;
-    @FXML CheckBox densityAltitudeCheckBox;
-    @FXML CheckBox temperatureCheckBox;
-    @FXML CheckBox pressureCheckBox;
-    @FXML CheckBox humidityCheckBox;
+    @FXML
+    CheckBox windDirectionCheckBox;
+    @FXML
+    CheckBox avgWindSpeedCheckBox;
+    @FXML
+    CheckBox gustWindSpeedCheckBox;
+    @FXML
+    CheckBox densityAltitudeCheckBox;
+    @FXML
+    CheckBox temperatureCheckBox;
+    @FXML
+    CheckBox pressureCheckBox;
+    @FXML
+    CheckBox humidityCheckBox;
 
     @FXML
-    public void CheckBoxBinding(javafx.event.ActionEvent e)
-    {
+    public void CheckBoxBinding(javafx.event.ActionEvent e) {
         CheckBox box = (CheckBox) e.getSource();
         FlowPane fp = (FlowPane) box.getParent();
         //The text field is the second child in the flow panel
@@ -125,7 +141,17 @@ public class EnvironmentalWindow implements Observer {
         //[2] = unit label
         TextField tf = (TextField) fp.getChildren().toArray()[1];
         tf.setEditable(box.isSelected());
-        if(tf.isEditable())
+        if (tf.isEditable()) {
             tf.requestFocus();
+        }
+    }
+
+    public static boolean validate() {
+        for (EnvironmentalWidget w : widgets) {
+            if (!w.validateWidget()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

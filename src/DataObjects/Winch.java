@@ -175,7 +175,7 @@ public class Winch {
     }
 
     //check for valid winch
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("") && !owner.equals("");
     }
 }
