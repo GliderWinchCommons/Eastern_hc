@@ -68,7 +68,8 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
     }
 
     public boolean validateWidget() {
-        return !(field.getStyle().equals("-fx-border-color: red;"));
+        //return !(field.getStyle().equals("-fx-border-color: red;"));
+        return true;
     }
 
     @Override
