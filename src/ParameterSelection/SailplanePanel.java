@@ -116,11 +116,11 @@ public class SailplanePanel implements Observer {
         gliderTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentGlider((Sailplane) newValue);
-                loadData();
             }
         });
         gliderTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -134,25 +134,34 @@ public class SailplanePanel implements Observer {
             maxWeakLinkStrengthLabel.setText("" + currentData.getCurrentSailplane().getMaxWeakLinkStrength());
             maxTensionLabel.setText("" + currentData.getCurrentSailplane().getMaxTension());
             cableReleaseAngleLabel.setText("" + currentData.getCurrentSailplane().getCableReleaseAngle());
-            setupUnits();
+        } else {
+            registrationNumberLabel.setText("");
+            ownerLabel.setText("");
+            emptyWeightLabel.setText("");
+            maxGrossWeightLabel.setText("");
+            indicatedStallSpeedLabel.setText("");
+            maxWinchingSpeedLabel.setText("");
+            maxWeakLinkStrengthLabel.setText("");
+            maxTensionLabel.setText("");
+            cableReleaseAngleLabel.setText("");
         }
     }
 
     @Override
     public void update() {
-        setupUnits();
         loadData();
+        setupUnits();
         Sailplane selected = (Sailplane) gliderTable.getSelectionModel().getSelectedItem();
         Sailplane currSailplane = currentData.getCurrentSailplane();
         if (currSailplane == null && selected != null) {
             gliderTable.getItems().remove(selected);
-        } else if (currSailplane != selected) {
+        } else {
             if (!gliderTable.getItems().contains(currSailplane)) {
                 gliderTable.getItems().add(currSailplane);
-            } else {
-                gliderTable.getSelectionModel().select(currSailplane);
             }
+            gliderTable.getSelectionModel().select(currSailplane);
         }
+        gliderTable.refresh();
     }
 
     private void updateLaunchInfo(JTextField textField) {

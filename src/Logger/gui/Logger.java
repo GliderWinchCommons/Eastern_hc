@@ -49,7 +49,7 @@ public class Logger {
     @FXML
     public void initialize() {
         try {
-            start_logging();
+            //start_logging();
         } catch (Exception e) {
 
         };

@@ -53,11 +53,11 @@ public class RunwayPanel extends JPanel implements Observer {
         runwayTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentRunway((Runway) newValue);
-                loadData();
             }
         });
         runwayTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -80,17 +80,19 @@ public class RunwayPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
+        setupUnits();
         Runway selected = (Runway) runwayTable.getSelectionModel().getSelectedItem();
         Runway currRunway = currentData.getCurrentRunway();
         if (currRunway == null && selected != null) {
             runwayTable.getItems().remove(selected);
-        } else if (currRunway != selected) {
+        } else {
             if (!runwayTable.getItems().contains(currRunway)) {
                 runwayTable.getItems().add(currRunway);
-            } else {
-                runwayTable.getSelectionModel().select(currRunway);
             }
+            runwayTable.getSelectionModel().select(currRunway);
         }
+        runwayTable.refresh();
     }
 
     @Override

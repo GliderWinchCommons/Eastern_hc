@@ -63,11 +63,11 @@ public class WinchPositionPanel extends JPanel implements Observer {
         winchPositionTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null && currentData.getCurrentWinchPosition() != (WinchPosition) newValue) {
                 currentData.setCurrentWinchPosition((WinchPosition) newValue);
-                loadData();
             }
         });
         winchPositionTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -76,7 +76,11 @@ public class WinchPositionPanel extends JPanel implements Observer {
             elevationLabel.setText("" + currentData.getCurrentWinchPosition().getElevation());
             longitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLongitude());
             latitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLatitude());
-            setupUnits();
+        } else {
+            positionNameLabel.setText("");
+            elevationLabel.setText("");
+            longitudeLabel.setText("");
+            latitudeLabel.setText("");
         }
     }
 
@@ -88,17 +92,19 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
+        setupUnits();
         WinchPosition selected = (WinchPosition) winchPositionTable.getSelectionModel().getSelectedItem();
         WinchPosition currWinchPosition = currentData.getCurrentWinchPosition();
         if (currWinchPosition == null && selected != null) {
             winchPositionTable.getItems().remove(selected);
-        } else if (currWinchPosition != selected) {
+        } else {
             if (!winchPositionTable.getItems().contains(currWinchPosition)) {
                 winchPositionTable.getItems().add(currWinchPosition);
-            } else {
-                winchPositionTable.getSelectionModel().select(currWinchPosition);
             }
+            winchPositionTable.getSelectionModel().select(currWinchPosition);
         }
+        winchPositionTable.refresh();
     }
 
     @Override

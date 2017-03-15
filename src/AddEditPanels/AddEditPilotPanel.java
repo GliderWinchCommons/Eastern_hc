@@ -100,7 +100,7 @@ public class AddEditPilotPanel extends AddEditPanel {
                     * UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID));
             emergencyContactNameField.setText(currentPilot.getEmergencyName());
             emergencyContactPhoneField.setText(currentPilot.getEmergencyPhone());
-
+            optionalInfoField.setText(currentPilot.getOptionalInfo());
         }
     }
 
@@ -113,8 +113,7 @@ public class AddEditPilotPanel extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (DatabaseEntryDelete.DeleteEntry(currentPilot)) {
-                CurrentDataObjectSet objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearPilot();
+                currentData.clearPilot();
                 new Alert(Alert.AlertType.INFORMATION, "Pilot removed").showAndWait();
             }
         }
@@ -136,14 +135,28 @@ public class AddEditPilotPanel extends AddEditPanel {
             String capability = "Student"; //pilotCapability.getSelection().getActionCommand();
             float preference = 0;
 
-            Pilot newPilot = new Pilot(0, firstName, lastName, middleName,
-                    weight, capability, preference, emergencyContact,
-                    emergencyPhone, optionalInformation);
+            Pilot newPilot;
+
+            if (isEditEntry) {
+                newPilot = currentData.getCurrentPilot();
+                newPilot.setFirstName(firstName);
+                newPilot.setLastName(lastName);
+                newPilot.setMiddleName(middleName);
+                newPilot.setFlightWeight(weight);
+                newPilot.setCapability(capability);
+                newPilot.setPreference(preference);
+                newPilot.setEmergencyContact(emergencyContact);
+                newPilot.setEmergencyPhone(emergencyPhone);
+                newPilot.setOptional_info(optionalInformation);
+            } else {
+                newPilot = new Pilot(0, firstName, lastName, middleName,
+                        weight, capability, preference, emergencyContact,
+                        emergencyPhone, optionalInformation);
+            }
 
             try {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newPilot.setId(currentData.getCurrentAirfield().getId());
                     if (!DatabaseEntryEdit.updateEntry(newPilot)) {
                         return false;
                     }
@@ -163,8 +176,6 @@ public class AddEditPilotPanel extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentPilot(newPilot);
-                //TODO
-                parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"

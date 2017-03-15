@@ -68,6 +68,7 @@ public class PilotPanel implements Observer {
         });
         pilotTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
 
         preferenceSlider.setLabelFormatter(new StringConverter<Double>() {
             @Override
@@ -112,7 +113,6 @@ public class PilotPanel implements Observer {
             flightWeightLabel.setText("");
             preferenceSlider.adjustValue(0.5);
         }
-        setupUnits();
     }
 
     public void setupUnits() {
@@ -122,18 +122,19 @@ public class PilotPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
         setupUnits();
         Pilot selected = (Pilot) pilotTable.getSelectionModel().getSelectedItem();
         Pilot currPilot = currentData.getCurrentPilot();
         if (currPilot == null && selected != null) {
             pilotTable.getItems().remove(selected);
-        } else if (currPilot != selected) {
+        } else {
             if (!pilotTable.getItems().contains(currPilot)) {
                 pilotTable.getItems().add(currPilot);
-            } else {
-                pilotTable.getSelectionModel().select(currPilot);
             }
+            pilotTable.getSelectionModel().select(currPilot);
         }
+        pilotTable.refresh();
     }
 
     private Observer getObserver() {

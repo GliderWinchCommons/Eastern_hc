@@ -13,6 +13,7 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AddEditRunwayFrame extends AddEditPanel {
@@ -24,6 +25,9 @@ public class AddEditRunwayFrame extends AddEditPanel {
     private Runway currentRunway;
     @FXML
     private Label magneticHeadingUnitsLabel;
+    @FXML
+    private TextArea optionalInformationTextArea;
+
     private int magneticHeadingUnitsID;
 
     public AddEditRunwayFrame(SubScene runwayPanel) {
@@ -37,6 +41,7 @@ public class AddEditRunwayFrame extends AddEditPanel {
         if (isEditEntry) {
             nameField.setText(currentRunway.getName());
             magneticHeadingField.setText("" + currentRunway.getMagneticHeading());
+            optionalInformationTextArea.setText(currentRunway.getOptionalInfo());
         }
     }
 
@@ -50,9 +55,8 @@ public class AddEditRunwayFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentRunway)) {
-                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 currentData.clearRunway();
-                new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
+                new Alert(Alert.AlertType.INFORMATION, "Runway removed").showAndWait();
             }
         }
     }
@@ -72,12 +76,18 @@ public class AddEditRunwayFrame extends AddEditPanel {
                 return false;
             }
 
-            Runway newRunway = new Runway(name, magneticHeading, "");
-            newRunway.setParentId(parentId);
-
+            Runway newRunway;
+            if (isEditEntry) {
+                newRunway = currentData.getCurrentRunway();
+                newRunway.setRunwayName(name);
+                newRunway.setMagneticHeading(magneticHeading);
+                newRunway.setOptionalInfo(optionalInformationTextArea.getText());
+            } else {
+                newRunway = new Runway(name, magneticHeading, optionalInformationTextArea.getText());
+                newRunway.setParentId(parentId);
+            }
             try {
                 if (isEditEntry) {
-                    newRunway.setId(currentData.getCurrentRunway().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newRunway)) {
                         return false;
                     }
@@ -97,8 +107,6 @@ public class AddEditRunwayFrame extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentRunway(newRunway);
-                //TODO
-                //parent.update("2");
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -143,6 +151,7 @@ public class AddEditRunwayFrame extends AddEditPanel {
     public void clearData() {
         nameField.setText("");
         magneticHeadingField.setText("");
+        optionalInformationTextArea.setText("");
 
         nameField.setStyle(whiteBackground);
         magneticHeadingField.setStyle(whiteBackground);

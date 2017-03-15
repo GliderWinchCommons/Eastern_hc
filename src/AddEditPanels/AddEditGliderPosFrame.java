@@ -50,10 +50,12 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         currentGliderPos = editGliderPos;
 
         if (isEditEntry) {
+            nameField.setText(currentGliderPos.getName());
             latitudeField.setText("" + currentGliderPos.getLatitude());
             longitudeField.setText("" + currentGliderPos.getLongitude());
             altitudeField.setText("" + currentGliderPos.getElevation()
                     * UnitConversionRate.convertDistanceUnitIndexToFactor(gliderPosAltitudeUnitsID));
+            optionalInformationArea.setText(currentGliderPos.getOptionalInfo());
         }
     }
 
@@ -66,8 +68,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
-                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
-                currentData.cleafGliderPosition();
+                currentData.clearGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
             }
         }
@@ -92,13 +93,21 @@ public class AddEditGliderPosFrame extends AddEditPanel {
                 return false;
             }
 
-            GliderPosition newGliderPos = new GliderPosition(gliderPosName, altitude,
-                    latitude, longitude, "");
-            newGliderPos.setRunwayParentId(runwayParentId);
-
+            GliderPosition newGliderPos;
+            if (isEditEntry) {
+                newGliderPos = currentData.getCurrentGliderPosition();
+                newGliderPos.setPositionName(gliderPosName);
+                newGliderPos.setAltitude(altitude);
+                newGliderPos.setLongitude(longitude);
+                newGliderPos.setLatitude(latitude);
+                newGliderPos.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newGliderPos = new GliderPosition(gliderPosName, altitude,
+                        latitude, longitude, optionalInformationArea.getText());
+                newGliderPos.setRunwayParentId(runwayParentId);
+            }
             try {
                 if (isEditEntry) {
-                    newGliderPos.setId(currentGliderPos.getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newGliderPos)) {
                         return false;
                     }
@@ -118,8 +127,6 @@ public class AddEditGliderPosFrame extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentGliderPosition(newGliderPos);
-                //TODO
-                //parent.update("3");
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -181,6 +188,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         altitudeField.setText("");
         longitudeField.setText("");
         latitudeField.setText("");
+        optionalInformationArea.setText("");
         nameField.setStyle(whiteBackground);
         altitudeField.setStyle(whiteBackground);
         longitudeField.setStyle(whiteBackground);

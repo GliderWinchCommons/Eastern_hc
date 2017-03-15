@@ -49,10 +49,12 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         currentWinchPos = editWinchPos;
 
         if (isEditEntry) {
+            nameField.setText("" + currentWinchPos.getName());
             latitudeField.setText("" + currentWinchPos.getLatitude());
             longitudeField.setText("" + currentWinchPos.getLongitude());
             altitudeField.setText("" + currentWinchPos.getElevation()
                     * UnitConversionRate.convertDistanceUnitIndexToFactor(winchPosAltitudeUnitsID));
+            optionalInformationArea.setText(currentWinchPos.getOptionalInfo());
         }
     }
 
@@ -65,9 +67,8 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
-                currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
-                currentData.cleafGliderPosition();
-                new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
+                currentData.clearWinchPosition();
+                new Alert(Alert.AlertType.INFORMATION, "Winch position removed").showAndWait();
             }
         }
     }
@@ -91,13 +92,21 @@ public class AddEditWinchPosFrame extends AddEditPanel {
                 return false;
             }
 
-            WinchPosition newWinchPos = new WinchPosition(winchPosId, altitude,
-                    latitude, longitude, "");
-            newWinchPos.setRunwayParentId(runwayParentId);
+            WinchPosition newWinchPos;
+            if (isEditEntry) {
+                newWinchPos = currentData.getCurrentWinchPosition();
+                newWinchPos.setElevation(altitude);
+                newWinchPos.setLatitude(latitude);
+                newWinchPos.setLongitude(longitude);
+                newWinchPos.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newWinchPos = new WinchPosition(winchPosId, altitude,
+                        latitude, longitude, optionalInformationArea.getText());
+                newWinchPos.setRunwayParentId(runwayParentId);
+            }
 
             try {
                 if (isEditEntry) {
-                    newWinchPos.setId(currentWinchPos.getId());
                     if (!DatabaseUtilities.DatabaseEntryEdit.UpdateEntry(newWinchPos)) {
                         return false;
                     }
@@ -117,8 +126,6 @@ public class AddEditWinchPosFrame extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentWinchPosition(newWinchPos);
-                //TODO
-                //parent.update("4");
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -179,6 +186,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         altitudeField.setText("");
         longitudeField.setText("");
         latitudeField.setText("");
+        optionalInformationArea.setText("");
         nameField.setStyle(whiteBackground);
         altitudeField.setStyle(whiteBackground);
         longitudeField.setStyle(whiteBackground);

@@ -144,7 +144,7 @@
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Name" />
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Winch Name" />
             <TextField fx:id="nameTextField" alignment="CENTER" editable="false" prefWidth="100.0" />
          </children>
       </FlowPane>

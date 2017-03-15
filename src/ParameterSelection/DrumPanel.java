@@ -70,11 +70,11 @@ public class DrumPanel implements Observer {
         drumTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentDrum((Drum) newValue);
-                loadData();
             }
         });
         drumTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -87,9 +87,16 @@ public class DrumPanel implements Observer {
             systemEquivalentMassLabel.setText("" + currentData.getCurrentDrum().getSystemEquivalentMass());
             numLaunchesLabel.setText("" + currentData.getCurrentDrum().getNumLaunches());
             maxTensionLabel.setText("" + currentData.getCurrentDrum().getMaxTension());
-            setupUnits();
+        } else {
+            drumNumberLabel.setText("");
+            coreDiameterLabel.setText("");
+            kFactorLabel.setText("");
+            cableLengthLabel.setText("");
+            cableDensityLabel.setText("");
+            systemEquivalentMassLabel.setText("");
+            numLaunchesLabel.setText("");
+            maxTensionLabel.setText("");
         }
-
     }
 
     public void setupUnits() {
@@ -104,18 +111,19 @@ public class DrumPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
         setupUnits();
         Drum selected = (Drum) drumTable.getSelectionModel().getSelectedItem();
         Drum currDrum = currentData.getCurrentDrum();
         if (currDrum == null && selected != null) {
             drumTable.getItems().remove(selected);
-        } else if (currDrum != selected) {
+        } else {
             if (!drumTable.getItems().contains(currDrum)) {
                 drumTable.getItems().add(currDrum);
-            } else {
-                drumTable.getSelectionModel().select(currDrum);
             }
+            drumTable.getSelectionModel().select(currDrum);
         }
+        drumTable.refresh();
     }
 
     private Observer getObserver() {

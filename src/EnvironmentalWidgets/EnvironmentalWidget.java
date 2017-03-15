@@ -8,6 +8,8 @@ package EnvironmentalWidgets;
 import Communications.Observer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
@@ -41,7 +43,12 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
                             field.setStyle("");
                             resetTimer.stop();
                         } else {
-                            resetTimer.start();
+                            try {
+                                Number d = DecimalFormat.getInstance().parse(field.getText());
+                                resetTimer.start();
+                            } catch (ParseException ex) {
+                                field.setStyle("-fx-border-color: red;");
+                            }
                         }
                     }
                 }

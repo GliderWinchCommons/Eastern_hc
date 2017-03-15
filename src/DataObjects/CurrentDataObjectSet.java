@@ -93,7 +93,7 @@ public class CurrentDataObjectSet {
         notifyObservers();
     }
 
-    public void cleafGliderPosition() {
+    public void clearGliderPosition() {
         if (instance != null) {
             instance.currentGliderPos = null;
         }

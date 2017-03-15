@@ -64,12 +64,12 @@ public class GliderPositionPanel extends JPanel implements Observer {
         gliderPositionTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null && currentData.getCurrentGliderPosition() != (GliderPosition) newValue) {
                 currentData.setCurrentGliderPosition((GliderPosition) newValue);
-                loadData();
             }
         });
         gliderPositionTable.getSelectionModel().selectFirst();
 
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -78,7 +78,11 @@ public class GliderPositionPanel extends JPanel implements Observer {
             elevationLabel.setText("" + currentData.getCurrentGliderPosition().getElevation());
             longitudeLabel.setText("" + currentData.getCurrentGliderPosition().getLongitude());
             latitudeLabel.setText("" + currentData.getCurrentGliderPosition().getLatitude());
-            setupUnits();
+        } else {
+            positionNameLabel.setText("");
+            elevationLabel.setText("");
+            longitudeLabel.setText("");
+            latitudeLabel.setText("");
         }
     }
 
@@ -90,17 +94,19 @@ public class GliderPositionPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
+        setupUnits();
         GliderPosition selected = (GliderPosition) gliderPositionTable.getSelectionModel().getSelectedItem();
         GliderPosition currGliderPosition = currentData.getCurrentGliderPosition();
         if (currGliderPosition == null && selected != null) {
             gliderPositionTable.getItems().remove(selected);
-        } else if (currGliderPosition != selected) {
+        } else {
             if (!gliderPositionTable.getItems().contains(currGliderPosition)) {
                 gliderPositionTable.getItems().add(currGliderPosition);
-            } else {
-                gliderPositionTable.getSelectionModel().select(currGliderPosition);
             }
+            gliderPositionTable.getSelectionModel().select(currGliderPosition);
         }
+        gliderPositionTable.refresh();
     }
 
     @Override

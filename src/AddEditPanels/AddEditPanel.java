@@ -62,9 +62,11 @@ public abstract class AddEditPanel implements Observer {
 
     @FXML
     public void DeleteButton_Click(javafx.event.ActionEvent e) {
-        deleteCommand();
-        clearData();
-        displayPanel.toFront();
+        if (isEditEntry) {
+            deleteCommand();
+            clearData();
+            displayPanel.toFront();
+        }
     }
 
     @Override

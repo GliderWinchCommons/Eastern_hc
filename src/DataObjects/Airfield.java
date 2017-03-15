@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DataObjects;
 
 /**
  * This class represents the relevant data about an Airfield
- * 
+ *
  * @author garreola-gutierrez, dbennett3, Noah Fujioka
  */
 public class Airfield {
+
     private int id;                     //randomly generated id
     private String name;                //name of the airfield
     private String designator;          //the 3 charecter designator
@@ -20,20 +20,61 @@ public class Airfield {
     private float latitude;             //global y coordinate
     private float longitude;            //global x coordinate
     private int utcOffset;              //time difference from Universal Time
-    private String optionalInfo;
-    
-    //constructors
-    public Airfield(String name, String designator, float altitude, float magneticVariation, 
-            float latitude, float longitude, String optional) {
-       this.name = name;
-       this.designator = designator;
-       this.altitude = altitude;
-       this.magneticVariation = magneticVariation;
-       this.latitude = latitude;
-       this.longitude = longitude;
-       this.optionalInfo = optional;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public Airfield(int id, String name, String designator, float altitude, float magneticVariation, 
+
+    public void setDesignator(String designator) {
+        this.designator = designator;
+    }
+
+    public void setAltitude(float altitude) {
+        this.altitude = altitude;
+    }
+
+    public void setMagneticVariation(float magneticVariation) {
+        this.magneticVariation = magneticVariation;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setUtcOffset(int utcOffset) {
+        this.utcOffset = utcOffset;
+    }
+
+    public void setOptionalInfo(String optionalInfo) {
+        this.optionalInfo = optionalInfo;
+    }
+
+    public float getAltitude() {
+        return altitude;
+    }
+
+    public int getUtcOffset() {
+        return utcOffset;
+    }
+    private String optionalInfo;
+
+    //constructors
+    public Airfield(String name, String designator, float altitude, float magneticVariation,
+            float latitude, float longitude, String optional) {
+        this.name = name;
+        this.designator = designator;
+        this.altitude = altitude;
+        this.magneticVariation = magneticVariation;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.optionalInfo = optional;
+    }
+
+    public Airfield(int id, String name, String designator, float altitude, float magneticVariation,
             float latitude, float longitude, int utc, String optional) {
         this.id = id;
         this.name = name;
@@ -45,43 +86,44 @@ public class Airfield {
         this.utcOffset = utc;
         this.optionalInfo = optional;
     }
-    
+
     //getters and setters
-    public int getId(){
+    public int getId() {
         return id;
     }
-    
-    public void setId(int newId){
+
+    public void setId(int newId) {
         id = newId;
     }
-    
-    public String getName(){
-       return name; 
+
+    public String getName() {
+        return name;
     }
-    
-    public String getDesignator(){
-       return designator; 
+
+    public String getDesignator() {
+        return designator;
     }
-    
-    public float getElevation(){
-       return altitude; 
+
+    public float getElevation() {
+        return altitude;
     }
-    
-    public float getMagneticVariation(){
-       return magneticVariation; 
+
+    public float getMagneticVariation() {
+        return magneticVariation;
     }
-    
+
     public float getLatitude() {
         return latitude;
     }
-    
+
     public float getLongitude() {
         return longitude;
     }
+
     public int getUTC() {
         return utcOffset;
     }
-    
+
     public String getOptionalInfo() {
         return optionalInfo;
     }
@@ -90,7 +132,7 @@ public class Airfield {
     public String toString() {
         return name + " (" + designator + ")";
     }
-    
+
     //check for valid data
     public boolean validate() {
         return !name.equals("") && !this.designator.equals("");

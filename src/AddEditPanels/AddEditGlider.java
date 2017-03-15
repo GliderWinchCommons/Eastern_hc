@@ -113,16 +113,7 @@ public class AddEditGlider extends AddEditPanel {
             releaseAngleField.setText("" + currentGlider.getCableReleaseAngle());
             winchingSpeedField.setText("" + currentGlider.getMaxWinchingSpeed()
                     * UnitConversionRate.convertSpeedUnitIndexToFactor(winchingSpeedUnitsID));
-        } else {
-            nNumberField.setText("");
-            ownerField.setText("");
-            stallSpeedField.setText("");
-            grossWeightField.setText("");
-            emptyWeightField.setText("");
-            weakLinkField.setText("");
-            tensionField.setText("");
-            releaseAngleField.setText("");
-            winchingSpeedField.setText("");
+            optionalInformationArea.setText(currentGlider.getOptionalInfo());
         }
     }
 
@@ -135,8 +126,7 @@ public class AddEditGlider extends AddEditPanel {
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
             if (DatabaseEntryDelete.DeleteEntry(currentGlider)) {
-                CurrentDataObjectSet objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearGlider();
+                currentData.clearGlider();
                 new Alert(Alert.AlertType.INFORMATION, "Glider removed").showAndWait();
             }
         }
@@ -165,14 +155,32 @@ public class AddEditGlider extends AddEditPanel {
             boolean carryBallast = false;//ballastCheckBox.isSelected();
             boolean multipleSeats = false;//multipleSeatsCheckBox.isSelected();
 
-            Sailplane newGlider = new Sailplane(nNumber, name, owner, "", grossWeight,
-                    emptyWeight, stallSpeed, winchingSpeed, weakLink, tension,
-                    releaseAngle, carryBallast, multipleSeats, "");
+            Sailplane newGlider;
+            if (isEditEntry) {
+                newGlider = currentData.getCurrentSailplane();
+                newGlider.setRegNumber(nNumber);
+                newGlider.setName(name);
+                newGlider.setOwner(owner);
+                newGlider.setType("");
+                newGlider.setMaximumGrossWeight(grossWeight);
+                newGlider.setEmptyWeight(emptyWeight);
+                newGlider.setIndicatedStallSpeed(stallSpeed);
+                newGlider.setMaximumWinchingSpeed(winchingSpeed);
+                newGlider.setMaximumAllowableWeakLinkStrength(weakLink);
+                newGlider.setMaximumTension(tension);
+                newGlider.setCableReleaseAngle(releaseAngle);
+                newGlider.setCarryBallast(carryBallast);
+                newGlider.setMultipleSeats(multipleSeats);
+                newGlider.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newGlider = new Sailplane(nNumber, name, owner, "", grossWeight,
+                        emptyWeight, stallSpeed, winchingSpeed, weakLink, tension,
+                        releaseAngle, carryBallast, multipleSeats, optionalInformationArea.getText());
+            }
 
             try {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newGlider.setId(currentData.getCurrentSailplane().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newGlider)) {
                         return false;
                     }
@@ -192,8 +200,6 @@ public class AddEditGlider extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentGlider(newGlider);
-                //TODO
-                parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -278,6 +284,7 @@ public class AddEditGlider extends AddEditPanel {
 
     @Override
     public void clearData() {
+        ownerField.setText("");
         nNumberField.setText("");
         emptyWeightField.setText("");
         grossWeightField.setText("");
@@ -286,6 +293,7 @@ public class AddEditGlider extends AddEditPanel {
         weakLinkField.setText("");
         tensionField.setText("");
         releaseAngleField.setText("");
+        optionalInformationArea.setText("");
         //TODO
         //ballastCheckBox.setSelected(false);
         //multipleSeatsCheckBox.setSelected(false);

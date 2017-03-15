@@ -76,11 +76,11 @@ public class AirfieldPanel extends JPanel implements Observer {
         airfieldTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentAirfield((Airfield) newValue);
-                loadData();
             }
         });
         airfieldTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -101,7 +101,6 @@ public class AirfieldPanel extends JPanel implements Observer {
             latitudeLabel.setText("");
             UTCOffsetLabel.setText("");
         }
-        setupUnits();
     }
 
     public void setupUnits() {
@@ -123,18 +122,19 @@ public class AirfieldPanel extends JPanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
         setupUnits();
         Airfield selected = (Airfield) airfieldTable.getSelectionModel().getSelectedItem();
         Airfield currAirfield = currentData.getCurrentAirfield();
         if (currAirfield == null && selected != null) {
             airfieldTable.getItems().remove(selected);
-        } else if (currAirfield != selected) {
+        } else {
             if (!airfieldTable.getItems().contains(currAirfield)) {
                 airfieldTable.getItems().add(currAirfield);
-            } else {
-                airfieldTable.getSelectionModel().select(currAirfield);
             }
+            airfieldTable.getSelectionModel().select(currAirfield);
         }
+        airfieldTable.refresh();
     }
 
     private Observer getObserver() {

@@ -71,6 +71,26 @@ public class WinchPanel {
     private TextField wp16TextField;
 
     @FXML
+    public void initialize() {
+        wp1TextField.setText("0");
+        wp2TextField.setText("0");
+        wp3TextField.setText("0");
+        wp4TextField.setText("0");
+        wp5TextField.setText("0");
+        wp6TextField.setText("0");
+        wp7TextField.setText("0");
+        wp8TextField.setText("0");
+        wp9TextField.setText("0");
+        wp10TextField.setText("0");
+        wp11TextField.setText("0");
+        wp12TextField.setText("0");
+        wp13TextField.setText("0");
+        wp14TextField.setText("0");
+        wp15TextField.setText("0");
+        wp16TextField.setText("0");
+    }
+
+    @FXML
     public void EditButton_Click(ActionEvent e) {
         saveButton.toFront();
         cancelButton.toFront();
@@ -162,6 +182,7 @@ public class WinchPanel {
             return DecimalFormat.getInstance().parse(field.getText()).floatValue();
         } catch (ParseException ex) {
             field.setStyle("-fx-border-color: red;");
+            returnVal = false;
             return -1;
         }
     }
@@ -172,6 +193,7 @@ public class WinchPanel {
             return Integer.parseInt(field.getText());
         } catch (NumberFormatException ex) {
             field.setStyle("-fx-border-color: red;");
+            returnVal = false;
             return -1;
         }
     }

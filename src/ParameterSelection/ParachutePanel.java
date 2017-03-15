@@ -55,13 +55,13 @@ public class ParachutePanel implements Observer {
             if (newValue != null) {
                 if (currentData.getCurrentDrum() != null) {
                     currentData.getCurrentDrum().setParachute((Parachute) newValue);
-                    loadData();
                 }
             }
         });
         parachuteTable.getSelectionModel().selectFirst();
 
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
@@ -69,7 +69,10 @@ public class ParachutePanel implements Observer {
             liftLabel.setText("" + currentData.getCurrentDrum().getParachute().getLift());
             dragLabel.setText("" + currentData.getCurrentDrum().getParachute().getDrag());
             weightLabel.setText("" + currentData.getCurrentDrum().getParachute().getWeight());
-            setupUnits();
+        } else {
+            liftLabel.setText("");
+            dragLabel.setText("");
+            weightLabel.setText("");
         }
     }
 
@@ -84,18 +87,19 @@ public class ParachutePanel implements Observer {
 
     @Override
     public void update() {
+        loadData();
         setupUnits();
         Parachute selected = (Parachute) parachuteTable.getSelectionModel().getSelectedItem();
         Parachute currParachute = null;//currentData.getCurrentParachute();
         if (currParachute == null && selected != null) {
             parachuteTable.getItems().remove(selected);
-        } else if (currParachute != selected) {
+        } else {
             if (!parachuteTable.getItems().contains(currParachute)) {
                 parachuteTable.getItems().add(currParachute);
-            } else {
-                parachuteTable.getSelectionModel().select(currParachute);
             }
+            parachuteTable.getSelectionModel().select(currParachute);
         }
+        parachuteTable.refresh();
     }
 
     @Override
