@@ -4,9 +4,7 @@ import static java.lang.Thread.sleep;
 import java.util.Date;
 import java.util.Queue;
 
-/**
- * Created by gm14793 on 11/9/16.
- */
+
 public class TimeThread implements Runnable {
 
     private Thread t;

@@ -21,6 +21,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -66,6 +67,10 @@ public class Main extends Application {
             }
         });*/
         primaryStage.setScene(theScene);
+        primaryStage.setOnCloseRequest((WindowEvent ew) -> {
+            //TODO stop logging before closing the application.
+            System.exit(0);
+        });
         primaryStage.show();
     }
 

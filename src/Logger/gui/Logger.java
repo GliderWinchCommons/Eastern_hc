@@ -55,26 +55,6 @@ public class Logger {
         };
     }
 
-    /*@FXML
-    void embedded_connect(ActionEvent event)
-    {
-        embedded_reader = connect_to_socket("localhost", Integer.parseInt(embedded_address.getText()));
-        if(embedded_reader == null)
-        {
-            embedded_label.setText("Connection failed");
-            embed_connected = false;
-            start.setDisable(true);
-        }
-        else
-        {
-            embedded_label.setText("Connection successful");
-            embed_connected = true;
-            if (sub_connected)
-            {
-                start.setDisable(false);
-            }
-        }
-    }*/
     @FXML
     void connect_to_systems() {
         //TODO Add error checking to protect against a null connection.
@@ -96,40 +76,16 @@ public class Logger {
         start_logging();
     }
 
-
-    /*@FXML
-    void sub_connect(ActionEvent event)
-    {
-        sub_system_reader = connect_to_socket("localhost", Integer.parseInt(sub_address.getText()));
-        if (sub_system_reader == null)
-        {
-            sub_label.setText("Connection failed");
-            sub_connected = false;
-            start.setDisable(true);
-        }
-        else
-        {
-            sub_label.setText("Connection successful");
-            sub_connected = true;
-            if (embed_connected)
-            {
-                start.setDisable(false);
-            }
-        }
-    }*/
     @FXML
     private void start_logging() {
         try {
-            //TODO figure out workaround for filename
             fout = new PrintWriter(LocalDate.now() + "_"
                     + convert_local_time(LocalTime.now().toString()) + ".wlg");
-            tt = new TimeThread("Timer", messages_to_log);
             logThread = new LogThread("Logger", messages_to_log, fout);
             logThread.start();
             for (MessageListenerThread message_thread : system_listener_threads) {
                 message_thread.start();
             }
-            tt.start();
             stop.setDisable(false);
             reset.setDisable(false);
             start.setDisable(true);
@@ -142,8 +98,7 @@ public class Logger {
     }
 
     @FXML
-    private void stop_logging() {
-        tt.endLoop();
+    public void stop_logging() {
         for (MessageListenerThread system_thread : system_listener_threads) {
             system_thread.endLoop();
         }

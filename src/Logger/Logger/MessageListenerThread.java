@@ -3,9 +3,7 @@ package Logger.Logger;
 import java.util.Queue;
 import java.util.Scanner;
 
-/**
- * Created by gm14793 on 2/1/17.
- */
+
 public class MessageListenerThread implements Runnable {
 
     private Thread thread;

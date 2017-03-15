@@ -9,7 +9,6 @@ public class SystemsList {
 
     public final List<System> systems = new ArrayList<>();
 
-    //public final Map<String, String> systems = new HashMap<>();
     public SystemsList() {
         systems.add(new System(0, "System_A", 32123));
         systems.add(new System(10, "System_B", 32123));
