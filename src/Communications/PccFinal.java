@@ -25,42 +25,10 @@ public class PccFinal {
 // Codes for command type    
 public static final  int CMD_LAUNCH_PARM_HDSHK   = 38;          // Send msg to handshake transferring launch parameters
 public static final  int CMD_SEND_LAUNCH_PARM    = 39;          // Send msg to send burst of parameters
-public static final  int LAUNCH_PARAM_BURST_SIZE = 100;          // Burst size for PC
+public static final  int LAUNCH_PARAM_BURST_SIZE = 1;          // Burst size for PC
 public static final  int CMD_LAUNCH_HDSHK_REQ_MC = 0xffe00004;  //incoming from cangate default
 public static final  int CMD_LAUNCH_HDSHK_REQ_HC = 0xffe00000;  // outgoing to cangate default
 
-
-// Parameter test list
-public static final double launchparameter_dbl[] = {
-    1.1,    // 1
-    2.2,    // 2    
-    3.3,    // 3    
-    4.4,    // 4    
-    5.5,    // 5    
-    6.6,    // 6    
-    7.7,    // 7    
-    8.8,    // 8    
-    9.1,    // 9    
-    10.2,   // 10    
-    11.3,   // 11
-    12.4,   // 12    
-    13.5,   // 13    
-    14.6,   // 14    
-    15.7,   // 15    
-    16.8,   // 16    
-    17.1,   // 17    
-    18.2,   // 18    
-    19.3,   // 19    
-    20.4,   // 20
-    21.5,   // 21
-    22.6,   // 22
-    23.7,   // 23
-    24.8,   // 24
-    25.1,   // 25
-    26.2,   // 26
-    27.3,   // 27
-    28.4   // 28
-    };    
 
 
 }

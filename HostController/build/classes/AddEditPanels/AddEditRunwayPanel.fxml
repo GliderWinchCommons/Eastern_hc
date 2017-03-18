@@ -32,13 +32,13 @@
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Runway Name" />
-            <TextField fx:id="nameField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="nameField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Magnetic Heading" />
-            <TextField fx:id="magneticHeadingField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="magneticHeadingField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="magneticHeadingUnitsLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
@@ -49,7 +49,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea prefHeight="96.0" prefWidth="551.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextArea fx:id="optionalInformationTextArea" prefHeight="96.0" prefWidth="551.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="4">

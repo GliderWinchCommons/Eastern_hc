@@ -18,7 +18,7 @@ public class DatabaseInitialization {
     static final String clientDriverName = "org.apache.derby.jdbc.ClientDriver";
     static final String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
 
-    /* Used to connect to the database 
+    /* Used to connect to the database
     if you change the this method you should do that in connectEx as well
      */
     public static Connection connect() {
@@ -116,7 +116,7 @@ public class DatabaseInitialization {
             fails += "Glider\n\r";
         }
 
-        //Build the Airfield table  
+        //Build the Airfield table
         if (!createAirfield(connection)) {
             fails += "Airfield\n\r";
         }
@@ -671,7 +671,7 @@ public class DatabaseInitialization {
                 + "last_name VARCHAR(30), "
                 + "admin BOOLEAN,"
                 + "salt VARCHAR(30),"
-                + "hash VARCHAR(60), "
+                + "hash VARCHAR(1024), "
                 + "optional_info LONG VARCHAR, "
                 + "unitSettings LONG VARCHAR, "
                 + "PRIMARY KEY (operator_id))";
@@ -1232,7 +1232,7 @@ public class DatabaseInitialization {
         stmt.close();
     }
 
-    /* 
+    /*
      * Used to scrub tables of entries
      **Caution** to clear a table that is referenced by another table
      * both tables will have to be cleared otherwise it won't work

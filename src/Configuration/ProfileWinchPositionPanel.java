@@ -8,15 +8,15 @@ import javafx.scene.control.ChoiceBox;
 /**
  * Created by micha on 1/30/2017.
  */
-public class ProfileWinchPositionPanel
-{
-    private   CurrentDataObjectSet currentData;
-    @FXML protected ChoiceBox            winchPosAltitudeComboBox;
+public class ProfileWinchPositionPanel {
+
+    private CurrentDataObjectSet currentData;
+    @FXML
+    protected ChoiceBox winchPosAltitudeComboBox;
 
     @FXML
-    protected void initialize()
-    {
+    protected void initialize() {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
-        winchPosAltitudeComboBox.setItems(FXCollections.observableArrayList("ft", "m", "km", "mi"));
+        winchPosAltitudeComboBox.setItems(FXCollections.observableArrayList("m", "ft", "mm", "cm", "km", "mi", "in"));
     }
 }

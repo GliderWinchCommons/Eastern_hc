@@ -5,52 +5,78 @@
  */
 package EnvironmentalWidgets;
 
-import java.awt.BorderLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import Communications.Observer;
-import DataObjects.CurrentLaunchInformation;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 /**
  *
  * @author jtroxel
  */
 public abstract class EnvironmentalWidget extends JPanel implements Observer {
+
     protected TextField field;
     protected CheckBox isEditable;
     protected Label unit;
     protected int unitId;
-    
-    public EnvironmentalWidget(TextField field, CheckBox edit, Label unit)
-    {
+    private Timer resetTimer;
+
+    public EnvironmentalWidget(TextField field, CheckBox edit, Label unit) {
         this.field = field;
         this.isEditable = edit;
         this.unit = unit;
+        if (edit != null) {
+            field.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> ov, Boolean oldValue, Boolean newValue) {
+                    if (field.editableProperty().getValue()) {
+                        if (newValue == true) {
+                            field.setStyle("");
+                            resetTimer.stop();
+                        } else {
+                            try {
+                                Number d = DecimalFormat.getInstance().parse(field.getText());
+                                resetTimer.start();
+                            } catch (ParseException ex) {
+                                field.setStyle("-fx-border-color: red;");
+                            }
+                        }
+                    }
+                }
+            });
+
+            ActionListener action = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    field.setStyle("-fx-border-color: red;");
+                }
+            };
+            resetTimer = new Timer(5000, action);
+            resetTimer.start();
+        }
         setupUnits();
     }
-    
-    public String getFieldValue()
-    {
+
+    public String getFieldValue() {
         return field.getText();
     }
 
-    public boolean manualEntry(){
+    public boolean manualEntry() {
         return isEditable.isSelected();
+    }
+
+    public boolean validateWidget() {
+        //return !(field.getStyle().equals("-fx-border-color: red;"));
+        return true;
     }
 
     @Override
@@ -58,6 +84,6 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
 
     @Override
     public abstract void update(String msg);
-    
+
     public abstract void setupUnits();
 }

@@ -6,16 +6,12 @@
 package EnvironmentalWidgets;
 
 import Configuration.UnitConversionRate;
-import Configuration.UnitConversionToIndexUtilities;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
-import DataObjects.CurrentLaunchInformation;
 import DataObjects.Operator;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import java.awt.Color;
 
 /**
  *
@@ -30,27 +26,22 @@ public class GustWindSpeedWidget extends EnvironmentalWidget {
     @Override
     public void update() {
         //field.setBackground(Color.WHITE);
-        if (manualEntry())
-        {
-            try{
+        if (manualEntry()) {
+            try {
                 float speed = Float.parseFloat(field.getText()) / UnitConversionRate.convertSpeedUnitIndexToFactor(unitId);
                 CurrentWidgetDataSet.getInstance().setValue("gustwindspeed", String.valueOf(speed));
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 //field.setBackground(Color.PINK);
             }
-        }
-        else
-        {
-            if (CurrentWidgetDataSet.getInstance().getValue("gustwindspeed").equals(""))
-            {
+        } else {
+            if (CurrentWidgetDataSet.getInstance().getValue("gustwindspeed").equals("")) {
                 field.setText("");
-            }
-            else
-            {
+            } else {
                 float speed = (Float.parseFloat(CurrentWidgetDataSet.getInstance().getValue("gustwindspeed")) * UnitConversionRate.convertSpeedUnitIndexToFactor(unitId));
                 field.setText(String.format("%.2f", speed));
             }
         }
+        setupUnits();
     }
 
     @Override
@@ -63,5 +54,5 @@ public class GustWindSpeedWidget extends EnvironmentalWidget {
         unitId = temp.getUnitSetting("gustwindspeed");
         unit.setText(" " + UnitLabelUtilities.velocityUnitIndexToString(unitId));
     }
-    
+
 }

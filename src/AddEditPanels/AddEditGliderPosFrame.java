@@ -1,7 +1,6 @@
 //Should be successful if entries in DB are set in the CurrentDataObjectSet
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -9,13 +8,11 @@ import DataObjects.GliderPosition;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
 import java.sql.SQLException;
-import javafx.fxml.FXML;
-import javafx.scene.SubScene;
-
-import javafx.scene.control.*;
-
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditGliderPosFrame extends AddEditPanel {
 
@@ -29,22 +26,16 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     private TextField nameField;
     @FXML
     private TextArea optionalInformationArea;
-    private CurrentDataObjectSet objectSet;
     private GliderPosition currentGliderPos;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label gliderPosAltitudeUnitsLabel;
     private int gliderPosAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
-        gliderPosAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("gliderPosAltitude");
+        gliderPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("gliderPosAltitude");
         String GliderPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(gliderPosAltitudeUnitsID);
         gliderPosAltitudeUnitsLabel.setText(GliderPosAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditGliderPosFrame(SubScene gliderPosPanel) {
@@ -52,17 +43,19 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     }
 
     public void edit(GliderPosition editGliderPos) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editGliderPos != null;
         currentGliderPos = editGliderPos;
 
         if (isEditEntry) {
+            nameField.setText(currentGliderPos.getName());
             latitudeField.setText("" + currentGliderPos.getLatitude());
             longitudeField.setText("" + currentGliderPos.getLongitude());
             altitudeField.setText("" + currentGliderPos.getElevation()
                     * UnitConversionRate.convertDistanceUnitIndexToFactor(gliderPosAltitudeUnitsID));
+            optionalInformationArea.setText(currentGliderPos.getOptionalInfo());
         }
     }
 
@@ -74,11 +67,9 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.cleafGliderPosition();
+            if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentGliderPos)) {
+                currentData.clearGliderPosition();
                 new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
-                parent.update("3");
             }
         }
     }
@@ -86,7 +77,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
     @Override
     protected boolean submitData() {
         if (isComplete()) {
-            objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+            currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
             String gliderPosName = nameField.getText();
             float altitude = Float.parseFloat(altitudeField.getText())
                     / UnitConversionRate.convertDistanceUnitIndexToFactor(gliderPosAltitudeUnitsID);
@@ -96,19 +87,27 @@ public class AddEditGliderPosFrame extends AddEditPanel {
             int runwayParentId;
 
             try {
-                runwayParentId = objectSet.getCurrentRunway().getId();
+                runwayParentId = currentData.getCurrentRunway().getId();
             } catch (NullPointerException e) {
                 new Alert(Alert.AlertType.ERROR, "Could not find a Runway to link to").showAndWait();
                 return false;
             }
 
-            GliderPosition newGliderPos = new GliderPosition(gliderPosName, altitude,
-                    latitude, longitude, "");
-            newGliderPos.setRunwayParentId(runwayParentId);
-
+            GliderPosition newGliderPos;
+            if (isEditEntry) {
+                newGliderPos = currentData.getCurrentGliderPosition();
+                newGliderPos.setPositionName(gliderPosName);
+                newGliderPos.setAltitude(altitude);
+                newGliderPos.setLongitude(longitude);
+                newGliderPos.setLatitude(latitude);
+                newGliderPos.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newGliderPos = new GliderPosition(gliderPosName, altitude,
+                        latitude, longitude, optionalInformationArea.getText());
+                newGliderPos.setRunwayParentId(runwayParentId);
+            }
             try {
                 if (isEditEntry) {
-                    newGliderPos.setId(currentGliderPos.getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newGliderPos)) {
                         return false;
                     }
@@ -127,9 +126,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentGliderPosition(newGliderPos);
-                //TODO
-                //parent.update("3");
+                currentData.setCurrentGliderPosition(newGliderPos);
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -191,6 +188,7 @@ public class AddEditGliderPosFrame extends AddEditPanel {
         altitudeField.setText("");
         longitudeField.setText("");
         latitudeField.setText("");
+        optionalInformationArea.setText("");
         nameField.setStyle(whiteBackground);
         altitudeField.setStyle(whiteBackground);
         longitudeField.setStyle(whiteBackground);

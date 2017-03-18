@@ -84,6 +84,50 @@ public class Drum {
         }
     }
 
+    public void setDrumId(int drumId) {
+        this.drumId = drumId;
+    }
+
+    public void setWinchId(int winchId) {
+        this.winchId = winchId;
+    }
+
+    public void setDrumNum(int drumNum) {
+        this.drumNum = drumNum;
+    }
+
+    public void setkFactor(float kFactor) {
+        this.kFactor = kFactor;
+    }
+
+    public void setSpringConst(float springConst) {
+        this.springConst = springConst;
+    }
+
+    public void setCableDensity(float cableDensity) {
+        this.cableDensity = cableDensity;
+    }
+
+    public void setSystemEquivalentMass(float systemEquivalentMass) {
+        this.systemEquivalentMass = systemEquivalentMass;
+    }
+
+    public void setNumLaunches(int numLaunches) {
+        this.numLaunches = numLaunches;
+    }
+
+    public void setMaxTension(float maxTension) {
+        this.maxTension = maxTension;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setPara(Parachute para) {
+        this.para = para;
+    }
+
     public int getId() {
         return drumId;
     }
@@ -150,6 +194,30 @@ public class Drum {
         return cableDensity;
     }
 
+    public int getDrumId() {
+        return drumId;
+    }
+
+    public int getDrumNum() {
+        return drumNum;
+    }
+
+    public float getkFactor() {
+        return kFactor;
+    }
+
+    public float getSpringConst() {
+        return springConst;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public Parachute getPara() {
+        return para;
+    }
+
     @Override
     public String toString() {
         if (para == null) {
@@ -159,7 +227,7 @@ public class Drum {
         }
     }
 
-    public boolean check() {
+    public boolean validate() {
         return !name.equals("") && para != null;
     }
 }

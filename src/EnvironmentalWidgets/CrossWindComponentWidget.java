@@ -24,6 +24,7 @@ public class CrossWindComponentWidget extends EnvironmentalWidget {
     public void update() {
         float speed = (CurrentLaunchInformation.getCurrentLaunchInformation().getCrosswindComponent()) * UnitConversionRate.convertSpeedUnitIndexToFactor(unitId);
         field.setText(String.format("%.2f", speed));
+        setupUnits();
     }
 
     @Override
@@ -35,5 +36,5 @@ public class CrossWindComponentWidget extends EnvironmentalWidget {
         unitId = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile().getUnitSetting("crosswind");
         unit.setText(" " + UnitLabelUtilities.velocityUnitIndexToString(unitId));
     }
-    
+
 }

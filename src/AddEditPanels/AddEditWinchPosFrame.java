@@ -1,19 +1,17 @@
 //Should be successful if entries in DB are set in the CurrentDataObjectSet
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.WinchPosition;
 import DatabaseUtilities.DatabaseEntryIdCheck;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.SubScene;
-
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditWinchPosFrame extends AddEditPanel {
 
@@ -27,22 +25,16 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     private TextField nameField;
     @FXML
     private TextArea optionalInformationArea;
-    private CurrentDataObjectSet objectSet;
     private WinchPosition currentWinchPos;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
     private Label winchPosAltitudeUnitsLabel;
     private int winchPosAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
-        winchPosAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("winchPosAltitude");
+        winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
         winchPosAltitudeUnitsLabel.setText(winchPosAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
     }
 
     public AddEditWinchPosFrame(SubScene winchPosPanel) {
@@ -50,17 +42,19 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     }
 
     public void edit(WinchPosition editWinchPos) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editWinchPos != null;
         currentWinchPos = editWinchPos;
 
         if (isEditEntry) {
+            nameField.setText("" + currentWinchPos.getName());
             latitudeField.setText("" + currentWinchPos.getLatitude());
             longitudeField.setText("" + currentWinchPos.getLongitude());
             altitudeField.setText("" + currentWinchPos.getElevation()
                     * UnitConversionRate.convertDistanceUnitIndexToFactor(winchPosAltitudeUnitsID));
+            optionalInformationArea.setText(currentWinchPos.getOptionalInfo());
         }
     }
 
@@ -72,11 +66,9 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.cleafGliderPosition();
-                new Alert(Alert.AlertType.INFORMATION, "Glider position removed").showAndWait();
-                parent.update("4");
+            if (DatabaseUtilities.DatabaseEntryDelete.DeleteEntry(currentWinchPos)) {
+                currentData.clearWinchPosition();
+                new Alert(Alert.AlertType.INFORMATION, "Winch position removed").showAndWait();
             }
         }
     }
@@ -84,7 +76,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
     @Override
     protected boolean submitData() {
         if (isComplete()) {
-            objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+            currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
             String winchPosId = nameField.getText();
             float altitude = Float.parseFloat(altitudeField.getText())
                     / UnitConversionRate.convertDistanceUnitIndexToFactor(winchPosAltitudeUnitsID);
@@ -94,19 +86,27 @@ public class AddEditWinchPosFrame extends AddEditPanel {
             int runwayParentId;
 
             try {
-                runwayParentId = objectSet.getCurrentRunway().getId();
+                runwayParentId = currentData.getCurrentRunway().getId();
             } catch (NullPointerException e) {
                 new Alert(Alert.AlertType.ERROR, "Could not find a Runway to link to").showAndWait();
                 return false;
             }
 
-            WinchPosition newWinchPos = new WinchPosition(winchPosId, altitude,
-                    latitude, longitude, "");
-            newWinchPos.setRunwayParentId(runwayParentId);
+            WinchPosition newWinchPos;
+            if (isEditEntry) {
+                newWinchPos = currentData.getCurrentWinchPosition();
+                newWinchPos.setElevation(altitude);
+                newWinchPos.setLatitude(latitude);
+                newWinchPos.setLongitude(longitude);
+                newWinchPos.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newWinchPos = new WinchPosition(winchPosId, altitude,
+                        latitude, longitude, optionalInformationArea.getText());
+                newWinchPos.setRunwayParentId(runwayParentId);
+            }
 
             try {
                 if (isEditEntry) {
-                    newWinchPos.setId(currentWinchPos.getId());
                     if (!DatabaseUtilities.DatabaseEntryEdit.UpdateEntry(newWinchPos)) {
                         return false;
                     }
@@ -125,9 +125,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentWinchPosition(newWinchPos);
-                //TODO
-                //parent.update("4");
+                currentData.setCurrentWinchPosition(newWinchPos);
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -188,6 +186,7 @@ public class AddEditWinchPosFrame extends AddEditPanel {
         altitudeField.setText("");
         longitudeField.setText("");
         latitudeField.setText("");
+        optionalInformationArea.setText("");
         nameField.setStyle(whiteBackground);
         altitudeField.setStyle(whiteBackground);
         longitudeField.setStyle(whiteBackground);

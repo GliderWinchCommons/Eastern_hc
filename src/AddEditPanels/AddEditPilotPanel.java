@@ -1,6 +1,5 @@
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -9,13 +8,13 @@ import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Random;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-
+import javafx.util.StringConverter;
 import javax.swing.*;
-import java.util.Optional;
-import java.util.Random;
 
 public class AddEditPilotPanel extends AddEditPanel {
 
@@ -36,25 +35,54 @@ public class AddEditPilotPanel extends AddEditPanel {
     @FXML
     private TextArea optionalInfoField;
     private Pilot currentPilot;
-    private boolean isEditEntry;
-    private Observer parent;
-    private CurrentDataObjectSet currentData;
     private int flightWeightUnitsID;
     @FXML
     private Label flightWeightUnitsLabel;
+    @FXML
+    Slider preferenceSlider;
 
+    @Override
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
         String flightWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID);
         flightWeightUnitsLabel.setText(flightWeightUnitsString);
     }
 
-    public void attach(Observer o) {
-        parent = o;
-    }
-
     public AddEditPilotPanel(SubScene pilotPanel) {
         super(pilotPanel);
+    }
+
+    @FXML
+    public void initialize() {
+        preferenceSlider.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double d) {
+                if (d == 0) {
+                    return "Mild";
+                }
+                if (d == .5) {
+                    return "Nominal";
+                }
+                if (d == 1) {
+                    return "Aggressive";
+                }
+                return d.toString();
+            }
+
+            @Override
+            public Double fromString(String string) {
+                if (string.equalsIgnoreCase("Student")) {
+                    return 0.0;
+                }
+                if (string.equalsIgnoreCase("Proficient")) {
+                    return 0.5;
+                }
+                if (string.equalsIgnoreCase("Advanced")) {
+                    return 1.0;
+                }
+                return Double.parseDouble(string);
+            }
+        });
     }
 
     public void edit(Pilot editPilot) {
@@ -72,7 +100,7 @@ public class AddEditPilotPanel extends AddEditPanel {
                     * UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID));
             emergencyContactNameField.setText(currentPilot.getEmergencyName());
             emergencyContactPhoneField.setText(currentPilot.getEmergencyPhone());
-
+            optionalInfoField.setText(currentPilot.getOptionalInfo());
         }
     }
 
@@ -84,11 +112,9 @@ public class AddEditPilotPanel extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseEntryDelete.DeleteEntry(currentPilot)) {
-                CurrentDataObjectSet objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearPilot();
-                new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update();
+            if (DatabaseEntryDelete.DeleteEntry(currentPilot)) {
+                currentData.clearPilot();
+                new Alert(Alert.AlertType.INFORMATION, "Pilot removed").showAndWait();
             }
         }
     }
@@ -109,14 +135,28 @@ public class AddEditPilotPanel extends AddEditPanel {
             String capability = "Student"; //pilotCapability.getSelection().getActionCommand();
             float preference = 0;
 
-            Pilot newPilot = new Pilot(0, firstName, lastName, middleName,
-                    weight, capability, preference, emergencyContact,
-                    emergencyPhone, optionalInformation);
+            Pilot newPilot;
+
+            if (isEditEntry) {
+                newPilot = currentData.getCurrentPilot();
+                newPilot.setFirstName(firstName);
+                newPilot.setLastName(lastName);
+                newPilot.setMiddleName(middleName);
+                newPilot.setFlightWeight(weight);
+                newPilot.setCapability(capability);
+                newPilot.setPreference(preference);
+                newPilot.setEmergencyContact(emergencyContact);
+                newPilot.setEmergencyPhone(emergencyPhone);
+                newPilot.setOptional_info(optionalInformation);
+            } else {
+                newPilot = new Pilot(0, firstName, lastName, middleName,
+                        weight, capability, preference, emergencyContact,
+                        emergencyPhone, optionalInformation);
+            }
 
             try {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newPilot.setId(currentData.getCurrentAirfield().getId());
                     if (!DatabaseEntryEdit.updateEntry(newPilot)) {
                         return false;
                     }
@@ -136,8 +176,6 @@ public class AddEditPilotPanel extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentPilot(newPilot);
-                //TODO
-                //parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"

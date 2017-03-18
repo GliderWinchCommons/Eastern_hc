@@ -48,6 +48,7 @@ public class DatabaseEntrySelect {
             }
             theProfiles.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Operators from Database").showAndWait();
             logError(e);
@@ -87,6 +88,7 @@ public class DatabaseEntrySelect {
             }
             thePilots.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Pilots from Database").showAndWait();
             logError(e);
@@ -129,6 +131,7 @@ public class DatabaseEntrySelect {
             }
             theDrums.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Drums from Database").showAndWait();
             logError(e);
@@ -173,6 +176,7 @@ public class DatabaseEntrySelect {
             }
             theSailplanes.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Gliders from Database").showAndWait();
             logError(e);
@@ -206,6 +210,7 @@ public class DatabaseEntrySelect {
             }
             theFlights.close();
             stmt.close();
+            connect.close();
             return flights;
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Flights from Database").showAndWait();
@@ -244,6 +249,7 @@ public class DatabaseEntrySelect {
             }
             theAirfields.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Airfields from Database").showAndWait();
             logError(e);
@@ -313,6 +319,7 @@ public class DatabaseEntrySelect {
                 currentLaunchInformation.setPassengerWeight(theFlight.getFloat("passenger_weight"));
                 currentLaunchInformation.setGliderBaggage(theFlight.getFloat("baggage"));
             }
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Could not repopulate current scenario,\n\rCheck Error Log").showAndWait();
             logError(e);
@@ -348,6 +355,7 @@ public class DatabaseEntrySelect {
             }
             theGliderPositions.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Glider Positions from Database").showAndWait();
             logError(e);
@@ -383,6 +391,7 @@ public class DatabaseEntrySelect {
             }
             theWinchPositions.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Winch Positions from Database").showAndWait();
             logError(e);
@@ -415,6 +424,7 @@ public class DatabaseEntrySelect {
             }
             theRunways.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Runways from Database").showAndWait();
             logError(e);
@@ -448,6 +458,7 @@ public class DatabaseEntrySelect {
             }
             theParachutes.close();
             stmt.close();
+            connect.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.WARNING, "Could not retrieve Parachutes from Database").showAndWait();
             logError(e);
@@ -466,6 +477,7 @@ public class DatabaseEntrySelect {
                     tables.add(theTables.getString(2));
                 }
             }
+            connect.close();
             return tables;
         } catch (Exception e) {
             logError(e);

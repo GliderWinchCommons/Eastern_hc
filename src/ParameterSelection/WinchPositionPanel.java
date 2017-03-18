@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditWinchPosFrame;
 import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -11,10 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.layout.GridPane;
 import javax.swing.*;
 
 /**
@@ -24,6 +23,7 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     private CurrentDataObjectSet currentData;
     private int winchPosAltitudeUnitsID;
+    private AddEditWinchPosFrame editFrame;
 
     SubScene editWinchPositionPanel;
     GridPane scenarioHomePane;
@@ -34,23 +34,24 @@ public class WinchPositionPanel extends JPanel implements Observer {
     @FXML
     Label positionNameLabel;
     @FXML
-    Label altitudeLabel;
+    Label elevationLabel;
     @FXML
     Label longitudeLabel;
     @FXML
     Label latitudeLabel;
 
     @FXML
-    Label altitudeUnitLabel;
+    Label elevationUnitLabel;
     @FXML
     Label longitudeUnitLabel;
     @FXML
     Label latitudeUnitLabel;
 
-    public WinchPositionPanel(SubScene editWinchPositionPanel, GridPane scenarioHomePane) {
+    public WinchPositionPanel(SubScene editWinchPositionPanel, GridPane scenarioHomePane, AddEditWinchPosFrame editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.editWinchPositionPanel = editWinchPositionPanel;
         this.scenarioHomePane = scenarioHomePane;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -60,33 +61,50 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
         winchPositionTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getWinchPositions()));
         winchPositionTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
-            if (newValue != null) {
+            if (newValue != null && currentData.getCurrentWinchPosition() != (WinchPosition) newValue) {
                 currentData.setCurrentWinchPosition((WinchPosition) newValue);
-                loadData();
             }
         });
         winchPositionTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
         if (currentData.getCurrentWinchPosition() != null) {
             positionNameLabel.setText("" + currentData.getCurrentWinchPosition().getName());
-            altitudeLabel.setText("" + currentData.getCurrentWinchPosition().getElevation());
+            elevationLabel.setText("" + currentData.getCurrentWinchPosition().getElevation());
             longitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLongitude());
             latitudeLabel.setText("" + currentData.getCurrentWinchPosition().getLatitude());
-            setupUnits();
+        } else {
+            positionNameLabel.setText("");
+            elevationLabel.setText("");
+            longitudeLabel.setText("");
+            latitudeLabel.setText("");
         }
     }
 
     public void setupUnits() {
         winchPosAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("winchPosAltitude");
         String winchPosAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(winchPosAltitudeUnitsID);
+        elevationUnitLabel.setText(winchPosAltitudeUnitsString);
     }
 
     @Override
     public void update() {
-
+        loadData();
+        setupUnits();
+        WinchPosition selected = (WinchPosition) winchPositionTable.getSelectionModel().getSelectedItem();
+        WinchPosition currWinchPosition = currentData.getCurrentWinchPosition();
+        if (currWinchPosition == null && selected != null) {
+            winchPositionTable.getItems().remove(selected);
+        } else {
+            if (!winchPositionTable.getItems().contains(currWinchPosition)) {
+                winchPositionTable.getItems().add(currWinchPosition);
+            }
+            winchPositionTable.getSelectionModel().select(currWinchPosition);
+        }
+        winchPositionTable.refresh();
     }
 
     @Override
@@ -109,6 +127,13 @@ public class WinchPositionPanel extends JPanel implements Observer {
 
     @FXML
     public void NewWinchPositionButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editWinchPositionPanel.toFront();
+    }
+
+    @FXML
+    public void EditWinchPositionButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentWinchPosition());
         editWinchPositionPanel.toFront();
     }
 }

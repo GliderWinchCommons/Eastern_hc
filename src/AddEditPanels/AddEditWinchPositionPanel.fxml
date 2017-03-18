@@ -33,28 +33,28 @@
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Position Name" />
-            <TextField fx:id="nameField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="nameField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label text="Units" visible="false" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Altitude" />
-            <TextField fx:id="altitudeField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="altitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label fx:id="winchPosAltitudeUnitsLabel" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Latitude" />
-            <TextField fx:id="latitudeField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="latitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 1.33em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Longitude" />
-            <TextField fx:id="longitudeField" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+            <TextField fx:id="longitudeField" alignment="CENTER" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
             <Label style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Units" />
          </children>
       </FlowPane>

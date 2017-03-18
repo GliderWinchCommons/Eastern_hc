@@ -14,20 +14,20 @@ import javafx.scene.control.TextField;
  */
 public class LaunchWeightWidget extends EnvironmentalWidget {
 
-    public LaunchWeightWidget(TextField field, Label unit)
-    {
+    public LaunchWeightWidget(TextField field, Label unit) {
         super(field, null, unit);
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         float weight = (CurrentLaunchInformation.getCurrentLaunchInformation().getGliderLaunchMass()) * UnitConversionRate.convertWeightUnitIndexToFactor(unitId);
         field.setText(String.format("%.2f", weight));
+        setupUnits();
     }
 
     @Override
-    public void update(String msg) {}
+    public void update(String msg) {
+    }
 
     @Override
     public void setupUnits() {
@@ -35,5 +35,5 @@ public class LaunchWeightWidget extends EnvironmentalWidget {
         unitId = temp.getUnitSetting("launchweight");
         unit.setText(" " + UnitLabelUtilities.weightUnitIndexToString(unitId));
     }
-    
+
 }

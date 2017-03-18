@@ -1,20 +1,17 @@
 package ParameterSelection;
 
-import DataObjects.CurrentDataObjectSet;
-import DataObjects.Sailplane;
-
-import java.awt.Color;
-import javax.swing.DefaultListModel;
-import javax.swing.JTextField;
-import javafx.event.ActionEvent;
-
+import AddEditPanels.AddEditGlider;
 import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
+import DataObjects.Sailplane;
 import DatabaseUtilities.DatabaseEntrySelect;
+import java.awt.Color;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
@@ -23,10 +20,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javax.swing.JTextField;
 
 public class SailplanePanel implements Observer {
 
     private CurrentDataObjectSet currentData;
+    private AddEditGlider editFrame;
 
     @FXML
     TableView gliderTable;
@@ -99,33 +98,34 @@ public class SailplanePanel implements Observer {
     /**
      * Creates new form sailplanePanel
      */
-    public SailplanePanel(SubScene editSailplanePanel, GridPane scenarioHomePane) {
+    public SailplanePanel(SubScene editSailplanePanel, GridPane scenarioHomePane, AddEditGlider editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         launchInfo = CurrentLaunchInformation.getCurrentLaunchInformation();
         launchInfo.setSailplanePanel(this);
         this.editSailplanePanel = editSailplanePanel;
         this.scenarioHomePane = scenarioHomePane;
+        this.editFrame = editFrame;
     }
 
     @FXML
     protected void initialize() {
         TableColumn registrationCol = (TableColumn) gliderTable.getColumns().get(0);
-        registrationCol.setCellValueFactory(new PropertyValueFactory<>("Registration"));
+        registrationCol.setCellValueFactory(new PropertyValueFactory<>("regNumber"));
 
         gliderTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getSailplanes()));
         gliderTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentGlider((Sailplane) newValue);
-                loadData();
             }
         });
         gliderTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
         if (currentData.getCurrentSailplane() != null) {
-            registrationNumberLabel.setText("" + currentData.getCurrentSailplane().getRegistration());
+            registrationNumberLabel.setText("" + currentData.getCurrentSailplane().getRegNumber());
             ownerLabel.setText("" + currentData.getCurrentSailplane().getOwner());
             emptyWeightLabel.setText("" + currentData.getCurrentSailplane().getEmptyWeight());
             maxGrossWeightLabel.setText("" + currentData.getCurrentSailplane().getMaxGrossWeight());
@@ -134,19 +134,34 @@ public class SailplanePanel implements Observer {
             maxWeakLinkStrengthLabel.setText("" + currentData.getCurrentSailplane().getMaxWeakLinkStrength());
             maxTensionLabel.setText("" + currentData.getCurrentSailplane().getMaxTension());
             cableReleaseAngleLabel.setText("" + currentData.getCurrentSailplane().getCableReleaseAngle());
-            setupUnits();
+        } else {
+            registrationNumberLabel.setText("");
+            ownerLabel.setText("");
+            emptyWeightLabel.setText("");
+            maxGrossWeightLabel.setText("");
+            indicatedStallSpeedLabel.setText("");
+            maxWinchingSpeedLabel.setText("");
+            maxWeakLinkStrengthLabel.setText("");
+            maxTensionLabel.setText("");
+            cableReleaseAngleLabel.setText("");
         }
     }
 
     @Override
     public void update() {
-        setupUnits();
         loadData();
-        DefaultListModel sailplaneModel = new DefaultListModel();
-        sailplaneModel.clear();
-
-        Sailplane currentSailplane = currentData.getCurrentSailplane();
-
+        setupUnits();
+        Sailplane selected = (Sailplane) gliderTable.getSelectionModel().getSelectedItem();
+        Sailplane currSailplane = currentData.getCurrentSailplane();
+        if (currSailplane == null && selected != null) {
+            gliderTable.getItems().remove(selected);
+        } else {
+            if (!gliderTable.getItems().contains(currSailplane)) {
+                gliderTable.getItems().add(currSailplane);
+            }
+            gliderTable.getSelectionModel().select(currSailplane);
+        }
+        gliderTable.refresh();
     }
 
     private void updateLaunchInfo(JTextField textField) {
@@ -166,6 +181,13 @@ public class SailplanePanel implements Observer {
 
     @FXML
     public void NewSailplaneButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editSailplanePanel.toFront();
+    }
+
+    @FXML
+    public void EditSailplaneButton_Click(ActionEvent e) {
+        editFrame.edit(currentData.getCurrentSailplane());
         editSailplanePanel.toFront();
     }
 

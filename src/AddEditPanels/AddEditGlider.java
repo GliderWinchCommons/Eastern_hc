@@ -1,6 +1,5 @@
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -8,16 +7,12 @@ import DataObjects.Sailplane;
 import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
-import javafx.fxml.FXML;
-import javafx.scene.SubScene;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Random;
+import javafx.fxml.FXML;
+import javafx.scene.SubScene;
+import javafx.scene.control.*;
 
 public class AddEditGlider extends AddEditPanel {
 
@@ -44,9 +39,6 @@ public class AddEditGlider extends AddEditPanel {
     private CheckBox ballastCheckBox;
     private CheckBox multipleSeatsCheckBox;
     private Sailplane currentGlider;
-    private boolean isEditEntry;
-    private Observer parent;
-    private CurrentDataObjectSet currentData;
     @FXML
     private Label emptyWeightUnitsLabel;
     @FXML
@@ -66,6 +58,7 @@ public class AddEditGlider extends AddEditPanel {
     private int weakLinkStrengthUnitsID;
     private int winchingSpeedUnitsID;
 
+    @Override
     public void setupUnits() {
         emptyWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("emptyWeight");
         String emptyWeightUnitsString = UnitLabelUtilities.weightUnitIndexToString(emptyWeightUnitsID);
@@ -92,10 +85,6 @@ public class AddEditGlider extends AddEditPanel {
         winchingSpeedUnitsLabel.setText(winchingSpeedUnitsString);
     }
 
-    public void attach(Observer o) {
-        parent = o;
-    }
-
     public AddEditGlider(SubScene gliderPane) {
         super(gliderPane);
     }
@@ -108,6 +97,9 @@ public class AddEditGlider extends AddEditPanel {
         currentGlider = sailplaneEdited;
 
         if (isEditEntry) {
+            nNumberField.setText(sailplaneEdited.getRegNumber());
+            ownerField.setText(sailplaneEdited.getOwner());
+
             stallSpeedField.setText("" + currentGlider.getIndicatedStallSpeed()
                     * UnitConversionRate.convertSpeedUnitIndexToFactor(stallSpeedUnitsID));
             grossWeightField.setText("" + currentGlider.getMaximumGrossWeight()
@@ -121,6 +113,7 @@ public class AddEditGlider extends AddEditPanel {
             releaseAngleField.setText("" + currentGlider.getCableReleaseAngle());
             winchingSpeedField.setText("" + currentGlider.getMaxWinchingSpeed()
                     * UnitConversionRate.convertSpeedUnitIndexToFactor(winchingSpeedUnitsID));
+            optionalInformationArea.setText(currentGlider.getOptionalInfo());
         }
     }
 
@@ -132,11 +125,9 @@ public class AddEditGlider extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseEntryDelete.DeleteEntry(currentGlider)) {
-                CurrentDataObjectSet objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearGlider();
+            if (DatabaseEntryDelete.DeleteEntry(currentGlider)) {
+                currentData.clearGlider();
                 new Alert(Alert.AlertType.INFORMATION, "Glider removed").showAndWait();
-                parent.update();
             }
         }
     }
@@ -146,7 +137,7 @@ public class AddEditGlider extends AddEditPanel {
         if (isComplete()) {
             String nNumber = nNumberField.getText();
             String name = "Planet Express";
-            String owner = "Hubert Farnsworth";
+            String owner = ownerField.getText();
             float emptyWeight = (Float.parseFloat(emptyWeightField.getText())
                     / UnitConversionRate.convertWeightUnitIndexToFactor(emptyWeightUnitsID));
             float grossWeight = Float.parseFloat(grossWeightField.getText())
@@ -164,14 +155,32 @@ public class AddEditGlider extends AddEditPanel {
             boolean carryBallast = false;//ballastCheckBox.isSelected();
             boolean multipleSeats = false;//multipleSeatsCheckBox.isSelected();
 
-            Sailplane newGlider = new Sailplane(nNumber, name, owner, "", grossWeight,
-                    emptyWeight, stallSpeed, winchingSpeed, weakLink, tension,
-                    releaseAngle, carryBallast, multipleSeats, "");
+            Sailplane newGlider;
+            if (isEditEntry) {
+                newGlider = currentData.getCurrentSailplane();
+                newGlider.setRegNumber(nNumber);
+                newGlider.setName(name);
+                newGlider.setOwner(owner);
+                newGlider.setType("");
+                newGlider.setMaximumGrossWeight(grossWeight);
+                newGlider.setEmptyWeight(emptyWeight);
+                newGlider.setIndicatedStallSpeed(stallSpeed);
+                newGlider.setMaximumWinchingSpeed(winchingSpeed);
+                newGlider.setMaximumAllowableWeakLinkStrength(weakLink);
+                newGlider.setMaximumTension(tension);
+                newGlider.setCableReleaseAngle(releaseAngle);
+                newGlider.setCarryBallast(carryBallast);
+                newGlider.setMultipleSeats(multipleSeats);
+                newGlider.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newGlider = new Sailplane(nNumber, name, owner, "", grossWeight,
+                        emptyWeight, stallSpeed, winchingSpeed, weakLink, tension,
+                        releaseAngle, carryBallast, multipleSeats, optionalInformationArea.getText());
+            }
 
             try {
                 currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newGlider.setId(currentData.getCurrentSailplane().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newGlider)) {
                         return false;
                     }
@@ -191,8 +200,6 @@ public class AddEditGlider extends AddEditPanel {
                     }
                 }
                 currentData.setCurrentGlider(newGlider);
-                //TODO
-                //parent.update();
                 return true;
             } catch (SQLException | ClassNotFoundException e1) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -277,6 +284,7 @@ public class AddEditGlider extends AddEditPanel {
 
     @Override
     public void clearData() {
+        ownerField.setText("");
         nNumberField.setText("");
         emptyWeightField.setText("");
         grossWeightField.setText("");
@@ -285,6 +293,7 @@ public class AddEditGlider extends AddEditPanel {
         weakLinkField.setText("");
         tensionField.setText("");
         releaseAngleField.setText("");
+        optionalInformationArea.setText("");
         //TODO
         //ballastCheckBox.setSelected(false);
         //multipleSeatsCheckBox.setSelected(false);

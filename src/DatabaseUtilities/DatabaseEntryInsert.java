@@ -81,7 +81,7 @@ public class DatabaseEntryInsert {
                     + "optional_info)"
                     + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sailplaneInsertStatement.setInt(1, theSailplane.getId());
-            sailplaneInsertStatement.setString(2, theSailplane.getRegistration());
+            sailplaneInsertStatement.setString(2, theSailplane.getRegNumber());
             sailplaneInsertStatement.setString(3, theSailplane.getName());
             sailplaneInsertStatement.setString(4, theSailplane.getOwner());
             sailplaneInsertStatement.setString(5, theSailplane.getType());
@@ -251,7 +251,7 @@ public class DatabaseEntryInsert {
                     + "(winch_id, name, owner, wc_version, "
                     + "w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, "
                     + "w13, w14, w15, w16, meteorological_check_time, "
-                    + "meteorological_verify_time, run_orientation_tolerance, optional_info,) "
+                    + "meteorological_verify_time, run_orientation_tolerance, optional_info) "
                     + "values ("
                     + "?,?,?,?,?,?,?,?,?,?," //10
                     + "?,?,?,?,?,?,?,?,?,?," //10
@@ -460,7 +460,7 @@ public class DatabaseEntryInsert {
                 return false;
             }
             PreparedStatement ProfileInsertStatement = connect.prepareStatement(
-                    "INSERT INTO Operator(id, first_name, middle_name, last_name, admin,"
+                    "INSERT INTO Operator(operator_id, first_name, middle_name, last_name, admin,"
                     + "salt, hash, optional_info, unitSettings)"
                     + "values (?,?,?,?,?,?,?,?,?)");
             ProfileInsertStatement.setInt(1, operator.getID());
@@ -582,7 +582,7 @@ public class DatabaseEntryInsert {
             PreviousLaunchesInsert.setString(10, currentDataObjectSet.getCurrentPilot().getEmergencyPhone());
             PreviousLaunchesInsert.setString(11, currentDataObjectSet.getCurrentPilot().getOptionalInfo());
             //Glider
-            PreviousLaunchesInsert.setString(12, currentDataObjectSet.getCurrentSailplane().getRegistration());
+            PreviousLaunchesInsert.setString(12, currentDataObjectSet.getCurrentSailplane().getRegNumber());
             PreviousLaunchesInsert.setString(13, currentDataObjectSet.getCurrentSailplane().getName());
             PreviousLaunchesInsert.setString(14, currentDataObjectSet.getCurrentSailplane().getOwner());
             PreviousLaunchesInsert.setString(15, currentDataObjectSet.getCurrentSailplane().getType());

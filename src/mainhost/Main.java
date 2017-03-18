@@ -5,17 +5,16 @@
  */
 package mainhost;
 
-import Communications.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
+import Communications.MessagePipeline;
+import DatabaseUtilities.DatabaseInitialization;
 import java.util.concurrent.atomic.AtomicInteger;
+import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,6 +22,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -31,6 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        DatabaseInitialization.buildDatabase(DatabaseInitialization.connect());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mockup3.fxml"));
         MainWindow mainWindow = new MainWindow(primaryStage);
         loader.setController(mainWindow);
@@ -41,35 +43,16 @@ public class Main extends Application {
         isScaling = new AtomicInteger(0);
         widthCount = 0;
 
+      
         MessagePipeline pipe = MessagePipeline.getInstance();
         pipe.connect("127.0.0.1", 32123);
-       // pipe.run();
-        Thread pipeThread = new Thread(pipe);
-        pipeThread.start();//runs in background, not connected yet
        
-        System.getProperties().setProperty("swing.jlf.contentPaneTransparent", "true");
-
-        /*primaryStage.widthProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public synchronized void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                //if(widthCount >= 0)
-                scaleWindow(newValue.doubleValue(), true, primaryStage);
-                //widthCount++;
-            }
-        });
-        primaryStage.heightProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public synchronized void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                //if(widthCount < 0)
-                scaleWindow(newValue.doubleValue(), false, primaryStage);
-                //widthCount--;
-            }
-        });*/
+        Thread pipeThread = new Thread(pipe);
+        pipeThread.start();
         primaryStage.setScene(theScene);
+        primaryStage.setOnCloseRequest((WindowEvent ew) -> {
+            System.exit(0);
+        });
         primaryStage.show();
     }
 

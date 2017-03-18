@@ -12,12 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.swing.JPanel;
-
-public class AirfieldPanel extends JPanel implements Observer {
+public class AirfieldPanel implements Observer {
 
     private CurrentDataObjectSet currentData;
     private int airfieldAltitudeUnitsID;
@@ -33,6 +30,8 @@ public class AirfieldPanel extends JPanel implements Observer {
     @FXML
     TableView airfieldTable;
 
+    @FXML
+    Label airfieldNameLabel;
     @FXML
     Label designatorLabel;
     @FXML
@@ -76,22 +75,30 @@ public class AirfieldPanel extends JPanel implements Observer {
         airfieldTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentAirfield((Airfield) newValue);
-                loadData();
             }
         });
         airfieldTable.getSelectionModel().selectFirst();
         loadData();
+        setupUnits();
     }
 
     public void loadData() {
         if (currentData.getCurrentAirfield() != null) {
-            designatorLabel.setText("" + currentData.getCurrentAirfield().getDesignator());
-            altitudeLabel.setText("" + currentData.getCurrentAirfield().getElevation());
-            magneticVariationLabel.setText("" + currentData.getCurrentAirfield().getMagneticVariation());
-            longitudeLabel.setText("" + currentData.getCurrentAirfield().getLongitude());
-            latitudeLabel.setText("" + currentData.getCurrentAirfield().getLatitude());
-            UTCOffsetLabel.setText("" + currentData.getCurrentAirfield().getUTC());
-            setupUnits();
+            airfieldNameLabel.setText(currentData.getCurrentAirfield().getName());
+            designatorLabel.setText(currentData.getCurrentAirfield().getDesignator());
+            altitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getElevation()));
+            magneticVariationLabel.setText(Float.toString(currentData.getCurrentAirfield().getMagneticVariation()));
+            longitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getLongitude()));
+            latitudeLabel.setText(Float.toString(currentData.getCurrentAirfield().getLatitude()));
+            UTCOffsetLabel.setText(Integer.toString(currentData.getCurrentAirfield().getUTC()));
+        } else {
+            airfieldNameLabel.setText("");
+            designatorLabel.setText("");
+            altitudeLabel.setText("");
+            magneticVariationLabel.setText("");
+            longitudeLabel.setText("");
+            latitudeLabel.setText("");
+            UTCOffsetLabel.setText("");
         }
     }
 
@@ -99,7 +106,7 @@ public class AirfieldPanel extends JPanel implements Observer {
         airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         altitudeUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID));
 
-        magneticVariationUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldMagneticVariation");
+        /*magneticVariationUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldMagneticVariation");
         magneticVariationUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(magneticVariationUnitsID));
 
         longitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldLongitude");
@@ -107,17 +114,26 @@ public class AirfieldPanel extends JPanel implements Observer {
 
         latitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldLatitude");
         latitudeUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(latitudeUnitsID));
-
         UTCUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldUTC");
         UTCOffsetUnitLabel.setText(UnitLabelUtilities.lenghtUnitIndexToString(UTCUnitsID));
+         */
     }
 
     @Override
-    public void update(String s) {
+    public void update() {
+        loadData();
         setupUnits();
-        if (s.equals("1")) {
-            airfieldTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getAirfields()));
+        Airfield selected = (Airfield) airfieldTable.getSelectionModel().getSelectedItem();
+        Airfield currAirfield = currentData.getCurrentAirfield();
+        if (currAirfield == null && selected != null) {
+            airfieldTable.getItems().remove(selected);
+        } else {
+            if (!airfieldTable.getItems().contains(currAirfield)) {
+                airfieldTable.getItems().add(currAirfield);
+            }
+            airfieldTable.getSelectionModel().select(currAirfield);
         }
+        airfieldTable.refresh();
     }
 
     private Observer getObserver() {
@@ -149,7 +165,7 @@ public class AirfieldPanel extends JPanel implements Observer {
     }
 
     @Override
-    public void update() {
+    public void update(String s) {
 
     }
 }

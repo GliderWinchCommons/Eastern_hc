@@ -1,15 +1,16 @@
 //Successful
 package AddEditPanels;
 
-import Communications.Observer;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
-import DataObjects.CurrentDataObjectSet;
 import DataObjects.Airfield;
+import DataObjects.CurrentDataObjectSet;
 import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.Random;
 import javafx.fxml.FXML;
@@ -31,24 +32,31 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     @FXML
     private TextField airfieldLatitudeField;
     @FXML
+    private TextField utcOffsetField;
+
+    @FXML
+    private Label magneticVariationUnitsLabel;
+    @FXML
+    private Label longitudeUnitsLabel;
+    @FXML
+    private Label latitudeUnitsLabel;
+    @FXML
+    private Label utcOffsetUnitsLabel;
+
+    @FXML
     private TextArea optionalInformationArea;
 
     private Airfield currentAirfield;
-    private CurrentDataObjectSet objectSet;
-    private boolean isEditEntry;
-    private Observer parent;
     @FXML
-    private Label airfieldAltitudeUnitsLabel;
+    private Label airfieldElevationUnitsLabel;
     private int airfieldAltitudeUnitsID;
 
+    @Override
     public void setupUnits() {
-        airfieldAltitudeUnitsID = objectSet.getCurrentProfile().getUnitSetting("airfieldAltitude");
+        int airfieldAltitudeUnitsID = currentData.getCurrentProfile().getUnitSetting("airfieldAltitude");
         String airfieldAltitudeUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(airfieldAltitudeUnitsID);
-        airfieldAltitudeUnitsLabel.setText(airfieldAltitudeUnitsString);
-    }
-
-    public void attach(Observer o) {
-        parent = o;
+        airfieldElevationUnitsLabel.setText(airfieldAltitudeUnitsString);
+        //String magneticVariationUnitsString = UnitLabelUtilities.degreesUnitIndexToString()
     }
 
     public AddEditAirfieldFrame(SubScene airfieldPanel) {
@@ -56,7 +64,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     }
 
     public void edit(Airfield editAirfield) {
-        objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
+        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editAirfield != null;
@@ -70,6 +78,8 @@ public class AddEditAirfieldFrame extends AddEditPanel {
             magneticVariationField.setText("" + currentAirfield.getMagneticVariation());
             airfieldLongitudeField.setText("" + currentAirfield.getLongitude());
             airfieldLatitudeField.setText("" + currentAirfield.getLatitude());
+            utcOffsetField.setText("" + currentAirfield.getUtcOffset());
+            optionalInformationArea.setText(currentAirfield.getOptionalInfo());
         }
     }
 
@@ -83,11 +93,9 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         a.setTitle("Delete Confirmation");
         Optional<ButtonType> choice = a.showAndWait();
         if (choice.get() == ButtonType.YES) {
-            if (!DatabaseEntryDelete.DeleteEntry(currentAirfield)) {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
-                objectSet.clearAirfield();
+            if (DatabaseEntryDelete.DeleteEntry(currentAirfield)) {
+                currentData.clearAirfield();
                 new Alert(Alert.AlertType.INFORMATION, "Airfield removed").showAndWait();
-                parent.update("1");
             }
         }
     }
@@ -102,14 +110,27 @@ public class AddEditAirfieldFrame extends AddEditPanel {
             float magneticVariation = Float.parseFloat(magneticVariationField.getText());
             float airfieldLatitude = Float.parseFloat(airfieldLatitudeField.getText());
             float airfieldLongitude = Float.parseFloat(airfieldLongitudeField.getText());
+            int utcOffset = Integer.parseInt(utcOffsetField.getText());
 
-            Airfield newAirfield = new Airfield(airfieldName, designator, airfieldAltitude,
-                    magneticVariation, airfieldLatitude, airfieldLongitude, "");
+            Airfield newAirfield;
+
+            if (isEditEntry) {
+                newAirfield = currentData.getCurrentAirfield();
+                newAirfield.setName(airfieldName);
+                newAirfield.setDesignator(designator);
+                newAirfield.setAltitude(airfieldAltitude);
+                newAirfield.setMagneticVariation(magneticVariation);
+                newAirfield.setLatitude(airfieldLatitude);
+                newAirfield.setLongitude(airfieldLongitude);
+                newAirfield.setUtcOffset(utcOffset);
+                newAirfield.setOptionalInfo(optionalInformationArea.getText());
+            } else {
+                newAirfield = new Airfield(0, airfieldName, designator, airfieldAltitude,
+                        magneticVariation, airfieldLatitude, airfieldLongitude, utcOffset, optionalInformationArea.getText());
+            }
 
             try {
-                objectSet = CurrentDataObjectSet.getCurrentDataObjectSet();
                 if (isEditEntry) {
-                    newAirfield.setId(objectSet.getCurrentAirfield().getId());
                     if (!DatabaseEntryEdit.UpdateEntry(newAirfield)) {
                         return false;
                     }
@@ -128,8 +149,7 @@ public class AddEditAirfieldFrame extends AddEditPanel {
                         }
                     }
                 }
-                objectSet.setCurrentAirfield(newAirfield);
-                parent.update("1");
+                currentData.setCurrentAirfield(newAirfield);
                 return true;
             } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, "An error occured in the database\n\r"
@@ -140,62 +160,17 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     }
 
     public boolean isComplete() {
-        try {
-            boolean emptyFields = false;
-            String airfieldName = airfieldNameField.getText();
-            String designator = designatorField.getText();
-            String airfieldAltitude = airfieldAltitudeField.getText();
-            String magneticVariation = magneticVariationField.getText();
-            String airfieldLatitude = airfieldLatitudeField.getText();
-            String airfieldLongitude = airfieldLongitudeField.getText();
+        boolean valid = true;
 
-            airfieldNameField.setStyle(whiteBackground);
-            designatorField.setStyle(whiteBackground);
-            airfieldAltitudeField.setStyle(whiteBackground);
-            magneticVariationField.setStyle(whiteBackground);
-            airfieldLatitudeField.setStyle(whiteBackground);
-            airfieldLongitudeField.setStyle(whiteBackground);
+        valid = valid && !airfieldNameField.getText().isEmpty();
+        valid = valid && !designatorField.getText().isEmpty();
+        valid = valid && parseFloat(airfieldAltitudeField);
+        valid = valid && parseFloat(magneticVariationField);
+        valid = valid && parseFloat(airfieldLatitudeField);
+        valid = valid && parseFloat(airfieldLongitudeField);
+        valid = valid && parseInteger(utcOffsetField);
 
-            if (airfieldName.isEmpty()) {
-                airfieldNameField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (designator.isEmpty()) {
-                designatorField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (airfieldAltitude.isEmpty()) {
-                airfieldAltitudeField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (magneticVariation.isEmpty()) {
-                magneticVariationField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (airfieldLatitude.isEmpty()) {
-                airfieldLatitudeField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (airfieldLongitude.isEmpty()) {
-                airfieldLongitudeField.setStyle(redBackground);
-                emptyFields = true;
-            }
-            if (emptyFields) {
-                throw new IllegalArgumentException();
-            }
-
-            Float.parseFloat(airfieldAltitude);
-            Float.parseFloat(magneticVariation);
-            Float.parseFloat(airfieldLatitude);
-            Float.parseFloat(airfieldLongitude);
-
-            return true;
-        } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.WARNING, "Please input correct numerical values").showAndWait();
-        } catch (IllegalArgumentException e) {
-            new Alert(Alert.AlertType.WARNING, "Please complete all required fields").showAndWait();
-        }
-        return false;
+        return valid;
     }
 
     @Override
@@ -206,6 +181,8 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         magneticVariationField.setText("");
         airfieldLatitudeField.setText("");
         airfieldLongitudeField.setText("");
+        utcOffsetField.setText("");
+        optionalInformationArea.setText("");
 
         airfieldNameField.setStyle(whiteBackground);
         designatorField.setStyle(whiteBackground);
@@ -213,7 +190,28 @@ public class AddEditAirfieldFrame extends AddEditPanel {
         magneticVariationField.setStyle(whiteBackground);
         airfieldLatitudeField.setStyle(whiteBackground);
         airfieldLongitudeField.setStyle(whiteBackground);
-
+        utcOffsetField.setStyle(whiteBackground);
     }
 
+    private boolean parseFloat(TextField field) {
+        try {
+            field.setStyle(whiteBackground);
+            DecimalFormat.getInstance().parse(field.getText()).floatValue();
+            return true;
+        } catch (ParseException ex) {
+            field.setStyle(redBackground);
+            return false;
+        }
+    }
+
+    private boolean parseInteger(TextField field) {
+        try {
+            field.setStyle(whiteBackground);
+            Integer.parseInt(field.getText());
+            return true;
+        } catch (NumberFormatException ex) {
+            field.setStyle(redBackground);
+            return false;
+        }
+    }
 }
