@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <Label text="Winch Parameters" GridPane.columnIndex="1" GridPane.columnSpan="4">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 1" />
+            <TextField fx:id="wp1TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 2" />
+            <TextField fx:id="wp2TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 3" />
+            <TextField fx:id="wp3TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 4" />
+            <TextField fx:id="wp4TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 5" />
+            <TextField fx:id="wp5TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 6" />
+            <TextField fx:id="wp6TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 7" />
+            <TextField fx:id="wp7TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 8" />
+            <TextField fx:id="wp8TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 9" />
+            <TextField fx:id="wp9TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 10" />
+            <TextField fx:id="wp10TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 11" />
+            <TextField fx:id="wp11TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 12" />
+            <TextField fx:id="wp12TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 13" />
+            <TextField fx:id="wp13TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 14" />
+            <TextField fx:id="wp14TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 15" />
+            <TextField fx:id="wp15TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="WP 16" />
+            <TextField fx:id="wp16TextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="80.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Time to Warning" textAlignment="CENTER" wrapText="true" />
+            <TextField fx:id="meteorologicalCheckTimeTextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="78.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Time to Timeout" textAlignment="CENTER" wrapText="true" />
+            <TextField fx:id="meteorologicalVerifyTimeTextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Winch Name" />
+            <TextField fx:id="nameTextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="27.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Owner" />
+            <TextField fx:id="ownerTextField" alignment="CENTER" editable="false" prefWidth="100.0" />
+         </children>
+      </FlowPane>
+      <Label fx:id="wcVersionLabel" text="wc_version: XX" GridPane.columnIndex="5" />
+      <Button fx:id="saveButton" mnemonicParsing="false" onAction="#SaveButton_Click" prefHeight="50.0" prefWidth="270.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Save" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#CancelButton_Click" prefHeight="50.0" prefWidth="270.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Cancel" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+      <Button fx:id="editButton" mnemonicParsing="false" onAction="#EditButton_Click" prefHeight="50.0" prefWidth="540.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Edit" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
+   </children>
+</GridPane>
