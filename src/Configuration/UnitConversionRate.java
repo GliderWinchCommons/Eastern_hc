@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Configuration;
 
 /**
@@ -12,7 +11,7 @@ package Configuration;
  */
 public class UnitConversionRate {
     //Conversion factors from the standard SI unit to the given unit
-    
+
     //Conversion rates for distances from the standard of a Meter
     public static final float METERS = 1;
     public static final float FEET = (float) 3.2804;
@@ -21,23 +20,23 @@ public class UnitConversionRate {
     public static final float KILOMETERS = (float) 0.001;
     public static final float MILES = (float) 0.000621371;
     public static final float INCHES = (float) 39.3701;
-    
+
     //Conversion rates for tension from the standard of a Newton
     public static final float NEWTON = 1;
     public static final float DECANEWTON = (float) 0.1;
     public static final float POUND_FORCE = (float) 0.224808943;
     public static final float KILOGRAM_FORCE = (float) 0.101971621;
-    
+
     //Conversion rates for weight from the standard of a Pound
     public static final float POUND = (float) 2.2046244;
-    public static final float KILOGRAM =  1;
-    
+    public static final float KILOGRAM = 1;
+
     //Conversion rates for speed from the standard of km/h
     public static final float KPH = 1;
     public static final float MPH = (float) 0.621371;
     public static final float MPS = (float) 0.2777778;
     public static final float KN = (float) 0.539957;
-        
+
     //Conversion rates for pressure from the standard of hPa
     public static final float HPA = 1;
     public static final float KPA = (float) 0.1;
@@ -45,8 +44,9 @@ public class UnitConversionRate {
     public static final float BAR = (float) 0.001;
     public static final float MILLIBAR = (float) 1;
     public static final float ATM = (float) 0.000986923;
-    
-    
+    public static final float INGH = (float) 0.0002953;
+    public static final float MMGH = (float) 0.00750062;
+
     public static float convertTensionUnitIndexToFactor(int index) {
         switch (index) {
             case 0:
@@ -56,13 +56,12 @@ public class UnitConversionRate {
             case 2:
                 return KILOGRAM_FORCE;
             case 3:
-                return DECANEWTON;   
+                return DECANEWTON;
             default:
                 return NEWTON;
         }
-    }  
-    
-    
+    }
+
     public static float convertDistanceUnitIndexToFactor(int index) {
         switch (index) {
             case 0:
@@ -82,7 +81,7 @@ public class UnitConversionRate {
             default:
                 return METERS;
         }
-    }    
+    }
 
     public static float convertWeightUnitIndexToFactor(int index) {
         switch (index) {
@@ -93,8 +92,8 @@ public class UnitConversionRate {
             default:
                 return KILOGRAM;
         }
-    }    
-    
+    }
+
     public static float convertSpeedUnitIndexToFactor(int index) {
         switch (index) {
             case 0:
@@ -102,7 +101,7 @@ public class UnitConversionRate {
             case 1:
                 return MPH;
             case 2:
-                return MPS; 
+                return MPS;
             case 3:
                 return KN;
             case 4:
@@ -111,10 +110,10 @@ public class UnitConversionRate {
                 return KPH;
         }
     }
-    
+
     public static float convertPressureUnitIndexToFactor(int index) {
-       switch (index) {
-            case 0: 
+        switch (index) {
+            case 0:
                 return HPA;
             case 1:
                 return KPA;
@@ -123,11 +122,15 @@ public class UnitConversionRate {
             case 3:
                 return BAR;
             case 4:
-                return MILLIBAR; 
+                return MILLIBAR;
             case 5:
-                return ATM; 
+                return ATM;
+            case 6:
+                return INGH;
+            case 7:
+                return MMGH;
             default:
                 return HPA;
-        } 
+        }
     }
 }

@@ -1,3 +1,4 @@
+//Class as been deprecated, likely should be removed in the future
 package ParameterSelection;
 
 import Communications.Observer;
@@ -31,14 +32,14 @@ import javax.swing.JScrollPane;
  * @author jtroxel
  */
 public class DEBUGWinchEditPanel extends JPanel implements Observer {
-    
+
     private Winch DEBUGWinch;
     private JPanel DEBUGWinchPanel;
     private JPanel DEBUGMainPanel;
     private int selected;
     private CurrentDataObjectSet data;
     private JPanel buttonPanel;
-    
+
     public DEBUGWinchEditPanel(ParameterSelectionPanel p) {
         //CurrentDataObjectSet.getCurrentDataObjectSet().attach(this);
         setBackground(Color.WHITE);
@@ -49,17 +50,18 @@ public class DEBUGWinchEditPanel extends JPanel implements Observer {
         scrollPane.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
-                
+
         data = CurrentDataObjectSet.getCurrentDataObjectSet();
         data.setCurrentWinch(DEBUGWinch);
     }
-    
-    public void setParamPanel(ParameterSelectionPanel p)
-    {
+
+    public void setParamPanel(ParameterSelectionPanel p) {
     }
-    
+
     private void buildWinchPanel(Winch winch, boolean isSelected) {
-        if(winch == null) return;
+        if (winch == null) {
+            return;
+        }
         DEBUGWinchPanel = new JPanel();
         DEBUGWinchPanel.setBackground(Color.WHITE);
 
@@ -82,31 +84,33 @@ public class DEBUGWinchEditPanel extends JPanel implements Observer {
             para.add(paraName);
             WinchPanel.add(para);
         }
-        */
-        
+         */
+
         DEBUGWinchPanel.add(WinchPanel);
-        if(isSelected) DEBUGWinchPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        else DEBUGWinchPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        if (isSelected) {
+            DEBUGWinchPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        } else {
+            DEBUGWinchPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
         DEBUGMainPanel.add(DEBUGWinchPanel);
     }
-    
+
     private void initComponents() {
         DEBUGMainPanel = new JPanel();
         DEBUGMainPanel.setLayout(new BoxLayout(DEBUGMainPanel, BoxLayout.Y_AXIS));
         DEBUGMainPanel.setBackground(Color.WHITE);
         buttonPanel = new JPanel();
         JButton loadNewWinchButton = new JButton("Load Winch Config File");
-        loadNewWinchButton.addActionListener(new ActionListener(){
+        loadNewWinchButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setDialogTitle("Winch Config");
                 chooser.setApproveButtonText("Select");
                 String filePath;
                 String fileName;
                 int option = chooser.showOpenDialog(DEBUGWinchEditPanel.this);
-                if(option == JFileChooser.APPROVE_OPTION) {
+                if (option == JFileChooser.APPROVE_OPTION) {
                     File file = chooser.getSelectedFile();
                     File chosen = chooser.getCurrentDirectory();
                     filePath = chosen.getPath();
@@ -116,20 +120,19 @@ public class DEBUGWinchEditPanel extends JPanel implements Observer {
             }
         });
         buttonPanel.setBackground(Color.WHITE);
-        loadNewWinchButton.setBackground(new Color(200,200,200));
+        loadNewWinchButton.setBackground(new Color(200, 200, 200));
         buttonPanel.add(loadNewWinchButton);
         buttonPanel.setMaximumSize(new Dimension(200, 40));
         DEBUGMainPanel.add(buttonPanel);
-        
+
         buildWinchPanel(DEBUGWinch, true);
         /*for(int i = 0; i < 7; ++i) {
             if(i == selected) buildWinchPanel(DEBUGWinch, true);
             else buildWinchPanel(DEBUGWinch, false);
         }*/
     }
-    
-    private void loadWinch(String filepath)
-    {
+
+    private void loadWinch(String filepath) {
         DEBUGWinch = loadWinchFile(filepath);
         CurrentDataObjectSet.getCurrentDataObjectSet().setCurrentWinch(DEBUGWinch);
         CurrentDataObjectSet.getCurrentDataObjectSet().forceUpdate();
@@ -137,23 +140,21 @@ public class DEBUGWinchEditPanel extends JPanel implements Observer {
         DEBUGMainPanel.add(buttonPanel);
         buildWinchPanel(DEBUGWinch, true);
     }
-    
-    private Winch loadWinchFile(String file)
-    {
+
+    private Winch loadWinchFile(String file) {
         ArrayList<String> lines = new ArrayList<>();
 
         Winch loadedWinch = new Winch();
         Drive curDrive = new Drive();
         Drum curDrum = new Drum();
         Parachute curPara = new Parachute();
-        
+
         try {
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             String line;
             try {
-                while ((line = br.readLine()) != null)
-                {
+                while ((line = br.readLine()) != null) {
                     lines.add(line);
                 }
             } catch (IOException ex) {
@@ -161,14 +162,12 @@ public class DEBUGWinchEditPanel extends JPanel implements Observer {
         } catch (FileNotFoundException ex) {
             return null;
         }
-        
-        for(String str : lines)
-        {
+
+        for (String str : lines) {
             String parts[] = str.split(":");
             String name = parts[0].trim();
-            
-            switch(name)
-            {
+
+            switch (name) {
                 case "winch-name":
                     loadedWinch.setName(parts[1]);
                     break;

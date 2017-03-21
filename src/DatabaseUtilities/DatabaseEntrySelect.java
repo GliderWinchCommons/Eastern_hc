@@ -97,7 +97,7 @@ public class DatabaseEntrySelect {
     }
 
     /**
-     * Pulls the list of Parachutes (and relevant data) from the database
+     * Pulls the list of Drums (and relevant data) from the database
      *
      * @return the list of parachutes in the database
      */
@@ -137,6 +137,60 @@ public class DatabaseEntrySelect {
             logError(e);
         }
         return drums;
+    }
+
+    /**
+     * Pulls the list of Winches (and relevant data) from the database
+     *
+     * @return the list of parachutes in the database
+     */
+    public static List<Winch> getWinch() {
+        List<Winch> winchs = new ArrayList();
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return winchs;
+            }
+            Statement stmt = connect.createStatement();
+            ResultSet theWinches = stmt.executeQuery("SELECT * "
+                    + "FROM Winch ORDER BY name");
+            while (theWinches.next()) {
+                int id = theWinches.getInt("winch_id");
+                String winch_name = theWinches.getString("name");
+                String owner = theWinches.getString("owner");
+                String wcVer = theWinches.getString("wc_version");
+                float w1 = theWinches.getFloat("w1");
+                float w2 = theWinches.getFloat("w2");
+                float w3 = theWinches.getFloat("w3");
+                float w4 = theWinches.getFloat("w4");
+                float w5 = theWinches.getFloat("w5");
+                float w6 = theWinches.getFloat("w6");
+                float w7 = theWinches.getFloat("w7");
+                float w8 = theWinches.getFloat("w8");
+                float w9 = theWinches.getFloat("w9");
+                float w10 = theWinches.getFloat("w10");
+                float w11 = theWinches.getFloat("w11");
+                float w12 = theWinches.getFloat("w12");
+                float w13 = theWinches.getFloat("w13");
+                float w14 = theWinches.getFloat("w14");
+                float w15 = theWinches.getFloat("w15");
+                float w16 = theWinches.getFloat("w16");
+                int mct = theWinches.getInt("meteorological_check_time");
+                int mvt = theWinches.getInt("meteorological_verify_time");
+                float rot = theWinches.getFloat("run_orientation_tolerance");
+                String info = theWinches.getString("optional_info");
+                Winch newWinch = new Winch(id, winch_name, owner, wcVer,
+                        w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16,
+                        mct, mvt, rot, info);
+                winchs.add(newWinch);
+            }
+            theWinches.close();
+            stmt.close();
+            connect.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.WARNING, "Could not retrieve Drums from Database").showAndWait();
+            logError(e);
+        }
+        return winchs;
     }
 
     /**

@@ -121,6 +121,21 @@ public class DatabaseEntryDelete {
         return false;
     }
 
+    public static boolean DeleteEntry(Winch winch) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
+                return false;
+            }
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM WINCH WHERE winch_id = ?");
+            stmt.setInt(1, winch.getId());
+            return Delete(stmt);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not delete Winch Position, Check Error Log").showAndWait();
+            logError(e);
+        }
+        return false;
+    }
+
     public static boolean DeleteEntry(Drum drum) {
         try (Connection conn = connect()) {
             if (conn == null) {
