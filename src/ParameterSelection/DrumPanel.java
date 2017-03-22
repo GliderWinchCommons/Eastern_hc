@@ -1,5 +1,6 @@
 package ParameterSelection;
 
+import AddEditPanels.AddEditDrumPanel;
 import Communications.Observer;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
@@ -7,6 +8,7 @@ import DataObjects.Drum;
 import DatabaseUtilities.DatabaseEntrySelect;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
@@ -20,8 +22,9 @@ public class DrumPanel implements Observer {
     private int cableLengthUnitsID;
     private int coreDiameterUnitsID;
 
-    @FXML
     SubScene parachuteScene;
+    AddEditDrumPanel editFrame;
+    SubScene editDrumPanel;
 
     @FXML
     TableView drumTable;
@@ -54,10 +57,12 @@ public class DrumPanel implements Observer {
     @FXML
     Label maxTensionUnitLabel;
 
-    public DrumPanel(SubScene parachuteScene) {
+    public DrumPanel(SubScene editDrumPanel, SubScene parachuteScene, AddEditDrumPanel editFrame) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         currentData.attach(this);
         this.parachuteScene = parachuteScene;
+        this.editDrumPanel = editDrumPanel;
+        this.editFrame = editFrame;
     }
 
     @FXML
@@ -99,31 +104,33 @@ public class DrumPanel implements Observer {
         }
     }
 
-    public void setupUnits() {
+    public void setupUnits() {        
         cableLengthUnitsID = currentData.getCurrentProfile().getUnitSetting("cableLength");
         String cableLengthUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(cableLengthUnitsID);
         cableLengthUnitLabel.setText(cableLengthUnitsString);
 
         coreDiameterUnitsID = currentData.getCurrentProfile().getUnitSetting("coreDiameter");
         String coreDiameterUnitsString = UnitLabelUtilities.lenghtUnitIndexToString(coreDiameterUnitsID);
-        coreDiameterUnitLabel.setText(coreDiameterUnitsString);
+        coreDiameterUnitLabel.setText(coreDiameterUnitsString);        
     }
 
     @Override
     public void update() {
-        loadData();
-        setupUnits();
-        Drum selected = (Drum) drumTable.getSelectionModel().getSelectedItem();
-        Drum currDrum = currentData.getCurrentDrum();
-        if (currDrum == null && selected != null) {
-            drumTable.getItems().remove(selected);
-        } else {
-            if (!drumTable.getItems().contains(currDrum)) {
-                drumTable.getItems().add(currDrum);
+        if(drumTable != null) {
+            loadData();
+            setupUnits();
+            Drum selected = (Drum) drumTable.getSelectionModel().getSelectedItem();
+            Drum currDrum = currentData.getCurrentDrum();
+            if (currDrum == null && selected != null) {
+                drumTable.getItems().remove(selected);
+            } else {
+                if (!drumTable.getItems().contains(currDrum)) {
+                    drumTable.getItems().add(currDrum);
+                }
+                drumTable.getSelectionModel().select(currDrum);
             }
-            drumTable.getSelectionModel().select(currDrum);
+            drumTable.refresh();
         }
-        drumTable.refresh();
     }
 
     private Observer getObserver() {
@@ -137,6 +144,21 @@ public class DrumPanel implements Observer {
     @FXML
     public void ParachuteButton_Click(javafx.event.ActionEvent e) {
         parachuteScene.toFront();
+    }
+
+    @FXML
+    public void NewDrumButton_Click(ActionEvent e) {
+        editFrame.edit(null);
+        editDrumPanel.toFront();
+    }
+
+    @FXML
+    public void EditDrumButton_Click(ActionEvent e) {
+        Drum selected = (Drum) drumTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            editFrame.edit(selected);
+            editDrumPanel.toFront();
+        }
     }
 
     @Override

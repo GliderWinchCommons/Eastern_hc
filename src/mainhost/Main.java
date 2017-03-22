@@ -5,6 +5,8 @@
  */
 package mainhost;
 
+import Communications.MessagePipeline;
+import static DatabaseUtilities.DatabaseVerification.verifyDatabase;
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -30,7 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //DatabaseInitialization.buildDatabase(DatabaseInitialization.connect());
+        verifyDatabase();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mockup3.fxml"));
         MainWindow mainWindow = new MainWindow(primaryStage);
         loader.setController(mainWindow);
@@ -41,31 +43,11 @@ public class Main extends Application {
         isScaling = new AtomicInteger(0);
         widthCount = 0;
 
-        /*MessagePipeline pipe = MessagePipeline.getInstance();
-        Thread pipeThread = new Thread(pipe);
-        pipeThread.start();//runs in background, not connected yet*/
-        //System.getProperties().setProperty("swing.jlf.contentPaneTransparent", "true");
+        MessagePipeline pipe = MessagePipeline.getInstance();
+        pipe.connect("127.0.0.1", 32123);
 
-        /*primaryStage.widthProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public synchronized void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                //if(widthCount >= 0)
-                scaleWindow(newValue.doubleValue(), true, primaryStage);
-                //widthCount++;
-            }
-        });
-        primaryStage.heightProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public synchronized void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                //if(widthCount < 0)
-                scaleWindow(newValue.doubleValue(), false, primaryStage);
-                //widthCount--;
-            }
-        });*/
+        Thread pipeThread = new Thread(pipe);
+        pipeThread.start();
         primaryStage.setScene(theScene);
         primaryStage.setOnCloseRequest((WindowEvent ew) -> {
             System.exit(0);

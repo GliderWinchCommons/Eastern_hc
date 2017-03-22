@@ -5,7 +5,9 @@
  */
 package Winch;
 
+import DataObjects.CurrentDataObjectSet;
 import DataObjects.Winch;
+import DatabaseUtilities.DatabaseEntryInsert;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import javafx.event.ActionEvent;
@@ -88,6 +90,9 @@ public class WinchPanel {
         wp14TextField.setText("0");
         wp15TextField.setText("0");
         wp16TextField.setText("0");
+        Winch w = new Winch(0, "1", "1", "1", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "");
+        CurrentDataObjectSet.getCurrentDataObjectSet().setCurrentWinch(w);
+        DatabaseEntryInsert.addWinchToDB(w);
     }
 
     @FXML

@@ -251,7 +251,7 @@ public class DatabaseEntryInsert {
                     + "(winch_id, name, owner, wc_version, "
                     + "w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, "
                     + "w13, w14, w15, w16, meteorological_check_time, "
-                    + "meteorological_verify_time, run_orientation_tolerance, optional_info,) "
+                    + "meteorological_verify_time, run_orientation_tolerance, optional_info) "
                     + "values ("
                     + "?,?,?,?,?,?,?,?,?,?," //10
                     + "?,?,?,?,?,?,?,?,?,?," //10

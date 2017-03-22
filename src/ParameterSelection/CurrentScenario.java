@@ -59,6 +59,10 @@ public class CurrentScenario implements Observer {
     private SubScene gliderPositionAddEditPanel;
     @FXML
     private SubScene winchPositionAddEditPanel;
+    @FXML
+    private SubScene drumAddEditPanel;
+    @FXML
+    private SubScene parachuteAddEditPanel;
 
     @FXML
     private Rectangle pilotGridBackground;
@@ -151,6 +155,12 @@ public class CurrentScenario implements Observer {
         AddEditGlider editGlider = new AddEditGlider(gliderPanel);
         SailplanePanel sailplane = new SailplanePanel(gliderAddEditPanel, scenarioHomePanel, editGlider);
 
+        AddEditDrumPanel editDrum = new AddEditDrumPanel(drumPanel);
+        DrumPanel drum = new DrumPanel(drumAddEditPanel, parachutePanel, editDrum);
+
+        AddEditParachutePanel editParachute = new AddEditParachutePanel(parachutePanel);
+        ParachutePanel parachute = new ParachutePanel(parachuteAddEditPanel, scenarioHomePanel, editParachute);
+
         //Load the display panes
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ParameterSelection/PilotScene.fxml"));
         loader.setController(pilot);
@@ -183,12 +193,12 @@ public class CurrentScenario implements Observer {
         winchPosPanel.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/DrumScene.fxml"));
-        loader.setController(new DrumPanel(parachutePanel));
+        loader.setController(drum);
         root = loader.load();
         drumPanel.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/ParameterSelection/ParachuteScene.fxml"));
-        loader.setController(new ParachutePanel(scenarioHomePanel));
+        loader.setController(parachute);
         root = loader.load();
         parachutePanel.setRoot(root);
 
@@ -223,29 +233,47 @@ public class CurrentScenario implements Observer {
         root = loader.load();
         winchPositionAddEditPanel.setRoot(root);
 
-        editAirfield.attach(airfield);
+        loader = new FXMLLoader(getClass().getResource("/AddEditPanels/AddEditDrumPanel.fxml"));
+        loader.setController(editDrum);
+        root = loader.load();
+        drumAddEditPanel.setRoot(root);
+
+        loader = new FXMLLoader(getClass().getResource("/AddEditPanels/AddEditParachutePanel.fxml"));
+        loader.setController(editParachute);
+        root = loader.load();
+        parachuteAddEditPanel.setRoot(root);
+
+        //editAirfield.attach(airfield);
         currentData.attach(editAirfield);
         currentData.attach(airfield);
 
-        editRunway.attach(runway);
+        //editRunway.attach(runway);
         currentData.attach(editRunway);
         currentData.attach(runway);
 
-        editGliderPos.attach(gliderPos);
+        //editGliderPos.attach(gliderPos);
         currentData.attach(editGliderPos);
         currentData.attach(gliderPos);
 
-        editWinchPos.attach(winchPos);
+        //editWinchPos.attach(winchPos);
         currentData.attach(editWinchPos);
         currentData.attach(winchPos);
 
-        editPilot.attach(pilot);
+        //editPilot.attach(pilot);
         currentData.attach(editPilot);
         currentData.attach(pilot);
 
-        editGlider.attach(sailplane);
+        //editGlider.attach(sailplane);
         currentData.attach(editGlider);
         currentData.attach(sailplane);
+
+        //editDrum.attach(drum);
+        currentData.attach(editDrum);
+        currentData.attach(drum);
+
+        //editParachute.attach(parachute);
+        currentData.attach(editParachute);
+        currentData.attach(parachute);
 
         loadScenario();
     }

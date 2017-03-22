@@ -121,6 +121,21 @@ public class DatabaseEntryIdCheck {
         }
     }
 
+    public static boolean IdCheck(Winch winch) throws SQLException, ClassNotFoundException {
+        try (Connection conn = connectEx()) {
+            if (conn == null) {
+                return false;
+            }
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Winch WHERE winch_id = ?");
+            stmt.setInt(1, winch.getId());
+
+            return IdCheck(stmt);
+        } catch (SQLException | ClassNotFoundException e) {
+            logError(e);
+            throw e;
+        }
+    }
+
     public static boolean IdCheck(Drum drum) throws SQLException, ClassNotFoundException {
         try (Connection conn = connectEx()) {
             if (conn == null) {

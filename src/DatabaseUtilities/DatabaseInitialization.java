@@ -671,7 +671,7 @@ public class DatabaseInitialization {
                 + "last_name VARCHAR(30), "
                 + "admin BOOLEAN,"
                 + "salt VARCHAR(30),"
-                + "hash VARCHAR(1024), "
+                + "hash LONG VARCHAR, "
                 + "optional_info LONG VARCHAR, "
                 + "unitSettings LONG VARCHAR, "
                 + "PRIMARY KEY (operator_id))";
@@ -996,7 +996,7 @@ public class DatabaseInitialization {
     }
 
     /**
-     * Creates the table to store flight messages
+     * Creates the table to store flight messages (Deprecated)
      *
      * @param connect the connection to be used for creating the table in the
      * database
@@ -1121,7 +1121,7 @@ public class DatabaseInitialization {
         }
     }
 
-    private static void dropCapabliity(Connection connect) {
+    private static void dropCapability(Connection connect) {
         try (Statement stmt = connect.createStatement()) {
             stmt.execute("DROP TABLE CAPABILITY");
         } catch (SQLException e) {
@@ -1149,7 +1149,7 @@ public class DatabaseInitialization {
         dropAirfield(connect);
         dropGlider(connect);
         dropPilot(connect);
-        dropCapabliity(connect);
+        dropCapability(connect);
 
         try {
             stmt.execute("DROP TABLE PilotUnits");
@@ -1243,9 +1243,10 @@ public class DatabaseInitialization {
     }
 
     static void cleanPrevAirfield(Connection connect) {
-        cleanPrevLaunches(connect);
+        dropPrevLaunches(connect);
         dropPrevAirfield(connect);
         createPrevAirfieldInfo(connect);
+        createPreviousLaunches(connect);
     }
 
     public static void cleanDrum(Connection connect) {
@@ -1308,6 +1309,17 @@ public class DatabaseInitialization {
 
     static void cleanPilot(Connection connect) {
         dropPilot(connect);
+        createPilot(connect);
+    }
+
+    static void cleanCapability(Connection connect) {
+        dropPilot(connect);
+        dropPrevLaunches(connect);
+        dropPrevAirfield(connect);
+        dropCapability(connect);
+        createCapability(connect);
+        createPrevAirfieldInfo(connect);
+        createPreviousLaunches(connect);
         createPilot(connect);
     }
 

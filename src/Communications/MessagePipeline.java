@@ -136,7 +136,10 @@ public class MessagePipeline implements Runnable {
                         System.out.format("HANDSHAKE RCVD\n");
                         // Setup payload for the response to the handshake request
                         cmsg.pb[6+1] = (byte) working_burst_size;
-                        cmsg.pb[6+2] = (byte) launchparameter_flt.length;
+                        if(lpGen.CanGenerate())
+                            cmsg.pb[6+2] = (byte) launchparameter_flt.length;
+                        else
+                            cmsg.pb[6+2] = (byte) 0;
                         cmsg.pb[6+3] = 1;   // Version
                         SendCANmsg(cmsg);   // Send msg using gui selected CAN id
                     }
@@ -149,7 +152,8 @@ public class MessagePipeline implements Runnable {
                             System.out.format("Burst request index out-of-range %d\n", cmsg.pb[6+1]);
                         }
                         else{
-                            int idx = cmsg.pb[6+1];
+                            int idx = cmsg.pb[6+1] & 0xFF;// int idx = cmsg.pb[6+1] original adding this it works
+                            
                             System.out.format("idx = " + idx + "\n");
                             int ib = 0;
                             Canmsg2j cmsg_r = new Canmsg2j();

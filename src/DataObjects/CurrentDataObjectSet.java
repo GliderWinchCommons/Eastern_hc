@@ -264,14 +264,14 @@ public class CurrentDataObjectSet {
             return false;
         } else {
             boolean validate = instance.currentPilot == null ? false : instance.currentPilot.validate();
-            validate = validate && instance.currentSailplane == null ? false : instance.currentSailplane.validate();
-            validate = validate && instance.currentAirfield == null ? false : instance.currentAirfield.validate();
-            validate = validate && instance.currentRunway == null ? false : instance.currentRunway.validate();
-            validate = validate && instance.currentGliderPos == null ? false : instance.currentGliderPos.validate();
-            validate = validate && instance.currentWinchPos == null ? false : instance.currentWinchPos.validate();
-            validate = validate && instance.currentWinch == null ? false : instance.currentWinch.validate();
-            validate = validate && instance.currentDrum == null ? false : instance.currentDrum.validate();
-            validate = validate && instance.currentDrum == null || instance.currentDrum.getParachute() == null ? false : instance.currentDrum.getParachute().validate();
+            validate = validate && (instance.currentSailplane == null ? false : instance.currentSailplane.validate());
+            validate = validate && (instance.currentAirfield == null ? false : instance.currentAirfield.validate());
+            validate = validate && (instance.currentRunway == null ? false : instance.currentRunway.validate());
+            validate = validate && (instance.currentGliderPos == null ? false : instance.currentGliderPos.validate());
+            validate = validate && (instance.currentWinchPos == null ? false : instance.currentWinchPos.validate());
+            validate = validate && (instance.currentWinch == null ? false : instance.currentWinch.validate());
+            validate = validate && (instance.currentDrum == null ? false : instance.currentDrum.validate());
+            validate = validate && (instance.currentDrum == null || instance.currentDrum.getParachute() == null ? false : instance.currentDrum.getParachute().validate());
             return validate;
         }
     }

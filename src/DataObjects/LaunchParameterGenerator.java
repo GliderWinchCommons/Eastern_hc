@@ -117,7 +117,7 @@ public class LaunchParameterGenerator {
     public float[] GenerateParameters() {
         //temporary float arrray used for testing with paramters
 
-        float[] launchparameter_flt = new float[175];
+        float[] launchparameter_flt = new float[150];
         for (int x = 0; x < launchparameter_flt.length; x++) {
             launchparameter_flt[x] = (float) 0.1 + x;
         }

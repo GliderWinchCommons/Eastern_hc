@@ -13,9 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javax.swing.JPanel;
 
-public class AirfieldPanel extends JPanel implements Observer {
+public class AirfieldPanel implements Observer {
 
     private CurrentDataObjectSet currentData;
     private int airfieldAltitudeUnitsID;
