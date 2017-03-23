@@ -7,9 +7,13 @@ package reader;
  */
 
 import Factories.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -52,6 +56,8 @@ public class Controller
     CheckBox unknown_checkbox;
     @FXML
     Button applyFiltersBtn;
+    @FXML
+    ListView launches_list_view;
 
     private final ArrayList<CheckBox> filters = new ArrayList<>();
     private final String EXPORT_DELIMETER = " ";
@@ -62,6 +68,7 @@ public class Controller
     //messages deleted by any applied filters in the message display window.
     private ObservableList<Message> original_backup = FXCollections.observableArrayList();
     private ObservableList<Message> processed_messages = FXCollections.observableArrayList();
+    private ObservableList<String> launches = FXCollections.observableArrayList();
 
 
     private final int ID_OFFSET = 21;
@@ -201,6 +208,7 @@ public class Controller
     {
         try
         {
+            //int launch_number = 1;
             Message processed_row;
             Scanner input = new Scanner(log_file);
             int displayIndex = 0;
@@ -209,11 +217,31 @@ public class Controller
                 processed_row = processMessage(input.nextLine(), displayIndex);
                 if(processed_row != null)
                 {
+                    /*
+                    This is where you can add the functionality to identify launches as you process the messages
+
+                    if(launch found)
+                    {
+                        launches.add("Launch " + launch_number + ": Index " + displayIndex);
+                        launch_number++;
+                    }
+                     */
                     processed_messages.add(processed_row);
-//                  System.out.println(displayIndex);
                     displayIndex++;
                 }
             }
+
+            /*
+            here is where you will add the items to the choice box
+
+            launches_choice_box.getItems.addAll(launches);
+             */
+            //Below is some test code to test functionality of choice box to navigate to selected index.
+            //delete when real functionality is implemented.
+
+            launches.addAll("Launch 1: Index 300", "Launch 2: Index 1000", "Launch 3: Index 10");
+            launches_list_view.getItems().addAll(launches);
+
             initialize_table();
             original_backup.clear();
             original_backup.addAll(processed_messages);
@@ -437,5 +465,23 @@ public class Controller
             }
         }
     }
+
+    @FXML
+    private void go_to_selected_launch()
+    {
+        String selection = launches_list_view.getSelectionModel().getSelectedItem().toString();
+        String[] split_selection = selection.split(" ");
+        try
+        {
+            int index_of_launch = Integer.parseInt(split_selection[split_selection.length - 1]);
+            data_table.scrollTo(index_of_launch);
+        }
+        catch(NumberFormatException numEx)
+        {
+            System.out.println("Cannot parse " + split_selection[split_selection.length - 1]);
+        }
+    }
+
+
 
 }
