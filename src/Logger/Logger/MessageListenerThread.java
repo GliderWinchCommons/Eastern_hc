@@ -3,6 +3,10 @@ package Logger.Logger;
 import java.util.Queue;
 import java.util.Scanner;
 
+/**
+ * This class is dedicated to listening to a system message feed. One of these threads is spawned for each
+ * system in SystemsList.java.
+ */
 
 public class MessageListenerThread implements Runnable {
 
@@ -22,6 +26,11 @@ public class MessageListenerThread implements Runnable {
 
     }
 
+    /**
+     * loops endlessly listening to the message stream and grabbing each message from the stream and adding it
+     * into the queue that is being emptied by the LogThread until endLoop is called, which sets keepLooping to
+     * false and breaks the loop.
+     */
     public void run() {
         try {
             while (keepLooping) {
@@ -30,7 +39,6 @@ public class MessageListenerThread implements Runnable {
         } catch (Exception ex) {
             System.out.println("Error in " + threadName);
             System.out.println(ex.getMessage());
-            throw ex;
         }
     }
 

@@ -20,6 +20,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+/**
+ * This class is the Controller class for the Logger window.
+ */
+
 public class Logger {
 
     @FXML
@@ -55,16 +59,19 @@ public class Logger {
         };
     }
 
+    /**
+     * This is the primary function of the Logger. This creates the threads needed to listen to the systems
+     * that are listed in SystemsList.java and connects them to their sockets and then starts the logging process.
+     */
     @FXML
-    void connect_to_systems() {
-        //TODO Add error checking to protect against a null connection.
-        //TODO figure out how to fire this on the app launch
-        //TODO refactor start_logging method to accomodate new connection method.
+    private void connect_to_systems() {
         Scanner system_listener;
         SystemsList sys = new SystemsList();
+        //List of systems displays the systems that are connected in the GUI.
         list_of_systems = FXCollections.observableArrayList();
         system_listener_threads = new ArrayList<>();
         systems_list.getItems().clear();
+        //loops through and creates a thread for each system and then connects them.
         for (int i = 0; i < sys.systems.size(); i++) {
             system_listener = connect_to_socket("localhost", sys.systems.get(i).port);
             system_listener_threads.add(new MessageListenerThread(sys.systems.get(i).name,
@@ -112,6 +119,9 @@ public class Logger {
     void reset_logging() {
         try {
             stop_logging();
+            //The time unit here forces the application to wait to give the threads time to wrap up before
+            //connect to systems is called again. Without it connect to systems runs over the final
+            //processes of the threads and it does not start correctly.
             TimeUnit.MILLISECONDS.sleep(100);
             connect_to_systems();
         } catch (InterruptedException ex) {

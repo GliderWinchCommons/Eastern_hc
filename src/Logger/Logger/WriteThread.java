@@ -8,7 +8,7 @@ import java.util.Queue;
  */
 public class WriteThread implements Runnable {
 
-    String threadName;
+    private String threadName;
     Queue<String> toWrite;
     PrintWriter fout;
     Thread t;

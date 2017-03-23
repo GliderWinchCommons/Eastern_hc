@@ -22,6 +22,9 @@ public class LogThread implements Runnable {
     public void run() {
         try {
             while (keepLooping) {
+                //loops endlessly writing anything in the queue toWrite until endloop is called which
+                //sets keepLooping to false and breaks the while loop, after which the thread will finish emptying
+                //the queue and close.
                 while (!toWrite.isEmpty()) {
                     fout.println(toWrite.poll());
                     fout.flush();
@@ -34,7 +37,8 @@ public class LogThread implements Runnable {
             }
             fout.flush();
         } catch (Exception ex) {
-            throw ex;
+            System.out.println("Error in LogThread");
+            System.out.println(ex.getMessage());
         }
     }
 

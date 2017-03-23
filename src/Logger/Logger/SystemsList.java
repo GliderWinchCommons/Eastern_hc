@@ -3,19 +3,22 @@ package Logger.Logger;
 import java.util.*;
 
 /**
- * Created by gm14793 on 1/30/17.
+ * This class is dedicated as a reference class for the Systems to be logged. Up to 10 systems are supported at
+ * this time. The list below can be added to or removed from as needed. Just adjust the port numbers and the
+ * address in connect_to_systems() in Logger.java as needed and the application will take care of the rest.
  */
 public class SystemsList {
 
     public final List<System> systems = new ArrayList<>();
 
     public SystemsList() {
-        systems.add(new System(0, "System_A", 32123));
-        systems.add(new System(10, "System_B", 32123));
-        systems.add(new System(11, "System_C", 32123));
-        systems.add(new System(12, "System_D", 32123));
-        systems.add(new System(13, "System_E", 32123));
-        systems.add(new System(14, "System_F", 32123));
+        //System ID and name can be whatever you want. The application will not be affected by changing them.
+        systems.add(new System(0, "System_0", 32123));
+        systems.add(new System(1, "System_1", 32123));
+        systems.add(new System(2, "System_2", 32123));
+        systems.add(new System(3, "System_3", 32123));
+        systems.add(new System(4, "System_4", 32123));
+        systems.add(new System(5, "System_5", 32123));
 
     }
 
