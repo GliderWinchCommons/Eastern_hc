@@ -31,7 +31,6 @@ public class ProfileManagementFrame implements Observer {
     @FXML
     private Label operatorNameLabel;
 
-    private Observer parent;
     private ProfilePilotPanel ProfilePilotPanel;
     private ProfileGliderPanel ProfileGliderPanel;
     private ProfileAirfieldPanel ProfileAirfieldPanel;
@@ -93,13 +92,9 @@ public class ProfileManagementFrame implements Observer {
     private int temperatureUnitsID;
     private int windDirectionUnitsID;
 
-    private OperatorLoginPanel loginPanel;
+    private SubScene loginPanel;
 
-    public void setParent(Observer p) {
-        parent = p;
-    }
-
-    public ProfileManagementFrame(OperatorLoginPanel loginPanel) {
+    public ProfileManagementFrame(SubScene loginPanel) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         this.loginPanel = loginPanel;
     }
@@ -137,8 +132,8 @@ public class ProfileManagementFrame implements Observer {
     }
 
     @FXML
-    public void SwitchProfileButton_Click(ActionEvent e) {
-        loginPanel.update();
+    public void CancelButton_Click(ActionEvent e) {
+        loginPanel.toFront();
     }
 
     @FXML
@@ -171,6 +166,7 @@ public class ProfileManagementFrame implements Observer {
         currentProfile_.setUnitSetting("runDirection", UnitConversionToIndexUtilities.degreesUnitStringToIndex(runDirectionUnits));
         currentProfile_.setUnitSetting("windDirection", UnitConversionToIndexUtilities.degreesUnitStringToIndex(windDirectionUnits));
         currentData.setCurrentProfile(currentProfile_);
+        loginPanel.toFront();
         try {
             DatabaseEntryEdit.UpdateEntry(currentProfile_);
         } catch (Exception e) {
@@ -337,6 +333,7 @@ public class ProfileManagementFrame implements Observer {
         loader.setController(ProfileOtherPanel);
         root = loader.load();
         profileOtherPanel.setRoot(root);
+
         Rebuild();
     }
 
@@ -370,7 +367,9 @@ public class ProfileManagementFrame implements Observer {
 
     @Override
     public void update() {
-        Rebuild();
+        if (currentData.getCurrentProfile() != null) {
+            Rebuild();
+        }
     }
 
     @Override

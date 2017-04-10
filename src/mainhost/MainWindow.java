@@ -15,6 +15,7 @@ import ParameterSelection.CurrentScenario;
 import ParameterSelection.DEBUGWinchEditPanel;
 import ParameterSelection.EnvironmentalWindow;
 import ParameterSelection.ParameterSelectionPanel;
+import Winch.AddEditWinchPanel;
 import Winch.WinchPanel;
 import java.awt.*;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -92,11 +94,6 @@ public class MainWindow {
         currentData.setCurrentProfile(defaultProfile);
     }
 
-    //TODO (jtroxel): remove this guy...necessary?
-    public static void run() {
-
-    }
-
     //==============================================================================================================================================================================================
     @FXML
     TabPane tabPane;
@@ -114,6 +111,8 @@ public class MainWindow {
     SubScene profileManagementFrame;
     @FXML
     SubScene winchSubScene;
+    @FXML
+    SubScene addEditWinchSubScene;
 
     @FXML
     LineChart lineChart;
@@ -124,6 +123,21 @@ public class MainWindow {
 
     @FXML
     Pane mainPane;
+
+    @FXML
+    private Tab currentScenarioTab;
+    @FXML
+    private Tab recentLaunchesTab;
+    @FXML
+    private Tab flightDashboardTab;
+    @FXML
+    private Tab editWinchTab;
+    @FXML
+    private Tab loggerTab;
+    @FXML
+    private Tab operatorTab;
+    @FXML
+    private Tab replaysTab;
 
     public static final int BASE_WIDTH = 1100, BASE_HEIGHT = 825, WIDTH_OFFSET = 16, HEIGHT_OFFSET = 39;
     public static final double WIDTH_TO_HEIGHT_RATIO = .75;
@@ -151,7 +165,15 @@ public class MainWindow {
         Parent root = loader.load();
         newOperatorScene.setRoot(root);
 
-        OperatorLoginPanel operatorLoginPanel = new OperatorLoginPanel(tabPane, loginSubScene, newOperatorPanel);
+        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileManagementFrame.fxml"));
+        ProfileManagementFrame managementFrame = new ProfileManagementFrame(loginSubScene);
+        currentData.attach(managementFrame);
+        //operatorLoginPanel.attach(managementFrame);
+        loader.setController(managementFrame);
+        root = loader.load();
+        profileManagementFrame.setRoot(root);
+
+        OperatorLoginPanel operatorLoginPanel = new OperatorLoginPanel(this, loginSubScene, newOperatorPanel, profileManagementFrame);
         newOperatorPanel.attach(operatorLoginPanel);
         loader = new FXMLLoader(getClass().getResource("/Configuration/OperatorLoginPanel.fxml"));
         loader.setController(operatorLoginPanel);
@@ -165,32 +187,32 @@ public class MainWindow {
         root = loader.load();
         currentScenario.setRoot(root);
 
-        loader = new FXMLLoader(getClass().getResource("/ParameterSelection/EnvironmentalWindowScene.fxml"));
-        EnvironmentalWindow_ = new EnvironmentalWindow();
-        loader.setController(EnvironmentalWindow_);
+        loader = new FXMLLoader(getClass().getResource("/Winch/AddEditWinchPanel.fxml"));
+        AddEditWinchPanel addEditWinch = new AddEditWinchPanel(winchSubScene);
+        loader.setController(addEditWinch);
         root = loader.load();
-        environmentalWindowScene.setRoot(root);
+        addEditWinchSubScene.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/Winch/WinchPanel.fxml"));
-        WinchPanel wp = new WinchPanel();
+        WinchPanel wp = new WinchPanel(addEditWinchSubScene, addEditWinch);
         loader.setController(wp);
         root = loader.load();
         winchSubScene.setRoot(root);
+
+        currentData.attach(addEditWinch);
+        currentData.attach(wp);
+
+        loader = new FXMLLoader(getClass().getResource("/ParameterSelection/EnvironmentalWindowScene.fxml"));
+        EnvironmentalWindow_ = new EnvironmentalWindow();
+        loader.setController(EnvironmentalWindow_);
+        currentData.attach(EnvironmentalWindow_);
+        root = loader.load();
+        environmentalWindowScene.setRoot(root);
 
         loader = new FXMLLoader(getClass().getResource("/Logger/gui/loggerui.fxml"));
         loader.setController(new Logger());
         root = loader.load();
         loggerScene.setRoot(root);
-
-        loader = new FXMLLoader(getClass().getResource("/Configuration/ProfileManagementFrame.fxml"));
-        ProfileManagementFrame managementFrame = new ProfileManagementFrame(operatorLoginPanel);
-        currentData.attach(managementFrame);
-        //operatorLoginPanel.attach(managementFrame);
-        loader.setController(managementFrame);
-        root = loader.load();
-        profileManagementFrame.setRoot(root);
-
-        loginSubScene.toFront();
 
         mainPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             if (theStage.getWidth() > 0) {
@@ -206,5 +228,16 @@ public class MainWindow {
                 mainPane.setTranslateY(-(mainPane.getHeight() - scale * mainPane.getHeight()) / 2);
             }
         });
+        tabPane.getSelectionModel().select(operatorTab);
+        enableTabs(false);
+    }
+
+    public void enableTabs(boolean value) {
+        currentScenarioTab.disableProperty().set(!value);
+        recentLaunchesTab.disableProperty().set(!value);
+        flightDashboardTab.disableProperty().set(!value);
+        editWinchTab.disableProperty().set(!value);
+        loggerTab.disableProperty().set(!value);
+        replaysTab.disableProperty().set(!value);
     }
 }

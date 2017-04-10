@@ -6,9 +6,17 @@
 package mainhost;
 
 import Communications.MessagePipeline;
+import Configuration.OperatorLoginPanel;
+import DataObjects.CurrentDataObjectSet;
+import DataObjects.Operator;
+import DataObjects.Winch;
 import static DatabaseUtilities.DatabaseVerification.verifyDatabase;
+import com.sun.javafx.binding.StringFormatter;
+import java.awt.event.ActionEvent;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -18,12 +26,14 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.swing.Timer;
 
 public class Main extends Application {
 
@@ -37,11 +47,24 @@ public class Main extends Application {
         MainWindow mainWindow = new MainWindow(primaryStage);
         loader.setController(mainWindow);
         Parent root = loader.load();
-        primaryStage.setTitle("Host Controller");
         Scene theScene = new Scene(root, MainWindow.BASE_WIDTH, MainWindow.BASE_HEIGHT);
         adjustFont(theScene);
         isScaling = new AtomicInteger(0);
         widthCount = 0;
+
+        Timer time = new Timer(1000, (ActionEvent e) -> {
+            Platform.runLater(() -> {
+                Operator operator = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentProfile();
+                Winch winch = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
+                if (operator != null) {
+                    operator = OperatorLoginPanel.isLoggedIn() ? operator : null;
+                }
+                primaryStage.setTitle(StringFormatter.format("%85s%51s%55s", Calendar.getInstance().getTime(),
+                        "Operator: " + (operator == null ? "Not Selected" : operator.getFirst() + " " + operator.getMiddle() + " " + operator.getLast()),
+                        "Winch: " + (winch == null ? "Not Selected" : winch.getName())).getValue());
+            });
+        });
+        time.start();
 
         MessagePipeline pipe = MessagePipeline.getInstance();
         pipe.connect("127.0.0.1", 32123);
@@ -53,19 +76,6 @@ public class Main extends Application {
             System.exit(0);
         });
         primaryStage.show();
-    }
-
-    private synchronized void scaleWindow(double newValue, boolean isWidth, Stage primaryStage) {
-        if (isScaling.get() == 0 && primaryStage.getWidth() > 0 && primaryStage.getHeight() > 0) {
-            isScaling.set(2);
-            if (isWidth) {
-                primaryStage.setHeight(newValue * MainWindow.WIDTH_TO_HEIGHT_RATIO + MainWindow.HEIGHT_OFFSET);
-            } else {
-                primaryStage.setWidth(newValue * MainWindow.HEIGHT_TO_WIDTH_RATIO + MainWindow.WIDTH_OFFSET);
-            }
-        } else if (isScaling.get() > 0) {
-            isScaling.getAndDecrement();
-        }
     }
 
     public static void main(String[] args) {
@@ -121,7 +131,6 @@ public class Main extends Application {
             } else if (currentChild instanceof TextField) {
                 TextField tf = (TextField) currentChild;
                 tf.setStyle(applyFontProportions(tf.getStyle()));
-
             } else if (currentChild instanceof Label) {
                 Label l = (Label) currentChild;
                 if (l.getText().equalsIgnoreCase("Run Description")) {
@@ -131,6 +140,9 @@ public class Main extends Application {
             } else if (currentChild instanceof Button) {
                 Button b = (Button) currentChild;
                 b.setStyle(applyFontProportions(b.getStyle()));
+            } else if (currentChild instanceof RadioButton) {
+                RadioButton rb = (RadioButton) currentChild;
+                rb.setStyle(applyFontProportions(rb.getStyle()));
             } else if (currentChild instanceof TabPane) {
                 ajustFontForTabPane((TabPane) currentChild);
             } else if (currentChild instanceof SubScene) {

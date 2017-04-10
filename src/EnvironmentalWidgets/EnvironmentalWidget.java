@@ -6,10 +6,12 @@
 package EnvironmentalWidgets;
 
 import Communications.Observer;
+import DataObjects.CurrentDataObjectSet;
+import DataObjects.Winch;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
@@ -28,7 +30,7 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
     protected CheckBox isEditable;
     protected Label unit;
     protected int unitId;
-    private Timer resetTimer;
+    private Timer checkTimer, verifyTimer;
 
     public EnvironmentalWidget(TextField field, CheckBox edit, Label unit) {
         this.field = field;
@@ -41,11 +43,12 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
                     if (field.editableProperty().getValue()) {
                         if (newValue == true) {
                             field.setStyle("");
-                            resetTimer.stop();
+                            checkTimer.stop();
+                            verifyTimer.stop();
                         } else {
                             try {
                                 Number d = DecimalFormat.getInstance().parse(field.getText());
-                                resetTimer.start();
+                                checkTimer.restart();
                             } catch (ParseException ex) {
                                 field.setStyle("-fx-border-color: red;");
                             }
@@ -53,17 +56,39 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
                     }
                 }
             });
+            Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
+            //get check time if available, otherwise default is 60 seconds
+            //multiply by 1000 to get milliseconds
+            checkTimer = getCheckTimer();
+            checkTimer.start();
 
-            ActionListener action = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    field.setStyle("-fx-border-color: red;");
-                }
-            };
-            resetTimer = new Timer(5000, action);
-            resetTimer.start();
+            //get check time if available, otherwise default is 60 seconds
+            verifyTimer = getVerifyTimer();
+
         }
         setupUnits();
+    }
+
+    private Timer getCheckTimer() {
+        Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
+        return new Timer((temp != null ? temp.getMeteorological_check_time() : 60) * 1000, (ActionEvent e) -> {
+            Platform.runLater(() -> {
+                field.setStyle("-fx-border-color: gold;");
+                checkTimer.stop();
+                verifyTimer.restart();
+            });
+        });
+    }
+
+    private Timer getVerifyTimer() {
+        Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
+        return new Timer((temp != null ? temp.getMeteorological_verify_time() : 60) * 1000, (ActionEvent e) -> {
+            Platform.runLater(() -> {
+                field.setStyle("");
+                field.setStyle("-fx-border-color: red;");
+                verifyTimer.stop();
+            });
+        });
     }
 
     public String getFieldValue() {
@@ -77,6 +102,25 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
     public boolean validateWidget() {
         //return !(field.getStyle().equals("-fx-border-color: red;"));
         return true;
+    }
+
+    public void updateTimers() {
+        if (checkTimer != null) {
+            Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
+            //get check time if available, otherwise default is 60 seconds
+            //multiply by 1000 to get milliseconds
+            int checkDelay = (temp != null ? temp.getMeteorological_check_time() : 60) * 1000;
+            //get check time if available, otherwise default is 60 seconds
+            int verifyDelay = (temp != null ? temp.getMeteorological_verify_time() : 60) * 1000;
+
+            if (checkTimer.getDelay() != checkDelay || verifyTimer.getDelay() != verifyDelay) {
+                checkTimer = getCheckTimer();
+                verifyTimer = getVerifyTimer();
+                checkTimer.restart();
+                verifyTimer.stop();
+                field.setStyle("");
+            }
+        }
     }
 
     @Override
