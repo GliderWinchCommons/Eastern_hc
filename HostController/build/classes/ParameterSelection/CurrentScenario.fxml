@@ -16,16 +16,6 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SubScene fx:id="parachuteAddEditPanel" height="599.0" width="800.0">
-         <root>
-            <Region />
-         </root>
-      </SubScene>
-      <SubScene fx:id="drumAddEditPanel" height="599.0" width="800.0">
-         <root>
-            <Region />
-         </root>
-      </SubScene>
       <SubScene fx:id="winchPositionAddEditPanel" height="599.0" width="800.0">
         <root>
           <Region />

@@ -4,7 +4,6 @@ package AddEditPanels;
 import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.Airfield;
-import DataObjects.CurrentDataObjectSet;
 import DatabaseUtilities.DatabaseEntryDelete;
 import DatabaseUtilities.DatabaseEntryEdit;
 import DatabaseUtilities.DatabaseEntryIdCheck;
@@ -64,7 +63,6 @@ public class AddEditAirfieldFrame extends AddEditPanel {
     }
 
     public void edit(Airfield editAirfield) {
-        currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editAirfield != null;

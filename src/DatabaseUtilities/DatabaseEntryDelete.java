@@ -6,10 +6,9 @@
 package DatabaseUtilities;
 
 import static Communications.ErrorLogger.logError;
-import java.sql.*;
-
 import DataObjects.*;
 import static DatabaseUtilities.DatabaseInitialization.connect;
+import java.sql.*;
 import javafx.scene.control.Alert;
 
 /**
@@ -30,6 +29,21 @@ public class DatabaseEntryDelete {
      * they are used to delete table entries that have a specific data object
      * attached to it. return's true if delete was successful, false if not
      */
+    public static boolean DeleteEntry(Operator operator) {
+        try (Connection conn = connect()) {
+            if (conn == null) {
+                return false;
+            }
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Operator WHERE operator_id = ?");
+            stmt.setInt(1, operator.getID());
+            return Delete(stmt);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not delete Operator, Check Error Log").showAndWait();
+            logError(e);
+        }
+        return false;
+    }
+
     public static boolean DeleteEntry(Pilot pilot) {
         try (Connection conn = connect()) {
             if (conn == null) {

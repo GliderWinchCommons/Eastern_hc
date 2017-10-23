@@ -6,10 +6,9 @@
 package DatabaseUtilities;
 
 import static Communications.ErrorLogger.logError;
-import java.sql.*;
-
 import DataObjects.*;
 import static DatabaseUtilities.DatabaseInitialization.connectEx;
+import java.sql.*;
 import javafx.scene.control.Alert;
 
 /**
@@ -28,7 +27,7 @@ public class DatabaseEntryIdCheck {
         return result;
     }
 
-    /* These methods will make sure that the randomly generated IDs 
+    /* These methods will make sure that the randomly generated IDs
      * for each data object is a unique primary key
      */
     public static boolean IdCheck(Pilot pilot) throws SQLException, ClassNotFoundException {

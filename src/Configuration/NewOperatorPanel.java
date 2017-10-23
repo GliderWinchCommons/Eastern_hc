@@ -25,7 +25,6 @@ import javafx.scene.control.TextField;
 
 public class NewOperatorPanel {
 
-    private OperatorLoginPanel login;
     private static SubScene newOperatorPanel;
 
     private static boolean isAdmin;
@@ -84,6 +83,7 @@ public class NewOperatorPanel {
         firstNameTextField.setStyle("");
         middleNameTextField.setStyle("");
         lastNameTextField.setStyle("");
+        passwordErrorLabel.visibleProperty().set(false);
     }
 
     @FXML
@@ -98,7 +98,6 @@ public class NewOperatorPanel {
                         isAdmin, infoBox.getText(),
                         "{}");
                 DatabaseEntryInsert.addOperatorToDB(theOperator, password.getText());
-                currentData.setCurrentProfile(theOperator);
             } else {
                 try {
                     theOperator = new Operator(theOperator.getID(), theOperator.getFirst(), theOperator.getMiddle(), theOperator.getLast(), theOperator.getAdmin(), theOperator.getInfo(), theOperator.getUnitSettingsForStorage());
@@ -112,6 +111,7 @@ public class NewOperatorPanel {
                     Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            currentData.setCurrentProfile(theOperator);
             parent.update();
         }
     }
@@ -129,7 +129,7 @@ public class NewOperatorPanel {
             passwordErrorLabel.visibleProperty().set(true);
             retypedPassword.setStyle("-fx-border-color:red;");
         } else {
-            passwordErrorLabel.visibleProperty().set(true);
+            passwordErrorLabel.visibleProperty().set(false);
             retypedPassword.setStyle("");
         }
 

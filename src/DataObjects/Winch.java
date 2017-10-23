@@ -21,9 +21,11 @@ public class Winch {
     //16 parameters set by an administrator
     private float w1, w2, w3, w4, w5, w6, w7, w8,
             w9, w10, w11, w12, w13, w14, w15, w16;
+
     private int meteorological_check_time;      //time before operator is warned about old data
     private int meteorological_verify_time;     //time before operator is forced to check old data
     private float run_orientation_tolerance;    //TODO Remeber what this did
+
     private String info;
     //private List<Drum> driveList;
 
@@ -61,6 +63,98 @@ public class Winch {
         this.meteorological_verify_time = mvt;
         this.run_orientation_tolerance = rot;
         this.info = info;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public void setW1(float w1) {
+        this.w1 = w1;
+    }
+
+    public void setW2(float w2) {
+        this.w2 = w2;
+    }
+
+    public void setW3(float w3) {
+        this.w3 = w3;
+    }
+
+    public void setW4(float w4) {
+        this.w4 = w4;
+    }
+
+    public void setW5(float w5) {
+        this.w5 = w5;
+    }
+
+    public void setW6(float w6) {
+        this.w6 = w6;
+    }
+
+    public void setW7(float w7) {
+        this.w7 = w7;
+    }
+
+    public void setW8(float w8) {
+        this.w8 = w8;
+    }
+
+    public void setW9(float w9) {
+        this.w9 = w9;
+    }
+
+    public void setW10(float w10) {
+        this.w10 = w10;
+    }
+
+    public void setW11(float w11) {
+        this.w11 = w11;
+    }
+
+    public void setW12(float w12) {
+        this.w12 = w12;
+    }
+
+    public void setW13(float w13) {
+        this.w13 = w13;
+    }
+
+    public void setW14(float w14) {
+        this.w14 = w14;
+    }
+
+    public void setW15(float w15) {
+        this.w15 = w15;
+    }
+
+    public void setW16(float w16) {
+        this.w16 = w16;
+    }
+
+    public int getMeteorological_check_time() {
+        return meteorological_check_time;
+    }
+
+    public void setMeteorological_check_time(int meteorological_check_time) {
+        this.meteorological_check_time = meteorological_check_time;
+    }
+
+    public int getMeteorological_verify_time() {
+        return meteorological_verify_time;
+    }
+
+    public void setMeteorological_verify_time(int meteorological_verify_time) {
+        this.meteorological_verify_time = meteorological_verify_time;
+    }
+
+    public float getRun_orientation_tolerance() {
+        return run_orientation_tolerance;
+    }
+
+    public void setRun_orientation_tolerance(float run_orientation_tolerance) {
+        this.run_orientation_tolerance = run_orientation_tolerance;
     }
 
     //getters and setters

@@ -54,6 +54,7 @@ public class EnvironmentalWindow implements Observer {
         for (EnvironmentalWidget ew : widgets) {
             ew.update();
             ew.setupUnits();
+            ew.updateTimers();
         }
     }
 
