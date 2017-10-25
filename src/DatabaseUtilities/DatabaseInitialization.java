@@ -14,7 +14,8 @@ public class DatabaseInitialization {
     public static final String HOSTCONTROLLER_VERSION = "3.0.0";
     public static final String DATABASE_VERSION = "4.0.0";
     public static final String WINCH_PRAM_VERSION = "1.0.0";
-    static final String databaseConnectionName = "jdbc:derby:hcDatabase;create=true;";
+    //static final String databaseConnectionName = "jdbc:derby:hcDatabase;create=true;";
+    static final String databaseConnectionName = "jdbc:derby://localhost:1527/hcDatabase;create=true;";//This will hopefully be a general fix for everyone -Alex M.
     static final String clientDriverName = "org.apache.derby.jdbc.ClientDriver";
     static final String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
 
