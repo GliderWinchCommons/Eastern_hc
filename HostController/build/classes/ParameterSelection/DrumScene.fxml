@@ -46,12 +46,12 @@
                   <Font name="SansSerif Bold" size="38.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="118.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Add New Drum" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Button mnemonicParsing="false" onAction="#NewDrumButton_Click" prefHeight="60.0" prefWidth="118.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Add New Drum" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="118.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Drum" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Button mnemonicParsing="false" onAction="#EditDrumButton_Click" prefHeight="60.0" prefWidth="118.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Drum" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
@@ -225,7 +225,7 @@
                            <font>
                               <Font name="SansSerif Bold" size="16.0" />
                            </font></Label>
-                        <Label fx:id="numLanuchesLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
+                        <Label fx:id="numLaunchesLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Label">
                            <FlowPane.margin>
                               <Insets />
                            </FlowPane.margin>

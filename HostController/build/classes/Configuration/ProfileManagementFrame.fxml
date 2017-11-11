@@ -39,7 +39,7 @@
       <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Label fx:id="operatorNameLabel" style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Operator Name" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+      <Label fx:id="operatorNameLabel" style="-fx-font-size: 3.16em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Operator Name" GridPane.columnSpan="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <font>
             <Font size="48.0" />
          </font>
@@ -141,7 +141,6 @@
       </TabPane>
       <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SwitchProfileButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Choose Different Profile" textAlignment="CENTER" wrapText="true" />
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#SaveButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Save" textAlignment="CENTER" wrapText="true" />
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ResetButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Reset to default" textAlignment="CENTER" wrapText="true">
                <contextMenu>
@@ -152,6 +151,7 @@
                   </ContextMenu>
                </contextMenu>
             </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#CancelButton_Click" prefHeight="55.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Cancel" textAlignment="CENTER" wrapText="true" />
          </children>
       </FlowPane>
    </children>
