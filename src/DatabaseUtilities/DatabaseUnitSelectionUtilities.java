@@ -4,15 +4,27 @@
  * and open the template in the editor.
  */
 
-package DatabaseUtilities;
+/*
+ *  NOTE:
+ *  As of 11/17/2017 this class is considered depricated and all units will be
+ *  hardcoded instead of stored in a database. I could not find any instances
+ *  of these methods being called regardless, so it shouldn't impact program
+ *  operations.
+ *  Also, all associated databases have been deleted. If they end up being 
+ *  necessary, execute the fullcommand.txt SQL statement with the appropriate
+ *  tables commented back in.
+ *  -Alex McCanna
+ */
 
+package DatabaseUtilities;
+/*
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-
+*/
 /**
  * A class that provides the means to get and set the units for all the major 
  * components of the program
@@ -27,7 +39,8 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Pilot weight
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getPilotWeightUnit() throws ClassNotFoundException {
+    
+    /*public static int getPilotWeightUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -58,7 +71,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessorss for retrieving the units for Sailplane weight
@@ -66,7 +79,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Sailplane weight
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getSailplaneWeightUnit() throws ClassNotFoundException {
+    /*public static int getSailplaneWeightUnit() throws ClassNotFoundException {
        int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -97,7 +110,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessorss for retrieving the units for Sailplane velocity
@@ -105,7 +118,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Sailplane velocity
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getSailplaneVelocityUnit() throws ClassNotFoundException {
+    /*public static int getSailplaneVelocityUnit() throws ClassNotFoundException {
        int velocityUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -136,7 +149,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return velocityUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Sailplane tension
@@ -144,7 +157,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Sailplane tension
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getSailplaneTensionUnit() throws ClassNotFoundException {
+    /*public static int getSailplaneTensionUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -175,7 +188,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Airfield distance
@@ -183,7 +196,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Airfield distance
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getAirfieldDistanceUnit() throws ClassNotFoundException {
+    /*public static int getAirfieldDistanceUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -214,7 +227,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Position distance
@@ -222,7 +235,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Position distance
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getPositionDistanceUnit() throws ClassNotFoundException {
+    /*public static int getPositionDistanceUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -253,7 +266,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Dashboard distance
@@ -261,7 +274,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Dashboard distance
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getDashboardDistanceUnit() throws ClassNotFoundException {
+    /*public static int getDashboardDistanceUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -292,7 +305,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Dashboard tension
@@ -300,7 +313,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Dashboard tension
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getDashboardTensionUnit() throws ClassNotFoundException {
+    /*public static int getDashboardTensionUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -331,7 +344,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Dashboard velocity
@@ -339,7 +352,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Dashboard velocity
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getDashboardVelocityUnit() throws ClassNotFoundException {
+    /*public static int getDashboardVelocityUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -370,7 +383,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Environmental temperature
@@ -378,7 +391,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Environmental temperature
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getEnvironmentalTempUnit() throws ClassNotFoundException {
+    /*public static int getEnvironmentalTempUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -409,7 +422,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     /**
      * accessors for retrieving the units for Environmental pressure
@@ -417,7 +430,7 @@ public class DatabaseUnitSelectionUtilities {
      * @return units for Environmental pressure
      * @throws ClassNotFoundException if Database driver classes not found
      */
-    public static int getEnvironmentalPressureUnit() throws ClassNotFoundException {
+    /*public static int getEnvironmentalPressureUnit() throws ClassNotFoundException {
         int weightUnit = 0;
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -448,7 +461,7 @@ public class DatabaseUnitSelectionUtilities {
             return -1;            
         }
         return weightUnit;
-    }
+    }*/
     
     
     
@@ -460,7 +473,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storePilotUnits(int unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storePilotUnits(int unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -483,7 +496,7 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
     
     /**
      * Method for setting the units for a Sailplane in the database
@@ -492,7 +505,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storeSailplanesUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storeSailplanesUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -517,7 +530,7 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
     
     /**
      * Method for setting the units for an Airfield in the database
@@ -526,7 +539,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storeAirfieldUnits(int unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storeAirfieldUnits(int unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -549,7 +562,7 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
     
     /**
      * Method for setting the units for a Position in the database
@@ -558,7 +571,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storePositionUnits(int unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storePositionUnits(int unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -581,7 +594,7 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
     
     /**
      * Method for setting the units for the Dashboard in the database
@@ -590,7 +603,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storeDashboardUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storeDashboardUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -615,7 +628,7 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
     
     /**
      * Method for setting the units for the Environmental variables in the database
@@ -624,7 +637,7 @@ public class DatabaseUnitSelectionUtilities {
      * @throws ClassNotFoundException if the program can't load the Apache Derby drivers
      * @throws SQLException if the table in the database can't be modified
      */
-    public static void storeEnvironmentalUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
+    /*public static void storeEnvironmentalUnits(int[] unitIndex) throws ClassNotFoundException, SQLException {
         //Check for DB drivers
         try{
             //Class derbyClass = RMIClassLoader.loadClass("lib/", "derby.jar");
@@ -648,5 +661,5 @@ public class DatabaseUnitSelectionUtilities {
         }catch(SQLException e) {
             throw e;
         }
-    }
+    }*/
 }
