@@ -27,6 +27,11 @@ public class NewOperatorPanel {
 
     private static SubScene newOperatorPanel;
 
+    @FXML
+    private Label adminLabel;
+    @FXML
+    private Label operatorLabel;
+    
     private static boolean isAdmin;
     @FXML
     private Label passwordErrorLabel;
@@ -54,6 +59,14 @@ public class NewOperatorPanel {
     }
 
     public void addOperator(boolean admin, Operator operator, String pass) {
+        if(admin == true) {
+            adminLabel.setVisible(true);
+            operatorLabel.setVisible(false);
+        }
+        else {
+            adminLabel.setVisible(false);
+            operatorLabel.setVisible(true);
+        }
         isAdmin = admin;
         theOperator = operator;
         loadData(pass);
