@@ -18,6 +18,7 @@ public class Operator {
     private String middleName;                      //Operators' middle name
     private String lastName;                        //Operators' last name
     private boolean admin;                          //Operators' privlige level
+    private String title;
     private String info;
     private HashMap<String,Integer> unitSettings;   //Unit display preferences
     
@@ -29,6 +30,7 @@ public class Operator {
         middleName = "";
         lastName = "Mochizuki";
         admin = true;
+        title = "Administrator";
         info = "This is a temporary administrator account, it should not be saved.";
         initSettingsFromString("{}");
     }
@@ -40,6 +42,7 @@ public class Operator {
         middleName = "";
         lastName = "";
         admin = false;
+        title = "Operator";
         info = "";
         initSettingsFromString(settings);
     }
@@ -50,6 +53,7 @@ public class Operator {
         middleName = "";
         lastName = "";
         admin = false;
+        title = "Operator";
         info = "";
         initSettingsFromString(settings);
     }
@@ -58,6 +62,14 @@ public class Operator {
         lastName = l;
         middleName = m;
         this.admin = admin;
+        
+        if(admin) {
+            title = "Administrator";
+        }
+        else {
+            title = "Operator";
+        }
+        
         this.info = info;
         unitSettings = new HashMap();
         this.id = id;
@@ -112,6 +124,10 @@ public class Operator {
     
     public boolean getAdmin() {
         return admin;
+    }
+    
+    public String getTitle() {
+        return title;
     }
     
     public String getFirst() {

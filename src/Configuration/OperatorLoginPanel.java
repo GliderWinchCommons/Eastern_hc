@@ -124,14 +124,16 @@ public class OperatorLoginPanel implements Observer {
             nameLabel.setText(currentData.getCurrentProfile().getFirst() + " "
                     + currentData.getCurrentProfile().getMiddle() + " "
                     + currentData.getCurrentProfile().getLast());
-            adminLabel.visibleProperty().set(currentData.getCurrentProfile().getAdmin());
+            //adminLabel.visibleProperty().set(currentData.getCurrentProfile().getAdmin());
+            adminLabel.setText("(" + currentData.getCurrentProfile().getTitle() + ")");
             infoBox.setText(currentData.getCurrentProfile().getInfo());
             newAdminButton.disableProperty().set(!currentData.getCurrentProfile().getAdmin());
             deleteButton.disableProperty().set(newAdminButton.disableProperty().getValue());
             //showPasswordButton.disableProperty().set(newAdminButton.disableProperty().getValue());
         } else {
-            nameLabel.setText("");
-            adminLabel.visibleProperty().set(false);
+            nameLabel.setText("Name");
+            //adminLabel.visibleProperty().set(false);
+            adminLabel.setText("(Title)");
             infoBox.setText("");
             newAdminButton.disableProperty().set(true);
             deleteButton.disableProperty().set(true);
@@ -160,7 +162,7 @@ public class OperatorLoginPanel implements Observer {
 
     @FXML
     private void EditOperatorButton_Click(ActionEvent e) {
-        newOperatorPanel.addOperator(false, currentData.getCurrentProfile(), password);
+        newOperatorPanel.addOperator(currentData.getCurrentProfile().getAdmin(), currentData.getCurrentProfile(), password);
     }
 
     @FXML
@@ -179,6 +181,8 @@ public class OperatorLoginPanel implements Observer {
         editSettingsButton.setDisable(true);
         loggedIn = false;
         currentOperator = null;
+        
+        loadData();
     }
 
     @FXML

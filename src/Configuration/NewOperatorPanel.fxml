@@ -30,7 +30,8 @@
       <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <Label style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Operator" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Label fx:id="operatorLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Operator" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" visible="true" />
+      <Label fx:id="adminLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Admin" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" visible="false" />
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="177.0" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="First Name" />
@@ -70,7 +71,7 @@
       </FlowPane>
       <FlowPane alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6">
          <children>
-            <Button mnemonicParsing="false" onAction="#CreateButton_Click" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Create" />
+            <Button mnemonicParsing="false" onAction="#CreateButton_Click" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Save" />
             <Button mnemonicParsing="false" onAction="#CancelButton_Click" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Cancel" />
          </children>
       </FlowPane>

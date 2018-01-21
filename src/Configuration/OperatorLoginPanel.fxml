@@ -79,7 +79,7 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label fx:id="adminLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="(Administrator)">
+                  <Label fx:id="adminLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="(Title)">
                      <font>
                         <Font size="16.0" />
                      </font>

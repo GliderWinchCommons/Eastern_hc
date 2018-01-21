@@ -58,6 +58,29 @@
       </SubScene>
       <TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
+            <Tab fx:id="operatorTab" text="Operator">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SubScene fx:id="profileManagementFrame" height="599.0" width="800.0">
+                          <root>
+                            <Region />
+                          </root>
+                        </SubScene>
+                        <SubScene fx:id="newOperatorScene" height="628.0" width="800.0">
+                           <root>
+                              <Region />
+                           </root>
+                        </SubScene>
+                        <SubScene fx:id="loginSubScene" height="628.0" width="800.0">
+                          <root>
+                            <Region />
+                          </root>
+                        </SubScene>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
             <Tab fx:id="currentScenarioTab" text="Current Scenario">
                <content>
                   <SubScene fx:id="currentScenario" height="599.0" width="800.0">
@@ -67,30 +90,22 @@
                   </SubScene>
                </content>
             </Tab>
-            <Tab fx:id="recentLaunchesTab" text="Recent Launches">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Tab fx:id="editWinchTab" text="Edit Winch">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="597.0" prefWidth="798.0">
-                                 <children>
-                                    <TableView layoutX="27.0" layoutY="21.0" prefHeight="597.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <columns>
-                                          <TableColumn editable="false" prefWidth="133.0" text="Pilot Name" />
-                                          <TableColumn editable="false" prefWidth="133.0" text="Glider Reg Number" />
-                                          <TableColumn editable="false" prefWidth="133.0" text="Launch Time" />
-                                       </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </ScrollPane>
+                        <SubScene fx:id="addEditWinchSubScene" height="599.0" width="800.0">
+                           <root>
+                              <Region />
+                           </root>
+                        </SubScene>
+                        <SubScene fx:id="winchSubScene" height="599.0" width="800.0">
+                           <root>
+                              <Region />
+                           </root>
+                        </SubScene>
                      </children></AnchorPane>
-              </content>
+               </content>
             </Tab>
             <Tab fx:id="flightDashboardTab" text="Flight Dashboard">
                <content>
@@ -123,22 +138,35 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="editWinchTab" text="Edit Winch">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Tab fx:id="recentLaunchesTab" text="Recent Launches">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <SubScene fx:id="addEditWinchSubScene" height="599.0" width="800.0">
-                           <root>
-                              <Region />
-                           </root>
-                        </SubScene>
-                        <SubScene fx:id="winchSubScene" height="599.0" width="800.0">
-                           <root>
-                              <Region />
-                           </root>
-                        </SubScene>
+                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="597.0" prefWidth="798.0">
+                                 <children>
+                                    <TableView layoutX="27.0" layoutY="21.0" prefHeight="597.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <columns>
+                                          <TableColumn editable="false" prefWidth="133.0" text="Pilot Name" />
+                                          <TableColumn editable="false" prefWidth="133.0" text="Glider Reg Number" />
+                                          <TableColumn editable="false" prefWidth="133.0" text="Launch Time" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
                      </children></AnchorPane>
-               </content>
+              </content>
+            </Tab>
+            <Tab fx:id="replaysTab" text="Replays">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: whitesmoke;" />
+              </content>
             </Tab>
             <Tab fx:id="loggerTab" text="Logger">
                <content>
@@ -148,34 +176,6 @@
                     </root>
                   </SubScene>
                </content>
-            </Tab>
-            <Tab fx:id="operatorTab" text="Operator">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <SubScene fx:id="profileManagementFrame" height="599.0" width="800.0">
-                          <root>
-                            <Region />
-                          </root>
-                        </SubScene>
-                        <SubScene fx:id="newOperatorScene" height="628.0" width="800.0">
-                           <root>
-                              <Region />
-                           </root>
-                        </SubScene>
-                        <SubScene fx:id="loginSubScene" height="628.0" width="800.0">
-                          <root>
-                            <Region />
-                          </root>
-                        </SubScene>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab fx:id="replaysTab" text="Replays">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: whitesmoke;" />
-              </content>
             </Tab>
          </tabs>
       </TabPane>
