@@ -11,6 +11,7 @@ import DataObjects.Operator;
 import DatabaseUtilities.DatabaseEntryDelete;
 import static DatabaseUtilities.DatabaseEntryIdCheck.matchPassword;
 import DatabaseUtilities.DatabaseEntrySelect;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -145,7 +146,28 @@ public class OperatorLoginPanel implements Observer {
     private void NewOperatorButton_Click(ActionEvent e) {
         newOperatorPanel.addOperator(false, null, "");
     }
+    
+    @FXML
+    private void ExportButton_Click(ActionEvent e) {
+        DatabaseExportFrame test = new DatabaseExportFrame();
+        test.setVisible(true);
+    }
+    
+    @FXML
+    private void ImportButton_Click(ActionEvent e) {
+        File temp = new File("dbExport.zip");
+        DatabaseImportFrame test = null;
+        try{
+                 test = new DatabaseImportFrame(temp, null);
+        }catch(Exception ie)
+        {
+            
+            System.out.println("nope, " + ie.getMessage());
+        }
 
+        test.setVisible(true);
+    }
+    
     @FXML
     private void NewAdminButton_Click(ActionEvent e) {
         if (!operatorTable.getItems().isEmpty()) {

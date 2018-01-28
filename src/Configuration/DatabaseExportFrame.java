@@ -106,8 +106,8 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                             filePath = chosen.getPath();
                             fileName = file.getName();
                             zipLocation = filePath + "\\" + fileName;
-                            if(!fileName.contains(".hcdb"))
-                                zipLocation += ".hcdb";
+                            if(!fileName.contains(".zip"))
+                                zipLocation += ".zip";
                             try{
                             DatabaseExporter.exportDatabase(selectedTables, zipLocation);
                             getFrame().dispose();

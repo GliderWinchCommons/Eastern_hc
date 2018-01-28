@@ -128,6 +128,7 @@ public class NewOperatorPanel {
                         isAdmin, infoBox.getText(),
                         "{}");
                 DatabaseEntryInsert.addOperatorToDB(theOperator, password.getText());
+                currentData.setCurrentProfile(theOperator);
             } else {
                 try {
                     theOperator = new Operator(theOperator.getID(), firstNameTextField.getText(), middleNameTextField.getText(), lastNameTextField.getText(), theOperator.getAdmin(), infoBox.getText(), theOperator.getUnitSettingsForStorage());
@@ -141,7 +142,6 @@ public class NewOperatorPanel {
                     Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            //currentData.setCurrentProfile(theOperator);
             parent.update();
         }
     }

@@ -4,15 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/Configuration/OperatorLoginPanel.fxml</file>
-            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/Configuration/NewOperatorPanel.java</file>
+            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/mainhost/mockup3.fxml</file>
+            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/Configuration/DatabaseImportFrame.java</file>
+            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/mainhost/Main.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseExporter.java</file>
-            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseEntryDelete.java</file>
-            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseEntryEdit.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/Configuration/OperatorLoginPanel.java</file>
+            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/Configuration/DatabaseExportFrame.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseImporter.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseEntryInsert.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseInitialization.java</file>
             <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/DatabaseUtilities/DatabaseUnitSelectionUtilities.java</file>
+            <file>file:/C:/Users/Alex/Desktop/CSCD%20488/Eastern_hc/src/mainhost/MainWindow.java</file>
         </group>
     </open-files>
 </project-private>

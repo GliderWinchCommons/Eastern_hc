@@ -60,6 +60,16 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
+                  <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#ExportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Export">
+                      <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#ImportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Import">
+                      <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
@@ -79,7 +89,7 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label fx:id="adminLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="(Administrator)">
+                  <Label fx:id="adminLabel" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="(Title)">
                      <font>
                         <Font size="16.0" />
                      </font>
