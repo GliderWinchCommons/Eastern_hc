@@ -67,12 +67,26 @@ public class NewOperatorPanel {
             adminLabel.setVisible(false);
             operatorLabel.setVisible(true);
         }
+        
         isAdmin = admin;
         theOperator = operator;
         loadData(pass);
         newOperatorPanel.toFront();
     }
 
+    public void editOperator(boolean admin) {
+        if(admin == true) {
+            adminLabel.setVisible(true);
+            operatorLabel.setVisible(false);
+        }
+        else {
+            adminLabel.setVisible(false);
+            operatorLabel.setVisible(true);
+        }
+        
+        
+    }
+    
     public void attach(Observer o) {
         this.parent = o;
     }
@@ -84,18 +98,21 @@ public class NewOperatorPanel {
             lastNameTextField.setText(theOperator.getLast());
             password.setText(pass);
             retypedPassword.setText(pass);
+            infoBox.setText(theOperator.getInfo());
         } else {
             firstNameTextField.setText("");
             middleNameTextField.setText("");
             lastNameTextField.setText("");
             password.setText("");
             retypedPassword.setText("");
+            infoBox.setText("");
         }
         password.setStyle("");
         retypedPassword.setStyle("");
         firstNameTextField.setStyle("");
         middleNameTextField.setStyle("");
         lastNameTextField.setStyle("");
+        infoBox.setStyle("");
         passwordErrorLabel.visibleProperty().set(false);
     }
 
@@ -113,7 +130,7 @@ public class NewOperatorPanel {
                 DatabaseEntryInsert.addOperatorToDB(theOperator, password.getText());
             } else {
                 try {
-                    theOperator = new Operator(theOperator.getID(), theOperator.getFirst(), theOperator.getMiddle(), theOperator.getLast(), theOperator.getAdmin(), theOperator.getInfo(), theOperator.getUnitSettingsForStorage());
+                    theOperator = new Operator(theOperator.getID(), firstNameTextField.getText(), middleNameTextField.getText(), lastNameTextField.getText(), theOperator.getAdmin(), infoBox.getText(), theOperator.getUnitSettingsForStorage());
                     if (!matchPassword(theOperator, password.getText())) {
                         DatabaseEntryEdit.ChangePassword(theOperator, password.getText());
                     }
@@ -124,7 +141,7 @@ public class NewOperatorPanel {
                     Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            currentData.setCurrentProfile(theOperator);
+            //currentData.setCurrentProfile(theOperator);
             parent.update();
         }
     }
