@@ -60,12 +60,12 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#ExportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Export">
+                  <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#ExportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Export Data">
                       <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#ImportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Import">
+                  <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#ImportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Import Data">
                       <font>
                         <Font size="16.0" />
                      </font>

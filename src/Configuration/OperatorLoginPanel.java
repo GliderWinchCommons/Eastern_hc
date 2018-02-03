@@ -155,7 +155,7 @@ public class OperatorLoginPanel implements Observer {
     
     @FXML
     private void ImportButton_Click(ActionEvent e) {
-        File temp = new File("dbExport.zip");
+        File temp = new File("fullDB.zip");
         DatabaseImportFrame test = null;
         try{
                  test = new DatabaseImportFrame(temp, null);

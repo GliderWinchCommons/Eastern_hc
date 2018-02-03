@@ -59,10 +59,10 @@ public class DatabaseExporter {
                 String resultString;
                 String fileName;
                 if (str.equalsIgnoreCase("VERSION")) {
-                    fileName = "__output_" + str + "_" + timestamp + ".csv";
+                    fileName = "output_" + str + "_" + timestamp + ".csv";
                 } else if (str.equalsIgnoreCase("airfield")
                         || str.equalsIgnoreCase("runway") || str.equalsIgnoreCase("winch")) {
-                    fileName = "_output_" + str + "_" + timestamp + ".csv";
+                    fileName = "output_" + str + "_" + timestamp + ".csv";
                 } else {
                     fileName = "output_" + str + "_" + timestamp + ".csv";
                 }

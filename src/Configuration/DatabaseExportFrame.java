@@ -75,9 +75,28 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
         
         TableList.setPreferredSize(new Dimension(500,300));
         DefaultListModel tableModel = new DefaultListModel();
-        for(Object str : names) {
+        for(String str : names) {
             //System.out.println(str);
-            tableModel.addElement(str);
+            //Catch runway, glider position, winch position here and package under runway
+            //Catch drum and package under winch
+            if(str.equalsIgnoreCase("drum") || str.equalsIgnoreCase("gliderposition") || str.equalsIgnoreCase("winchposition") || str.equalsIgnoreCase("runway"))
+            {
+                
+            }
+            else if(str.equalsIgnoreCase("airfield"))
+            {
+                str += " with RUNWAY, GLIDER POSITION, WINCH POSITION";
+                tableModel.addElement(str);
+            }
+            else if(str.equalsIgnoreCase("winch"))
+            {
+                str+= " with DRUM";
+                tableModel.addElement(str);
+            }
+            else
+            {
+                tableModel.addElement(str);
+            }
         }
         TableList.setModel(tableModel);
         TableListPanel.setViewportView(TableList);
@@ -99,8 +118,29 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                         String zipLocation;
                         int option = chooser.showOpenDialog(DatabaseExportFrame.this);
                         if(option == JFileChooser.APPROVE_OPTION) {
-                            List<String> selectedTables;
-                            selectedTables = TableList.getSelectedValuesList();
+                            List<String> selectedTables, tempHolder;//tempHolder is used to hold the table that might have entries with multiple tables
+                            tempHolder = TableList.getSelectedValuesList();
+                            selectedTables = new ArrayList<>();
+                            
+                            for(String st : tempHolder)
+                            {
+                                if(st.contains("AIRFIELD"))
+                                {
+                                    selectedTables.add("AIRFIELD");
+                                    selectedTables.add("RUNWAY");
+                                    selectedTables.add("GLIDERPOSITION");
+                                    selectedTables.add("WINCHPOSITION");
+                                }
+                                else if(st.contains("WINCH"))
+                                {
+                                    selectedTables.add("WINCH");
+                                    selectedTables.add("DRUM");
+                                }
+                                else
+                                {
+                                    selectedTables.add(st);
+                                }
+                            }
                             File file = chooser.getSelectedFile();
                             File chosen = chooser.getCurrentDirectory();
                             filePath = chosen.getPath();
@@ -119,6 +159,9 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                     }                     
                 });
         panel.add(submitButton);
+        
+        JLabel label = new JLabel("Ctrl+click to select multiple tables.");
+        panel.add(label);
         
         JCheckBox selectAll = new JCheckBox();
         selectAll.setLabel("Select all");
@@ -145,6 +188,8 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                 }
             });
         panel.add(selectAll);
+        
+        
         
 
     }               
