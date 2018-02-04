@@ -28,7 +28,7 @@ public class UnitLabelUtilities {
             case 6:
                 return "in";
             default:
-                return "m";
+                return "ft";
         }
     }
 
@@ -54,7 +54,7 @@ public class UnitLabelUtilities {
             case 1:
                 return "lbs";
             default:
-                return "kg";
+                return "lbs";
         }
     }
 
@@ -71,7 +71,7 @@ public class UnitLabelUtilities {
             case 4:
                 return "kts";
             default:
-                return "kph";
+                return "kn";
         }
     }
 
@@ -84,7 +84,7 @@ public class UnitLabelUtilities {
             case 2:
                 return "relative";
             default:
-                return "true";
+                return "magnetic";
         }
     }
 
@@ -95,7 +95,7 @@ public class UnitLabelUtilities {
             case 1:
                 return "F";
             default:
-                return "C";
+                return "F";
         }
     }
 
@@ -118,7 +118,7 @@ public class UnitLabelUtilities {
             case 7:
                 return "mmHg";
             default:
-                return "hPa";
+                return "inHg";
         }
     }
 }
