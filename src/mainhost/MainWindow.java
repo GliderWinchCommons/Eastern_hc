@@ -79,14 +79,14 @@ public class MainWindow {
         defaultProfile.setUnitSetting("cableLength", 1);
         defaultProfile.setUnitSetting("coreDiameter", 6);
 
-        defaultProfile.setUnitSetting("avgWindSpeed", 1);
-        defaultProfile.setUnitSetting("crosswind", 1);
-        defaultProfile.setUnitSetting("gustWindSpeed", 1);
-        defaultProfile.setUnitSetting("headwind", 1);
+        defaultProfile.setUnitSetting("avgWindSpeed", 3);
+        defaultProfile.setUnitSetting("crosswind", 3);
+        defaultProfile.setUnitSetting("gustWindSpeed", 3);
+        defaultProfile.setUnitSetting("headwind", 3);
         defaultProfile.setUnitSetting("launchWeight", 1);
         defaultProfile.setUnitSetting("densityAltitude", 1);
         defaultProfile.setUnitSetting("runLength", 1);
-        defaultProfile.setUnitSetting("pressure", 4);
+        defaultProfile.setUnitSetting("pressure", 6);
         defaultProfile.setUnitSetting("temperature", 1);
         defaultProfile.setUnitSetting("runDirection", 1);
         defaultProfile.setUnitSetting("windDirection", 1);
