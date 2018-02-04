@@ -70,8 +70,12 @@ public class OperatorLoginPanel implements Observer {
     private Button editSettingsButton;
     @FXML
     private Button deleteButton;
+    //@FXML
+    //private Button showPasswordButton;
     @FXML
-    private Button showPasswordButton;
+    private Button importButton;
+    @FXML
+    private Button exportButton;
 
     private String password;
     private static boolean loggedIn;
@@ -103,7 +107,9 @@ public class OperatorLoginPanel implements Observer {
         logoutButton.setDisable(true);
         editSettingsButton.setDisable(true);
         deleteButton.setDisable(true);
-        showPasswordButton.setDisable(true);
+        //showPasswordButton.setDisable(true);
+        importButton.setDisable(true);
+        exportButton.setDisable(true);
 
         TableColumn airfieldCol = (TableColumn) operatorTable.getColumns().get(0);
         airfieldCol.setCellValueFactory(new PropertyValueFactory<>("first"));
@@ -131,6 +137,8 @@ public class OperatorLoginPanel implements Observer {
             newAdminButton.disableProperty().set(!currentData.getCurrentProfile().getAdmin());
             deleteButton.disableProperty().set(newAdminButton.disableProperty().getValue());
             //showPasswordButton.disableProperty().set(newAdminButton.disableProperty().getValue());
+            importButton.disableProperty().set(false);
+            exportButton.disableProperty().set(false);
         } else {
             nameLabel.setText("Name");
             //adminLabel.visibleProperty().set(false);
@@ -138,7 +146,9 @@ public class OperatorLoginPanel implements Observer {
             infoBox.setText("");
             newAdminButton.disableProperty().set(true);
             deleteButton.disableProperty().set(true);
-            showPasswordButton.disableProperty().set(true);
+            //showPasswordButton.disableProperty().set(true);
+            importButton.disableProperty().set(true);
+            exportButton.disableProperty().set(true);
         }
     }
 
@@ -201,6 +211,8 @@ public class OperatorLoginPanel implements Observer {
         logoutButton.setDisable(true);
         loginButton.setDisable(false);
         editSettingsButton.setDisable(true);
+        importButton.setDisable(true);
+        exportButton.setDisable(true);
         loggedIn = false;
         currentOperator = null;
         
@@ -223,6 +235,8 @@ public class OperatorLoginPanel implements Observer {
                 editOperatorButton.setDisable(false);
                 logoutButton.setDisable(false);
                 editSettingsButton.setDisable(false);
+                importButton.setDisable(false);
+                exportButton.setDisable(false);
                 loginButton.setDisable(true);
                 loggedIn = true;
                 currentData.setCurrentProfile((Operator) newValue);
@@ -256,13 +270,13 @@ public class OperatorLoginPanel implements Observer {
         }
     }
 
-    @FXML
-    public void ShowPasswordButton_Click(ActionEvent e) {
-        Operator selected = (Operator) operatorTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            //TODO: Get password from database and then display in an alert panel or something
-        }
-    }
+//    @FXML
+//    public void ShowPasswordButton_Click(ActionEvent e) {
+//        Operator selected = (Operator) operatorTable.getSelectionModel().getSelectedItem();
+//        if (selected != null) {
+//            //TODO: Get password from database and then display in an alert panel or something
+//        }
+//    }
 
     private Dialog createPasswordDialogBox(Operator operator) {
         Dialog<String> dialog = new Dialog<>();

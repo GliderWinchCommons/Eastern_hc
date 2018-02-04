@@ -40,8 +40,23 @@
                         <Font size="15.0" />
                      </font>
                   </Button>
+                  <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#ImportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Import Data">
+                      <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
                   <Button fx:id="editOperatorButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditOperatorButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Edit Operator">
                      <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="editSettingsButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditSettingsButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Edit Settings">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#ExportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Export Data">
+                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
@@ -52,21 +67,6 @@
                   </Button>
                   <Button fx:id="logoutButton" alignment="CENTER" mnemonicParsing="false" onAction="#LogoutButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Logout">
                      <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="editSettingsButton" alignment="CENTER" mnemonicParsing="false" onAction="#EditSettingsButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Edit Settings">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="importButton" alignment="CENTER" mnemonicParsing="false" onAction="#ImportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Import Data">
-                      <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="exportButton" alignment="CENTER" mnemonicParsing="false" onAction="#ExportButton_Click" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Export Data">
-                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
@@ -113,8 +113,8 @@
             </TableView>
             <FlowPane prefHeight="62.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#DeleteButton_Click" prefHeight="62.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Delete" wrapText="true" />
-                  <Button fx:id="showPasswordButton" mnemonicParsing="false" onAction="#ShowPasswordButton_Click" prefHeight="62.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Show Password" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#DeleteButton_Click" prefHeight="62.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Delete" wrapText="true" />
+                  <!--<Button fx:id="showPasswordButton" mnemonicParsing="false" onAction="#ShowPasswordButton_Click" prefHeight="62.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" text="Show Password" textAlignment="CENTER" wrapText="true" />-->
                </children>
             </FlowPane>
          </children>
