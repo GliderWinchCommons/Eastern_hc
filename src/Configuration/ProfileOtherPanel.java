@@ -45,6 +45,6 @@ public class ProfileOtherPanel {
         avgWindSpeedComboBox.setItems(FXCollections.observableArrayList("kph", "mph", "m/s", "kn", "kts"));
         gustWindSpeedComboBox.setItems(FXCollections.observableArrayList("kph", "mph", "m/s", "kn", "kts"));
         temperatureComboBox.setItems(FXCollections.observableArrayList("C", "F"));
-        pressureComboBox.setItems(FXCollections.observableArrayList("hPa", "kPa", "psi", "bar", "millibar", "atm"));
+        pressureComboBox.setItems(FXCollections.observableArrayList("hPa", "kPa", "psi", "bar", "millibar", "atm", "inHg", "mmHg"));
     }
 }
