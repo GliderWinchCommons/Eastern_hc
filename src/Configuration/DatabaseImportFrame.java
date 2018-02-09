@@ -43,6 +43,7 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
      * Creates new form DatabaseExportFrame
      */
     public DatabaseImportFrame(File zipName, ParameterSelectionPanel psp) throws IOException {
+    
         this.file = zipName;
         this.selectionPanel = psp;
         initTableList();

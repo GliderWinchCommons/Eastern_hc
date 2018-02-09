@@ -11,6 +11,7 @@ import DataObjects.Operator;
 import DatabaseUtilities.DatabaseEntryDelete;
 import static DatabaseUtilities.DatabaseEntryIdCheck.matchPassword;
 import DatabaseUtilities.DatabaseEntrySelect;
+import java.awt.BorderLayout;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -36,6 +37,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import mainhost.MainWindow;
 
 /**
@@ -165,17 +170,36 @@ public class OperatorLoginPanel implements Observer {
     
     @FXML
     private void ImportButton_Click(ActionEvent e) {
-        File temp = new File("fullDB.zip");
-        DatabaseImportFrame test = null;
-        try{
-                 test = new DatabaseImportFrame(temp, null);
-        }catch(Exception ie)
-        {
-            
-            System.out.println("nope, " + ie.getMessage());
-        }
+        /*
+            Opening a JFileChooser to get the file path.
+            Currently, on first click of import button, the chooser
+            will appear behind the window and the window will show as
+            "not responding". 
+        */
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
+        chooser.setDialogTitle("Import File");
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setAcceptAllFileFilterUsed(false);
+        
+        
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File temp = chooser.getSelectedFile();
+            DatabaseImportFrame test = null;
+            try{
+                     test = new DatabaseImportFrame(temp, null);
+            }catch(Exception ie)
+            {
 
-        test.setVisible(true);
+                System.out.println("nope, " + ie.getMessage());
+            }
+            test.setVisible(true);
+        } else {
+            System.out.println("No Selection ");
+        }
+        
+        
+        
     }
     
     @FXML

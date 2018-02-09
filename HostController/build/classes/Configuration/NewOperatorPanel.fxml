@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +16,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
@@ -30,30 +35,42 @@
       <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <Label fx:id="operatorLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Operator" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" visible="true" />
-      <Label fx:id="adminLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Admin" underline="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" visible="false" />
+      <Label fx:id="operatorLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Operator" underline="true" visible="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Label fx:id="adminLabel" style="-fx-font-size: 3em; -fx-font-family: SansSerif; -fx-font-weight: Bold;" text="Add/Edit Admin" underline="true" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="177.0" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="First Name" />
-            <TextField fx:id="firstNameTextField" alignment="CENTER" />
+            <TextField fx:id="firstNameTextField" alignment="CENTER" prefHeight="37.0" prefWidth="138.0">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="177.0" prefWidth="165.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Middle Name" />
-            <TextField fx:id="middleNameTextField" alignment="CENTER" />
+            <TextField fx:id="middleNameTextField" alignment="CENTER" prefHeight="37.0" prefWidth="2.0">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="177.0" prefWidth="165.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
             <Label style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Last Name" />
-            <TextField fx:id="lastNameTextField" alignment="CENTER" />
+            <TextField fx:id="lastNameTextField" alignment="CENTER" prefHeight="37.0" prefWidth="138.0">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <children>
             <Label style="-fx-font-size: 2em; -fx-font-family: SansSerif;" text="Info" />
-            <TextArea fx:id="infoBox" prefHeight="85.0" prefWidth="600.0" style="-fx-font-size: 1.5em; -fx-font-family: SansSerif;" />
+            <TextArea fx:id="infoBox" prefHeight="85.0" prefWidth="600.0" style="-fx-font-size: 1.75em; -fx-font-family: SansSerif;">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
          </children>
       </FlowPane>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="2">
