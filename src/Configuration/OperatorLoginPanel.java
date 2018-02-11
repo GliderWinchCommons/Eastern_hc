@@ -393,6 +393,7 @@ public class OperatorLoginPanel implements Observer {
         } else if (currentOperator != null) {
             currentData.setCurrentProfile(currentOperator);
         }
+        loadData();
     }
 
     @Override

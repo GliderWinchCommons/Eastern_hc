@@ -131,11 +131,16 @@ public class NewOperatorPanel {
                 currentData.setCurrentProfile(theOperator);
             } else {
                 try {
-                    theOperator = new Operator(theOperator.getID(), firstNameTextField.getText(), middleNameTextField.getText(), lastNameTextField.getText(), theOperator.getAdmin(), infoBox.getText(), theOperator.getUnitSettingsForStorage());
+                    theOperator = currentData.getCurrentProfile();
+                    theOperator.setName(firstNameTextField.getText(), middleNameTextField.getText(), lastNameTextField.getText());
+                    theOperator.setInfo(infoBox.getText());
+                    //theOperator = new Operator(theOperator.getID(), firstNameTextField.getText(), middleNameTextField.getText(), lastNameTextField.getText(), theOperator.getAdmin(), infoBox.getText(), theOperator.getUnitSettingsForStorage());
                     if (!matchPassword(theOperator, password.getText())) {
                         DatabaseEntryEdit.ChangePassword(theOperator, password.getText());
                     }
                     DatabaseEntryEdit.UpdateEntry(theOperator);
+                    //currentData.clearProfile();
+                    currentData.setCurrentProfile(theOperator);
                 } catch (SQLException ex) {
                     Logger.getLogger(NewOperatorPanel.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
