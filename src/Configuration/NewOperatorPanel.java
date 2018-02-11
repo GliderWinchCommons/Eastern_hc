@@ -28,9 +28,13 @@ public class NewOperatorPanel {
     private static SubScene newOperatorPanel;
 
     @FXML
-    private Label adminLabel;
+    private Label AddAdminLabel;
     @FXML
-    private Label operatorLabel;
+    private Label AddOperatorLabel;
+    @FXML
+    private Label EditAdminLabel;
+    @FXML
+    private Label EditOperatorLabel;
     
     private static boolean isAdmin;
     @FXML
@@ -60,12 +64,16 @@ public class NewOperatorPanel {
 
     public void addOperator(boolean admin, Operator operator, String pass) {
         if(admin == true) {
-            adminLabel.setVisible(true);
-            operatorLabel.setVisible(false);
+            AddAdminLabel.setVisible(true);
+            AddOperatorLabel.setVisible(false);
+            EditAdminLabel.setVisible(false);
+            EditOperatorLabel.setVisible(false);
         }
         else {
-            adminLabel.setVisible(false);
-            operatorLabel.setVisible(true);
+            AddAdminLabel.setVisible(false);
+            AddOperatorLabel.setVisible(true);
+            EditAdminLabel.setVisible(false);
+            EditOperatorLabel.setVisible(false);
         }
         
         isAdmin = admin;
@@ -74,17 +82,24 @@ public class NewOperatorPanel {
         newOperatorPanel.toFront();
     }
 
-    public void editOperator(boolean admin) {
+    public void editOperator(boolean admin, Operator operator, String pass) {
         if(admin == true) {
-            adminLabel.setVisible(true);
-            operatorLabel.setVisible(false);
+            AddAdminLabel.setVisible(false);
+            AddOperatorLabel.setVisible(false);
+            EditAdminLabel.setVisible(true);
+            EditOperatorLabel.setVisible(false);
         }
         else {
-            adminLabel.setVisible(false);
-            operatorLabel.setVisible(true);
+            AddAdminLabel.setVisible(false);
+            AddOperatorLabel.setVisible(false);
+            EditAdminLabel.setVisible(false);
+            EditOperatorLabel.setVisible(true);
         }
         
-        
+        isAdmin = admin;
+        theOperator = operator;
+        loadData(pass);
+        newOperatorPanel.toFront();
     }
     
     public void attach(Observer o) {

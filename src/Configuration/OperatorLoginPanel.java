@@ -218,7 +218,7 @@ public class OperatorLoginPanel implements Observer {
 
     @FXML
     private void EditOperatorButton_Click(ActionEvent e) {
-        newOperatorPanel.addOperator(currentData.getCurrentProfile().getAdmin(), currentData.getCurrentProfile(), password);
+        newOperatorPanel.editOperator(currentData.getCurrentProfile().getAdmin(), currentData.getCurrentProfile(), password);
     }
 
     @FXML
@@ -281,10 +281,7 @@ public class OperatorLoginPanel implements Observer {
                 a.setTitle("Delete Confirmation");
                 Optional<ButtonType> choice = a.showAndWait();
                 if (choice.get() == ButtonType.YES) {
-                    if (DatabaseEntryDelete.DeleteEntry(selected)) {
-                        new Alert(Alert.AlertType.INFORMATION, "Operator removed").showAndWait();
                         operatorTable.getItems().remove(selected);
-                    }
                 }
             } else {
                 new Alert(Alert.AlertType.ERROR, "Can't delete yourself").showAndWait();
