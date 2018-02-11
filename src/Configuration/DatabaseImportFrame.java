@@ -37,15 +37,16 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
     private List<String> names = new ArrayList<>();
     private List<String> fileNames = new ArrayList<>();
     private File file;
-    private ParameterSelectionPanel selectionPanel;
+    //private ParameterSelectionPanel selectionPanel; --I have temporarily disabled this, no clue why is was here or what it did. The only call made to it was to a
+                                                      //function the previous team commented out. Alex M.
     
     /**
      * Creates new form DatabaseExportFrame
      */
-    public DatabaseImportFrame(File zipName, ParameterSelectionPanel psp) throws IOException {
+    public DatabaseImportFrame(File zipName) throws IOException {
     
         this.file = zipName;
-        this.selectionPanel = psp;
+        //this.selectionPanel = psp;
         initTableList();
         initComponents();
     }
@@ -119,22 +120,31 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
                         
                         orderedTables = orderList(selectedTables);
                         //System.out.println(orderedTables.toString());
-                        
-                        try{
-                            DatabaseImporter.importDatabase(file, selectedTables);
-                            //Done twice for possible foreign key contraints. Ugly solution
-                            //DatabaseImporter.importDatabase(file, orderedTables);
-                            selectionPanel.update();
-                            getFrame().dispose();
-                        }catch(Exception e)
+                        if(JOptionPane.showConfirmDialog(null, "Importing data may over-write existing entries. Continue?", "Alert", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
                         {
-                            logError(e);
-                            JOptionPane.showMessageDialog(rootPane, "Couldn't import", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            try{
+                                DatabaseImporter.importDatabase(file, selectedTables);
+                                //Done twice for possible foreign key contraints. Ugly solution
+                                //DatabaseImporter.importDatabase(file, orderedTables);
+                                //selectionPanel.update();
+                                getFrame().dispose();
+                            }catch(Exception e)
+                            {
+                                logError(e);
+                                JOptionPane.showMessageDialog(rootPane, "Couldn't import", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
+                        else
+                        {
+                            JOptionPane.showConfirmDialog(null, "Import cancelled.");
+                            getFrame().dispose();
+                        }
+                        
+                        
                     }  
 
             private void logError(Exception e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet. " + e.getMessage()); //To change body of generated methods, choose Tools | Templates.
             }
                                          
                 });

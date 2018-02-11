@@ -41,6 +41,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import mainhost.MainWindow;
 
 /**
@@ -176,18 +177,17 @@ public class OperatorLoginPanel implements Observer {
             will appear behind the window and the window will show as
             "not responding". 
         */
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File("."));
-        chooser.setDialogTitle("Import File");
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        chooser.setAcceptAllFileFilterUsed(false);
+        JFileChooser chooser = new JFileChooser(".");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("ZIP Files", "zip");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
         
         
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File temp = chooser.getSelectedFile();
             DatabaseImportFrame test = null;
             try{
-                     test = new DatabaseImportFrame(temp, null);
+                test = new DatabaseImportFrame(temp);
             }catch(Exception ie)
             {
 
