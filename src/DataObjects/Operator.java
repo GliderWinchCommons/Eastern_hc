@@ -108,6 +108,16 @@ public class Operator {
     public void setName(String name) {
         this.firstName = name;
     }
+    
+    public void setName(String fName, String mName, String lName) {
+        this.firstName = fName;
+        this.middleName = mName;
+        this.lastName = lName;
+    }
+    
+    public void setInfo(String i) {
+        this.info = i;
+    }
 
     public void setUnitSetting(String id, int value) {
         unitSettings.put(id.toUpperCase(), value);
