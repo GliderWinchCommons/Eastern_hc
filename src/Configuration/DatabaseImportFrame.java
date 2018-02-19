@@ -109,7 +109,6 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
                     public void actionPerformed(ActionEvent arg0) {
                         
                         List<String> selectedTables = new ArrayList<String>();
-                        List<String> orderedTables = new ArrayList<String>();
                         
                         int[] selectedIndices;
                         selectedIndices = TableList.getSelectedIndices();
@@ -118,7 +117,6 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
                             selectedTables.add(fileNames.get(i));
                         }
                         
-                        orderedTables = orderList(selectedTables);
                         //System.out.println(orderedTables.toString());
                         if(JOptionPane.showConfirmDialog(null, "Importing data may over-write existing entries. Continue?", "Alert", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
                         {
@@ -130,7 +128,9 @@ public class DatabaseImportFrame extends javax.swing.JFrame {
                                 getFrame().dispose();
                             }catch(Exception e)
                             {
-                                logError(e);
+                                System.out.println(e.getMessage());
+                                e.printStackTrace();
+                                //logError(e);
                                 JOptionPane.showMessageDialog(rootPane, "Couldn't import", "Error", JOptionPane.INFORMATION_MESSAGE);
                             }
                         }

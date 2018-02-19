@@ -429,6 +429,75 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
+    
+    /**
+     * used to import an operator from a file
+     *
+     * @param operator the profile to add to the database
+     * @param salt salt from a database backup
+     * @param hash hash from a database backup
+     * @return false if add fails
+     */
+    public static boolean addOperatorToTempDB(Operator operator, String salt, String hash) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement ProfileInsertStatement = connect.prepareStatement(
+                    "INSERT INTO tempOperator(operator_id, first_name, middle_name, last_name, admin,"
+                    + "salt, hash, optional_info, unitSettings)"
+                    + "values (?,?,?,?,?,?,?,?,?)");
+            ProfileInsertStatement.setInt(1, operator.getID());
+            ProfileInsertStatement.setString(2, operator.getFirst());
+            ProfileInsertStatement.setString(3, operator.getMiddle());
+            ProfileInsertStatement.setString(4, operator.getLast());
+            ProfileInsertStatement.setBoolean(5, operator.getAdmin());
+            ProfileInsertStatement.setString(6, salt);
+            ProfileInsertStatement.setString(7, hash);
+            ProfileInsertStatement.setString(8, operator.getInfo());
+            ProfileInsertStatement.setString(9, operator.getUnitSettingsForStorage());
+            ProfileInsertStatement.executeUpdate();
+            ProfileInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Operator to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean mergeOperator()
+    {
+         try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Operator o "
+                                + "USING tempOperator t "
+                                + "ON o.operator_id = t.operator_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.first_name = t.first_name, "
+                                    + "o.middle_name = t.middle_name, o.last_name = t.last_name, "
+                                    + "o.admin = t.admin, o.salt = t.salt, o.hash = t.hash, "
+                                    + "o.optional_info = t.optional_info, o.unitsettings = t.unitsettings "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values (t.operator_id, t.first_name, t.middle_name, t.last_name, t.admin, t.salt, t.hash, t.optional_info, t.unitsettings)";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Operator to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
 
     /**
      * Adds the relevant data for a profile to the database with a password

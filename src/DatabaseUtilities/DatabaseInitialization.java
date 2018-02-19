@@ -167,44 +167,6 @@ public class DatabaseInitialization {
             fails += "Previous Launches\n\r";
         }
 
-        //Build Distance convesion tables
-        if (!createDistanceUnits(connection)) {
-            fails += "Distance Units\n\r";
-        }
-        if (!createTensionUnits(connection)) {
-            fails += "Tension Units\n\r";
-        }
-        if (!createVelocityUnits(connection)) {
-            fails += "Velocity Units\n\r";
-        }
-        if (!createWeightUnits(connection)) {
-            fails += "Weight Units\n\r";
-        }
-        if (!createTemperatureUnits(connection)) {
-            fails += "Temperature Units\n\r";
-        }
-        if (!createPressureUnits(connection)) {
-            fails += "Pressure Units\n\r";
-        }
-        if (!createPilotUnits(connection)) {
-            fails += "Pilot Units\n\r";
-        }
-        if (!createGliderUnits(connection)) {
-            fails += "Glider Units\n\r";
-        }
-        if (!createAirfieldUnits(connection)) {
-            fails += "Airfield Units\n\r";
-        }
-        if (!createPositionUnits(connection)) {
-            fails += "Position Units\n\r";
-        }
-        if (!createDashboardUnits(connection)) {
-            fails += "Dashboard Units\n\r";
-        }
-        if (!createEnvironmentalUnits(connection)) {
-            fails += "Environmental Units\n\r";
-        }
-
         if (!fails.equals("")) {
             Alert a = new Alert(Alert.AlertType.ERROR,
                     "Failed to create:\n\r" + fails);
@@ -686,317 +648,6 @@ public class DatabaseInitialization {
     }
 
     /**
-     * Creates the table to store the possible units of distance
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createDistanceUnits(Connection connect) {
-        String createLengthUnitsString = "CREATE TABLE DistanceUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String meters = "INSERT INTO DistanceUnits(index, abbreviation) VALUES (0, 'm')";
-        String feet = "INSERT INTO DistanceUnits(index, abbreviation) VALUES (1, 'ft')";
-        String millimeters = "INSERT INTO DistanceUnits(index, abbreviation) VALUES (2, 'mm')";
-        String centimeters = "INSERT INTO DistanceUnits(index, abbreviation) VALUES (3, 'cm')";
-        String kilometers = "INSERT INTO DistanceUnits(index, abbreviation) VALUES (4, 'Km')";
-        try (Statement createLengthUnitsTableStatement = connect.createStatement()) {
-            createLengthUnitsTableStatement.execute(createLengthUnitsString);
-            createLengthUnitsTableStatement.executeUpdate(meters);
-            createLengthUnitsTableStatement.executeUpdate(feet);
-            createLengthUnitsTableStatement.executeUpdate(millimeters);
-            createLengthUnitsTableStatement.executeUpdate(centimeters);
-            createLengthUnitsTableStatement.executeUpdate(kilometers);
-            createLengthUnitsTableStatement.close();
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the possible units of tension
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createTensionUnits(Connection connect) {
-        String createTensionUnitsString = "CREATE TABLE TensionUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String newtons = "INSERT INTO TensionUnits(index, abbreviation) VALUES (0, 'N')";
-        String poundForce = "INSERT INTO TensionUnits(index, abbreviation) VALUES (1, 'lbf')";
-        String kilogramForce = "INSERT INTO TensionUnits(index, abbreviation) VALUES (2, 'Kgf')";
-        try (Statement createTensionUnitsTableStatement = connect.createStatement()) {
-            createTensionUnitsTableStatement.execute(createTensionUnitsString);
-            createTensionUnitsTableStatement.executeUpdate(newtons);
-            createTensionUnitsTableStatement.executeUpdate(poundForce);
-            createTensionUnitsTableStatement.executeUpdate(kilogramForce);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the possible units of weight
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createWeightUnits(Connection connect) {
-        String createWeightUnitsString = "CREATE TABLE WeightUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String pounds = "INSERT INTO WeightUnits(index, abbreviation) VALUES (0, 'lbs')";
-        String kilograms = "INSERT INTO WeightUnits(index, abbreviation) VALUES (1, 'Kg')";
-        try (Statement createWeightUnitsTableStatement = connect.createStatement()) {
-            createWeightUnitsTableStatement.execute(createWeightUnitsString);
-            createWeightUnitsTableStatement.executeUpdate(pounds);
-            createWeightUnitsTableStatement.executeUpdate(kilograms);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the possible units of velocity
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createVelocityUnits(Connection connect) {
-        String createVelocityUnitsString = "CREATE TABLE VelocityUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String milesPerHour = "INSERT INTO VelocityUnits(index, abbreviation) VALUES (0, 'mph')";
-        String kmPerHour = "INSERT INTO VelocityUnits(index, abbreviation) VALUES (1, 'Km/h')";
-        String metersPerSecond = "INSERT INTO VelocityUnits(index, abbreviation) VALUES (2, 'm/s')";
-        String knots = "INSERT INTO VelocityUnits(index, abbreviation) VALUES (3, 'kn')";
-        try (Statement createVelocityUnitsTableStatement = connect.createStatement()) {
-            createVelocityUnitsTableStatement.execute(createVelocityUnitsString);
-            createVelocityUnitsTableStatement.executeUpdate(milesPerHour);
-            createVelocityUnitsTableStatement.executeUpdate(kmPerHour);
-            createVelocityUnitsTableStatement.executeUpdate(metersPerSecond);
-            createVelocityUnitsTableStatement.executeUpdate(knots);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the possible units of temperature
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createTemperatureUnits(Connection connect) {
-        String createTemperatureUnitsString = "CREATE TABLE TemperatureUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String fahrenheit = "INSERT INTO TemperatureUnits(index, abbreviation) VALUES (0, 'F')";
-        String celsius = "INSERT INTO TemperatureUnits(index, abbreviation) VALUES (1, 'C')";
-        try (Statement createVelocityUnitsTableStatement = connect.createStatement()) {
-            createVelocityUnitsTableStatement.execute(createTemperatureUnitsString);
-            createVelocityUnitsTableStatement.executeUpdate(fahrenheit);
-            createVelocityUnitsTableStatement.executeUpdate(celsius);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the possible units of pressure
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createPressureUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE PressureUnits"
-                + "(index INT, "
-                + "abbreviation VARCHAR(5), "
-                + "PRIMARY KEY (index))";
-        String psi = "INSERT INTO PressureUnits(index, abbreviation) VALUES (0, 'psi')";
-        String megapascals = "INSERT INTO PressureUnits(index, abbreviation) VALUES (1, 'Mp')";
-        String kilopascals = "INSERT INTO PressureUnits(index, abbreviation) VALUES (2, 'Kp')";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(psi);
-            createPressureUnitsTableStatement.executeUpdate(megapascals);
-            createPressureUnitsTableStatement.executeUpdate(kilopascals);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for pilot data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createPilotUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE PilotUnits"
-                + "(unit_set INT, "
-                + "weight_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (weight_unit) REFERENCES WeightUnits (index))";
-        String insertRow = "INSERT INTO PilotUnits(unit_set, weight_unit) VALUES (0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-            createPressureUnitsTableStatement.close();
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for Glider data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createGliderUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE GliderUnits"
-                + "(unit_set INT, "
-                + "weight_unit INT, "
-                + "velocity_unit INT, "
-                + "tension_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (weight_unit) REFERENCES WeightUnits (index), "
-                + "FOREIGN KEY (velocity_unit) REFERENCES VelocityUnits (index) ,"
-                + "FOREIGN KEY (tension_unit) REFERENCES TensionUnits (index))";
-        String insertRow = "INSERT INTO GliderUnits(unit_set, weight_unit, velocity_unit, tension_unit) "
-                + "VALUES (0, 0, 0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-            createPressureUnitsTableStatement.close();
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for Airfield data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createAirfieldUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE AirfieldUnits"
-                + "(unit_set INT, "
-                + "distance_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (distance_unit) REFERENCES DistanceUnits (index))";
-        String insertRow = "INSERT INTO AirfieldUnits(unit_set, distance_unit) VALUES (0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for Position data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createPositionUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE PositionUnits"
-                + "(unit_set INT, "
-                + "distance_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (distance_unit) REFERENCES DistanceUnits (index))";
-        String insertRow = "INSERT INTO PositionUnits(unit_set, distance_unit) VALUES (0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for Dashboard display data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createDashboardUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE DashboardUnits"
-                + "(unit_set INT, "
-                + "distance_unit INT, "
-                + "tension_unit INT, "
-                + "velocity_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (distance_unit) REFERENCES DistanceUnits (index), "
-                + "FOREIGN KEY (tension_unit) REFERENCES TensionUnits (index), "
-                + "FOREIGN KEY (velocity_unit) REFERENCES VelocityUnits (index))";
-        String insertRow = "INSERT INTO DashboardUnits(unit_set, distance_unit, tension_unit, velocity_unit) "
-                + "VALUES (0, 0, 0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Creates the table to store the units for environmental data
-     *
-     * @param connect the connection to be used for creating the table in the
-     * database
-     */
-    private static boolean createEnvironmentalUnits(Connection connect) {
-        String createPressureUnitsString = "CREATE TABLE EnvironmentalUnits"
-                + "(unit_set INT, "
-                + "temp_unit INT, "
-                + "pressure_unit INT, "
-                + "PRIMARY KEY (unit_set), "
-                + "FOREIGN KEY (temp_unit) REFERENCES TemperatureUnits (index), "
-                + "FOREIGN KEY (pressure_unit) REFERENCES PressureUnits (index))";
-        String insertRow = "INSERT INTO EnvironmentalUnits(unit_set, temp_unit, pressure_unit) VALUES (0, 0, 0)";
-        try (Statement createPressureUnitsTableStatement = connect.createStatement()) {
-            createPressureUnitsTableStatement.execute(createPressureUnitsString);
-            createPressureUnitsTableStatement.executeUpdate(insertRow);
-        } catch (SQLException e) {
-            logError(e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Creates the table to store flight messages (Deprecated)
      *
      * @param connect the connection to be used for creating the table in the
@@ -1323,5 +974,34 @@ public class DatabaseInitialization {
         createPreviousLaunches(connect);
         createPilot(connect);
     }
-
+    
+    public static boolean createTempOperator(Connection connect) {
+        String createProfileString = "CREATE TABLE tempOperator"
+                + "(operator_id INT, "
+                + "first_name VARCHAR(30),"
+                + "middle_name VARCHAR(30),"
+                + "last_name VARCHAR(30), "
+                + "admin BOOLEAN,"
+                + "salt VARCHAR(30),"
+                + "hash LONG VARCHAR, "
+                + "optional_info LONG VARCHAR, "
+                + "unitSettings LONG VARCHAR, "
+                + "PRIMARY KEY (operator_id))";
+        try (Statement createProfileTableStatement = connect.createStatement()) {
+            createProfileTableStatement.execute(createProfileString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    public static void dropTempOperator(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE TEMPOPERATOR");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+    
 }

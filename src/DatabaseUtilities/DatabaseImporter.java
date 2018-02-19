@@ -301,9 +301,17 @@ public class DatabaseImporter {
         }
     }
 
+    
+    /**
+     * Modified the existing importer. Now creates a temporary table, reads the data into it, then merges the temp and permanent table.
+     * Temporary table is dropped after the merge.
+     * @throws IOException 
+     */
     private static void importOperator() throws IOException {
         String s;
-        cleanOperator(connection);
+        //cleanOperator(connection);
+        createTempOperator(connection);
+        
         while ((s = br.readLine()) != null) {
             String[] profileData = s.split(",", -1);
             int id = Integer.parseInt(profileData[0]);
@@ -316,9 +324,19 @@ public class DatabaseImporter {
             String optional = profileData[7];
             String settings = profileData[8];
 
-            Operator importer = new Operator(id, first, middle, last, admin, optional, settings);
-            DatabaseEntryInsert.addOperatorToDB(importer, salt, hash);
+            Operator imported = new Operator(id, first, middle, last, admin, optional, settings);
+            try{
+                DatabaseEntryInsert.addOperatorToTempDB(imported, salt, hash);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
+        
+        DatabaseEntryInsert.mergeOperator();
+        
+        dropTempOperator(connection);
+        
     }
 
     private static void importDrum() throws IOException {
