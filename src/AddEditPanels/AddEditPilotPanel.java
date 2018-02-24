@@ -26,7 +26,10 @@ public class AddEditPilotPanel extends AddEditPanel {
     private TextField middleNameField;
     @FXML
     private TextField flightWeightField;
-    private ButtonGroup pilotCapability;
+    
+    @FXML
+    private ToggleGroup CapabilityGroup;
+    
     private ButtonGroup pilotLaunchPref;
     @FXML
     private TextField emergencyContactNameField;
@@ -114,7 +117,7 @@ public class AddEditPilotPanel extends AddEditPanel {
         if (choice.get() == ButtonType.YES) {
             if (DatabaseEntryDelete.DeleteEntry(currentPilot)) {
                 currentData.clearPilot();
-                new Alert(Alert.AlertType.INFORMATION, "Pilot removed").showAndWait();
+                //new Alert(Alert.AlertType.INFORMATION, "Pilot removed").showAndWait();
             }
         }
     }
@@ -132,7 +135,8 @@ public class AddEditPilotPanel extends AddEditPanel {
             float weight = Float.parseFloat(flightWeightField.getText())
                     / UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID);
             //TODO
-            String capability = "Student"; //pilotCapability.getSelection().getActionCommand();
+            RadioButton rb = (RadioButton) CapabilityGroup.getSelectedToggle().getToggleGroup().getSelectedToggle();
+            String capability = rb.getText(); //pilotCapability.getSelection().getActionCommand();
             float preference = 0;
 
             Pilot newPilot;
