@@ -38,7 +38,7 @@ public class PilotPanel implements Observer {
     @FXML
     Label flightWeightLabel;
     @FXML
-    Label capabiltiyLabel;
+    Label capabilityLabel;
 
     @FXML
     Label flightWeightUnitLabel;
@@ -67,8 +67,8 @@ public class PilotPanel implements Observer {
             }
         });
         pilotTable.getSelectionModel().selectFirst();
-        loadData();
         setupUnits();
+        loadData();
 
         preferenceSlider.setLabelFormatter(new StringConverter<Double>() {
             @Override
@@ -104,26 +104,26 @@ public class PilotPanel implements Observer {
     public void loadData() {
         if (currentData.getCurrentPilot() != null) {
             pilotNameLabel.setText(currentData.getCurrentPilot().getFirstName() + " " + currentData.getCurrentPilot().getMiddleName() + " " + currentData.getCurrentPilot().getLastName());
-            flightWeightLabel.setText("" + currentData.getCurrentPilot().getWeight());
-            //TODO
-            //capabiltiyLabel.setText("" + currentData.getCurrentPilot().getCapability());
+            flightWeightLabel.setText(currentData.getCurrentPilot().getWeight() + " " + UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
+            capabilityLabel.setText("" + currentData.getCurrentPilot().getCapability());
             preferenceSlider.adjustValue(currentData.getCurrentPilot().getPreference());
         } else {
-            pilotNameLabel.setText("");
-            flightWeightLabel.setText("");
+            pilotNameLabel.setText("Pilot Name");
+            flightWeightLabel.setText("N/A");
+            capabilityLabel.setText("N/A");
             preferenceSlider.adjustValue(0.5);
         }
     }
 
     public void setupUnits() {
         flightWeightUnitsID = currentData.getCurrentProfile().getUnitSetting("flightWeight");
-        flightWeightUnitLabel.setText(UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
+        //flightWeightUnitLabel.setText(UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
     }
 
     @Override
     public void update() {
-        loadData();
         setupUnits();
+        loadData();
         Pilot selected = (Pilot) pilotTable.getSelectionModel().getSelectedItem();
         Pilot currPilot = currentData.getCurrentPilot();
         if (currPilot == null && selected != null) {
