@@ -282,6 +282,7 @@ public class OperatorLoginPanel implements Observer {
                 Optional<ButtonType> choice = a.showAndWait();
                 if (choice.get() == ButtonType.YES) {
                         operatorTable.getItems().remove(selected);
+                        DatabaseEntryDelete.DeleteEntry(selected);
                 }
             } else {
                 new Alert(Alert.AlertType.ERROR, "Can't delete yourself").showAndWait();
