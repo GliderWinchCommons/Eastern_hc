@@ -170,7 +170,8 @@ public class DatabaseImporter {
 
     private static void importGlider() throws IOException {
         String s;
-        cleanGlider(connection);
+        //cleanGlider(connection);
+        createTempGlider(connection);
         while ((s = br.readLine()) != null) {
             String[] gliderData = s.split(",", -1);
             int id = Integer.parseInt(gliderData[0]);
@@ -190,8 +191,11 @@ public class DatabaseImporter {
             String optional = gliderData[14];
             Sailplane importer = new Sailplane(id, reg, name, owner, type,
                     mgw, ew, iss, mws, mwls, mt, cra, cb, ms, optional);
-            DatabaseEntryInsert.addSailplaneToDB(importer);
+            DatabaseEntryInsert.addSailplaneToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeGlider();
+        dropTempGlider(connection);       
+        
     }
 
     private static void importPilot() throws IOException {

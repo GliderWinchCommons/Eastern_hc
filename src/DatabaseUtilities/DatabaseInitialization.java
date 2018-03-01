@@ -975,6 +975,45 @@ public class DatabaseInitialization {
         createPilot(connect);
     }
     
+    public static boolean createTempGlider(Connection connect){
+        String createGliderString = "CREATE TABLE tempGlider"
+                + "(glider_id INT, "
+                + "reg_number VARCHAR(30),"
+                + "common_name VARCHAR(30),"
+                + "owner VARCHAR(30),"
+                + "type VARCHAR(30),"
+                + "max_gross_weight FLOAT,"
+                + "empty_weight FLOAT,"
+                + "indicated_stall_speed FLOAT,"
+                + "max_winching_speed FLOAT,"
+                + "max_weak_link_strength FLOAT,"
+                + "max_tension FLOAT,"
+                + "cable_release_angle FLOAT, "
+                + "carry_ballast BOOLEAN, "
+                + "multiple_seats BOOLEAN, "
+                + "optional_info LONG VARCHAR,"
+                + "UNIQUE (reg_number),"
+                + "PRIMARY KEY (glider_id))";
+        try (Statement createPilotTableStatement = connect.createStatement()) {
+            createPilotTableStatement.execute(createGliderString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    public static void dropTempGlider(Connection connect) {
+        try (Statement stmt = connect.createStatement()) {
+            stmt.execute("DROP TABLE TEMPGLIDER");
+        } catch (SQLException e) {
+            logError(e);
+        }
+    }
+    
+    
+    
+    
     public static boolean createTempOperator(Connection connect) {
         String createProfileString = "CREATE TABLE tempOperator"
                 + "(operator_id INT, "

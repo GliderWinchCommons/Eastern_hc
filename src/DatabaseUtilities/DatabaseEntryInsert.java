@@ -104,7 +104,83 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    
+    public static boolean addSailplaneToTempDB(Sailplane theSailplane) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement sailplaneInsertStatement;
+            sailplaneInsertStatement = connect.prepareStatement(
+                    "INSERT INTO tempGlider(glider_id, reg_number, common_name, owner, type, "
+                    + "max_gross_weight, empty_weight, indicated_stall_speed, "
+                    + "max_winching_speed, max_weak_link_strength, max_tension, "
+                    + "cable_release_angle, carry_ballast, multiple_seats, "
+                    + "optional_info)"
+                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            sailplaneInsertStatement.setInt(1, theSailplane.getId());
+            sailplaneInsertStatement.setString(2, theSailplane.getRegNumber());
+            sailplaneInsertStatement.setString(3, theSailplane.getName());
+            sailplaneInsertStatement.setString(4, theSailplane.getOwner());
+            sailplaneInsertStatement.setString(5, theSailplane.getType());
+            sailplaneInsertStatement.setFloat(6, theSailplane.getMaxGrossWeight());
+            sailplaneInsertStatement.setFloat(7, theSailplane.getEmptyWeight());
+            sailplaneInsertStatement.setFloat(8, theSailplane.getIndicatedStallSpeed());
+            sailplaneInsertStatement.setFloat(9, theSailplane.getMaxWinchingSpeed());
+            sailplaneInsertStatement.setFloat(10, theSailplane.getMaxWeakLinkStrength());
+            sailplaneInsertStatement.setFloat(11, theSailplane.getMaxTension());
+            sailplaneInsertStatement.setFloat(12, theSailplane.getCableReleaseAngle());
+            sailplaneInsertStatement.setBoolean(13, theSailplane.getCarryBallast());
+            sailplaneInsertStatement.setBoolean(14, theSailplane.getMultipleSeats());
+            sailplaneInsertStatement.setString(15, theSailplane.getOptionalInfo());
+            sailplaneInsertStatement.executeUpdate();
+            sailplaneInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean mergeGlider(){
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                    + "o.common_name = t.common_name, o.owner = t.owner, "
+                                    + "o.type = t.type, o.max_gross_weight = t.max_gross_weight, o.empty_weight = t.empty_weight, "
+                                    + "o.indicated_stall_speed = t.indicated_stall_speed, o.max_winching_speed = t.max_winching_speed, "
+                                    + "o.max_weak_link_strength = t.max_weak_link_strength, o.max_tension = t.max_tension, "
+                                    + "o.cable_release_angle = t.cable_release_angle, o.carry_ballast = t.carry_ballast, "
+                                    + "o.multiple_seats = multiple_seats, o.optional_info = t.optional_info"
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values (t.glider_id, t.reg_number, t.common_name, t.owner, t.type, "
+                                    + "t.max_gross_weight, t.empty_weight, t.indicated_stall_speed, "
+                                    + "t.max_winching_speed, t.max_weak_link_strength, t.max_tension, "
+                                    + "t.cable_release_angle, t.carry_ballast, t.multiple_seats, "
+                                    + "t.optional_info)";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
     /**
      * Adds the relevant data for an airfield to the database
      *
@@ -494,9 +570,6 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-    
-    
-    
     
 
     /**
