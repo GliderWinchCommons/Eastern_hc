@@ -20,6 +20,7 @@ public class CurrentDataObjectSet {
     private Airfield currentAirfield;
     private ArrayList<Observer> observers;
     private Drum currentDrum;
+    private float currScenarioFlightPref;
 
     public static CurrentDataObjectSet getCurrentDataObjectSet() {
         if (instance == null) {
@@ -120,6 +121,13 @@ public class CurrentDataObjectSet {
         }
         notifyObservers();
     }
+    
+    public void clearCurrScenarioFlightPref() {
+        if (instance != null) {
+            instance.currScenarioFlightPref = -1;
+        }
+        notifyObservers();
+    }
 
     //Setters
     public void setCurrentPilot(Pilot pilot) {
@@ -181,6 +189,13 @@ public class CurrentDataObjectSet {
     public void setCurrentDrum(Drum drum) {
         if (instance != null) {
             instance.currentDrum = drum;
+        }
+        instance.notifyObservers();
+    }
+    
+    public void setCurrScenarioFlightPref(float pref) {
+        if (instance != null) {
+            instance.currScenarioFlightPref = pref;
         }
         instance.notifyObservers();
     }
@@ -257,6 +272,14 @@ public class CurrentDataObjectSet {
             return instance.currentDrum;
         }
     }
+    
+    public float getCurrScenarioFlightPref() {
+        if (instance == null) {
+            return -1;
+        } else {
+            return instance.currScenarioFlightPref;
+        }
+    }
 
     //check if we're ready to launch
     public boolean check() {
@@ -272,6 +295,7 @@ public class CurrentDataObjectSet {
             validate = validate && (instance.currentWinch == null ? false : instance.currentWinch.validate());
             validate = validate && (instance.currentDrum == null ? false : instance.currentDrum.validate());
             validate = validate && (instance.currentDrum == null || instance.currentDrum.getParachute() == null ? false : instance.currentDrum.getParachute().validate());
+            //validate = validate && (instance.currScenarioFlightPref == -1 ? false : instance.currScenarioFlightPref.validate());
             return validate;
         }
     }
