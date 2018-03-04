@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
-import javax.swing.*;
 
 public class AddEditPilotPanel extends AddEditPanel {
 
@@ -30,7 +29,6 @@ public class AddEditPilotPanel extends AddEditPanel {
     @FXML
     private ToggleGroup CapabilityGroup;
     
-    private ButtonGroup pilotLaunchPref;
     @FXML
     private TextField emergencyContactNameField;
     @FXML
@@ -42,7 +40,15 @@ public class AddEditPilotPanel extends AddEditPanel {
     @FXML
     private Label flightWeightUnitsLabel;
     @FXML
-    Slider preferenceSlider;
+    private Label addEditLabel;
+    @FXML
+    private Slider preferenceSlider2;
+    @FXML
+    private RadioButton studentBtn;
+    @FXML
+    private RadioButton proficientBtn;
+    @FXML
+    private RadioButton advancedBtn;
 
     @Override
     public void setupUnits() {
@@ -57,7 +63,7 @@ public class AddEditPilotPanel extends AddEditPanel {
 
     @FXML
     public void initialize() {
-        preferenceSlider.setLabelFormatter(new StringConverter<Double>() {
+        preferenceSlider2.setLabelFormatter(new StringConverter<Double>() {
             @Override
             public String toString(Double d) {
                 if (d == 0) {
@@ -88,12 +94,19 @@ public class AddEditPilotPanel extends AddEditPanel {
         });
     }
 
-    public void edit(Pilot editPilot) {
+    public void edit(Pilot editPilot, boolean edit) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = editPilot != null;
         currentPilot = editPilot;
+        
+        if(edit) {
+            addEditLabel.setText("Edit Pilot");
+        }
+        else {
+            addEditLabel.setText("Add Pilot");
+        }
 
         if (isEditEntry) {
             firstNameField.setText(currentPilot.getFirstName());
@@ -104,6 +117,26 @@ public class AddEditPilotPanel extends AddEditPanel {
             emergencyContactNameField.setText(currentPilot.getEmergencyName());
             emergencyContactPhoneField.setText(currentPilot.getEmergencyPhone());
             optionalInfoField.setText(currentPilot.getOptionalInfo());
+            
+            switch (currentPilot.getCapability()) {
+                case "Student":
+                    studentBtn.setSelected(true);
+                    break;
+                case "Proficient":
+                    proficientBtn.setSelected(true);
+                    break;
+                case "Advanced":
+                    advancedBtn.setSelected(true);
+                    break;
+                default:
+                    break;
+            }
+
+            preferenceSlider2.adjustValue(currentData.getCurrentPilot().getPreference());
+        }
+        else {
+            advancedBtn.setSelected(true);
+            preferenceSlider2.adjustValue(0.5);
         }
     }
 
@@ -134,10 +167,10 @@ public class AddEditPilotPanel extends AddEditPanel {
 
             float weight = Float.parseFloat(flightWeightField.getText())
                     / UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID);
-            //TODO
+
             RadioButton rb = (RadioButton) CapabilityGroup.getSelectedToggle().getToggleGroup().getSelectedToggle();
-            String capability = rb.getText(); //pilotCapability.getSelection().getActionCommand();
-            float preference = 0;
+            String capability = rb.getText();
+            float preference = (float) preferenceSlider2.getValue();
 
             Pilot newPilot;
 
@@ -213,11 +246,6 @@ public class AddEditPilotPanel extends AddEditPanel {
             }
 
             /* TODO
-            if (pilotCapability.getSelection() == null) {
-                //TODO some kind of alert
-                emptyFields = true;
-            }
-
             if (pilotLaunchPref.getSelection() == null) {
                 //TODO some kind of alert
                 emptyFields = true;
@@ -244,7 +272,6 @@ public class AddEditPilotPanel extends AddEditPanel {
         middleNameField.setText("");
         flightWeightField.setText("");
         //TODO
-        //pilotCapability.clearSelection();
         //pilotLaunchPref.clearSelection();
         emergencyContactNameField.setText("");
         emergencyContactPhoneField.setText("");
