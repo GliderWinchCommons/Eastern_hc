@@ -48,6 +48,7 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
                         } else {
                             try {
                                 Number d = DecimalFormat.getInstance().parse(field.getText());
+                                field.setStyle("-fx-border-color: green;");
                                 checkTimer.restart();
                             } catch (ParseException ex) {
                                 field.setStyle("-fx-border-color: red;");
@@ -73,7 +74,9 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
         Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
         return new Timer((temp != null ? temp.getMeteorological_check_time() : 60) * 1000, (ActionEvent e) -> {
             Platform.runLater(() -> {
-                field.setStyle("-fx-border-color: gold;");
+                if(field.getText() == null){
+                    field.setStyle("-fx-border-color: gold;");
+                }
                 checkTimer.stop();
                 verifyTimer.restart();
             });
@@ -84,8 +87,10 @@ public abstract class EnvironmentalWidget extends JPanel implements Observer {
         Winch temp = CurrentDataObjectSet.getCurrentDataObjectSet().getCurrentWinch();
         return new Timer((temp != null ? temp.getMeteorological_verify_time() : 60) * 1000, (ActionEvent e) -> {
             Platform.runLater(() -> {
-                field.setStyle("");
-                field.setStyle("-fx-border-color: red;");
+                if(field.getText() == null){
+                    field.setStyle("");
+                    field.setStyle("-fx-border-color: red;");
+                }
                 verifyTimer.stop();
             });
         });

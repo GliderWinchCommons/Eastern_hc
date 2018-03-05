@@ -47,7 +47,7 @@ public class TemperatureWidget extends EnvironmentalWidget {
             } else if (unitId == 1) {
                 String value = CurrentWidgetDataSet.getInstance().getValue("temperature");
                 if (value.equals("")) {
-                    this.field.setText("0.00");
+                    //this.field.setText("0.00");
                 } else {
                     this.field.setText(String.format("%.2f", (Float.parseFloat(CurrentWidgetDataSet.getInstance().getValue("temperature")) * (9f / 5f) + 32f)));
                 }

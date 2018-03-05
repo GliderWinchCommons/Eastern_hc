@@ -16,6 +16,8 @@ import javafx.scene.control.TextField;
  *
  * @author jtroxel
  */
+
+// *** Now displays in the application as Altimeter Setting ***
 public class PressureWidget extends EnvironmentalWidget {
 
     public PressureWidget(TextField field, CheckBox edit, Label unit) {
