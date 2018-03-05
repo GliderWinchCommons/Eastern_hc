@@ -78,7 +78,7 @@
                   <Slider fx:id="preferenceSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 1.5em;" value="0.5" />
                </children>
             </FlowPane>
-            <Button fx:id="pilotFinishButton" alignment="CENTER" mnemonicParsing="false" onAction="#PilotFinishButton_Click" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Save" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="pilotFinishButton" alignment="CENTER" mnemonicParsing="false" onAction="#PilotFinishButton_Click" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Select" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>

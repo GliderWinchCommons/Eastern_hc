@@ -2,12 +2,14 @@ package ParameterSelection;
 
 import AddEditPanels.AddEditPilotPanel;
 import Communications.Observer;
+import Configuration.UnitConversionRate;
 import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Pilot;
 import DatabaseUtilities.DatabaseEntrySelect;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
@@ -59,14 +61,17 @@ public class PilotPanel implements Observer {
         TableColumn lastCol = (TableColumn) pilotTable.getColumns().get(1);
         lastCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
-        pilotTable.setItems(FXCollections.observableList(DatabaseEntrySelect.getPilots()));
+        ObservableList list = FXCollections.observableList(DatabaseEntrySelect.getPilots());
+        pilotTable.setItems(list);
+        
         pilotTable.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
             if (newValue != null) {
                 currentData.setCurrentPilot((Pilot) newValue);
                 loadData();
             }
         });
-        pilotTable.getSelectionModel().selectFirst();
+        
+        //pilotTable.getSelectionModel().selectFirst();
         setupUnits();
         loadData();
 
@@ -104,7 +109,7 @@ public class PilotPanel implements Observer {
     public void loadData() {
         if (currentData.getCurrentPilot() != null) {
             pilotNameLabel.setText(currentData.getCurrentPilot().getFirstName() + " " + currentData.getCurrentPilot().getMiddleName() + " " + currentData.getCurrentPilot().getLastName());
-            flightWeightLabel.setText(currentData.getCurrentPilot().getWeight() + " " + UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
+            flightWeightLabel.setText(currentData.getCurrentPilot().getWeight() * UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID) + " " + UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
             capabilityLabel.setText("" + currentData.getCurrentPilot().getCapability());
             preferenceSlider.adjustValue(currentData.getCurrentPilot().getPreference());
         } else {
@@ -129,10 +134,12 @@ public class PilotPanel implements Observer {
         if (currPilot == null && selected != null) {
             pilotTable.getItems().remove(selected);
         } else {
-            if (!pilotTable.getItems().contains(currPilot)) {
-                pilotTable.getItems().add(currPilot);
+            if(currPilot != null) {
+                if (!pilotTable.getItems().contains(currPilot)) {
+                    pilotTable.getItems().add(currPilot);
+                }
+                pilotTable.getSelectionModel().select(currPilot);
             }
-            pilotTable.getSelectionModel().select(currPilot);
         }
         pilotTable.refresh();
     }
@@ -152,18 +159,19 @@ public class PilotPanel implements Observer {
 
     @FXML
     public void PilotFinishButton_Click(ActionEvent e) {
+        currentData.setCurrScenarioFlightPref((float) preferenceSlider.getValue());
         scenarioHomePane.toFront();
     }
 
     @FXML
     public void NewPilotButton_Click(ActionEvent e) {
-        editFrame.edit(null);
+        editFrame.edit(null, false);
         editPilotPanel.toFront();
     }
 
     @FXML
     public void EditPilotButton_Click(ActionEvent e) {
-        editFrame.edit(currentData.getCurrentPilot());
+        editFrame.edit(currentData.getCurrentPilot(), true);
         editPilotPanel.toFront();
     }
 }
