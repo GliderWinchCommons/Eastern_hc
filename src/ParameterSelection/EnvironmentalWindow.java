@@ -9,6 +9,9 @@ import Communications.MessagePipeline;
 import Communications.Observer;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.CurrentLaunchInformation;
+import DataObjects.Pilot;
+import DataObjects.Sailplane;
+import EnvironmentalWidgets.AirDensityWidget;
 import EnvironmentalWidgets.AvgWindSpeedWidget;
 import EnvironmentalWidgets.DensityAltitudeWidget;
 import EnvironmentalWidgets.EnvironmentalWidget;
@@ -56,6 +59,14 @@ public class EnvironmentalWindow implements Observer {
             ew.setupUnits();
             ew.updateTimers();
         }
+        if(data.getCurrentPilot() != null) {
+            Pilot p = data.getCurrentPilot();
+            pilotName.setText(p.getFirstName() + " " + p.getLastName());
+        }
+        if(data.getCurrentSailplane() != null) {
+            Sailplane glider = data.getCurrentSailplane();
+            pilotName.setText(glider.getName() + " ");
+        }
     }
 
     @Override
@@ -77,7 +88,9 @@ public class EnvironmentalWindow implements Observer {
         addWidget(new DensityAltitudeWidget(densityAltitudeTextField, densityAltitudeCheckBox, densityAltitudeUnitLabel));
         addWidget(new TemperatureWidget(temperatureTextField, temperatureCheckBox, temperatureUnitLabel));
         addWidget(new HumidityWidget(humidityTextField, humidityCheckBox, humidityUnitLabel));
-        addWidget(new PressureWidget(pressureTextField, pressureCheckBox, pressureUnitLabel));
+        addWidget(new PressureWidget(altimeterTextField, altimeterCheckBox, altimeterUnitLabel));
+        
+        addWidget(new AirDensityWidget(airDensityTextField, airDensityCheckBox, airDensityUnitLabel));
     }
 
     //TextFields
@@ -93,10 +106,14 @@ public class EnvironmentalWindow implements Observer {
     TextField densityAltitudeTextField;
     @FXML
     TextField temperatureTextField;
+    
+    // Used to be pressure
     @FXML
-    TextField pressureTextField;
+    TextField altimeterTextField;
     @FXML
     TextField humidityTextField;
+    @FXML
+    TextField airDensityTextField;
 
     //Units
     @FXML
@@ -111,10 +128,14 @@ public class EnvironmentalWindow implements Observer {
     Label densityAltitudeUnitLabel;
     @FXML
     Label temperatureUnitLabel;
+    
+    // Used to be pressure
     @FXML
-    Label pressureUnitLabel;
+    Label altimeterUnitLabel;
     @FXML
     Label humidityUnitLabel;
+    @FXML
+    Label airDensityUnitLabel;
 
     //TextFields
     @FXML
@@ -127,10 +148,18 @@ public class EnvironmentalWindow implements Observer {
     CheckBox densityAltitudeCheckBox;
     @FXML
     CheckBox temperatureCheckBox;
+    
+    // Used to be pressure
     @FXML
-    CheckBox pressureCheckBox;
+    CheckBox altimeterCheckBox;
     @FXML
     CheckBox humidityCheckBox;
+    @FXML
+    CheckBox airDensityCheckBox;
+    
+    //Text Labels
+    @FXML
+    Label pilotName;
 
     @FXML
     public void CheckBoxBinding(javafx.event.ActionEvent e) {
