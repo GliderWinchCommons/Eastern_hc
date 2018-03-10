@@ -201,6 +201,7 @@ public class DatabaseImporter {
     private static void importPilot() throws IOException {
         String s;
         cleanPilot(connection);
+        createTempPilot(connection);
         while ((s = br.readLine()) != null) {
             String[] pilotData = s.split(",", -1);
             int id = Integer.parseInt(pilotData[0]);
@@ -215,14 +216,19 @@ public class DatabaseImporter {
             String optional = pilotData[9];
             Pilot importer = new Pilot(id, first, last, middle, weight,
                     capabilities, preference, eName, ePhone, optional);
-            DatabaseEntryInsert.addPilotToDB(importer);
-
+            DatabaseEntryInsert.addPilotToTempDB(importer);
+            
         }
+        DatabaseEntryInsert.mergePilot();
+        dropTempPilot(connection);
+        
+        
     }
 
     private static void importAirfield() throws IOException {
         String s;
         cleanAirfield(connection);
+        createTempAirfield(connection);
         while ((s = br.readLine()) != null) {
             String[] airfieldData = s.split(",", -1);
             int id = Integer.parseInt(airfieldData[0]);
@@ -235,13 +241,17 @@ public class DatabaseImporter {
             int utc = Integer.parseInt(airfieldData[7]);
             String optional = airfieldData[8];
             Airfield importer = new Airfield(id, name, designator, ele, mv, lat, lng, utc, optional);
-            DatabaseEntryInsert.addAirfieldToDB(importer);
+            DatabaseEntryInsert.addAirfieldToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeAirfield();
+        dropTempAirfield(connection);
+        
     }
 
     private static void importRunway() throws IOException {
         String s;
         cleanRunway(connection);
+        createTempRunway(connection);
         while ((s = br.readLine()) != null) {
             String[] runwayData = s.split(",", -1);
             int id = Integer.parseInt(runwayData[0]);
@@ -250,13 +260,17 @@ public class DatabaseImporter {
             float mh = Float.parseFloat(runwayData[3]);
             String info = runwayData[4];
             Runway importer = new Runway(id, pid, name, mh, info);
-            DatabaseEntryInsert.addRunwayToDB(importer);
+            DatabaseEntryInsert.addRunwayToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeRunway();
+        dropTempRunway(connection);
+        
     }
 
     private static void importGliderPosition() throws IOException {
         String s;
         cleanGliderPosition(connection);
+        createTempGliderPosition(connection);
         while ((s = br.readLine()) != null) {
             String[] gliderPositionData = s.split(",", -1);
             int id = Integer.parseInt(gliderPositionData[0]);
@@ -267,13 +281,16 @@ public class DatabaseImporter {
             float lng = Float.parseFloat(gliderPositionData[5]);
             String optional = gliderPositionData[6];
             GliderPosition importer = new GliderPosition(id, pid, name, elv, lat, lng, optional);
-            DatabaseEntryInsert.addGliderPositionToDB(importer);
+            DatabaseEntryInsert.addGliderPositionToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeGliderPosition();
+        dropTempGliderPosition(connection);
     }
 
     private static void importWinchPosition() throws IOException {
         String s;
         cleanWinchPosition(connection);
+        createTempWinchPosition(connection);
         while ((s = br.readLine()) != null) {
             String[] winchPositionData = s.split(",", -1);
             int id = Integer.parseInt(winchPositionData[0]);
@@ -285,13 +302,18 @@ public class DatabaseImporter {
             String optional = winchPositionData[6];
             WinchPosition importer = new WinchPosition(id, pid, name, elv, lat, lng, optional);
 
-            DatabaseEntryInsert.addWinchPositionToDB(importer);
+            DatabaseEntryInsert.addWinchPositionToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeWinchPosition();
+        dropTempWinchPosition(connection);
+        
+        
     }
 
     private static void importParachute() throws IOException {
         String s;
         cleanParachute(connection);
+        createTempParachute(connection);
         while ((s = br.readLine()) != null) {
             String[] parachuteData = s.split(",", -1);
             int id = Integer.parseInt(parachuteData[0]);
@@ -301,8 +323,11 @@ public class DatabaseImporter {
             float weight = Float.parseFloat(parachuteData[4]);
             String optional = parachuteData[5];
             Parachute importer = new Parachute(id, name, lift, drag, weight, optional);
-            DatabaseEntryInsert.addParachuteToDB(importer);
+            DatabaseEntryInsert.addParachuteToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeParachute();
+        dropTempParachute(connection);
+        
     }
 
     
@@ -315,7 +340,6 @@ public class DatabaseImporter {
         String s;
         //cleanOperator(connection);
         createTempOperator(connection);
-        
         while ((s = br.readLine()) != null) {
             String[] profileData = s.split(",", -1);
             int id = Integer.parseInt(profileData[0]);
@@ -337,8 +361,7 @@ public class DatabaseImporter {
             }
         }
         
-        DatabaseEntryInsert.mergeOperator();
-        
+        DatabaseEntryInsert.mergeOperator();       
         dropTempOperator(connection);
         
     }
@@ -346,6 +369,7 @@ public class DatabaseImporter {
     private static void importDrum() throws IOException {
         String s;
         cleanDrum(connection);
+        createTempDrum(connection);
         while ((s = br.readLine()) != null) {
             String[] drumData = s.split(",", -1);
             int id = Integer.parseInt(drumData[0]);
@@ -363,13 +387,18 @@ public class DatabaseImporter {
             String optional = drumData[11];
 
             Drum importer = new Drum(id, wid, name, number, cod, kf, sc, cal, cad, dse, nol, mwt, optional);
-            DatabaseEntryInsert.addDrumToDB(importer);
+            DatabaseEntryInsert.addDrumToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeDrum();
+        dropTempDrum(connection);
+        
+        
     }
 
     private static void importWinch() throws IOException {
         String s;
         cleanWinch(connection); //also cleans Drum
+        createTempWinch(connection);
         while ((s = br.readLine()) != null) {
             String[] winchData = s.split(",", -1);
             int id = Integer.parseInt(winchData[0]);
@@ -400,8 +429,11 @@ public class DatabaseImporter {
             Winch importer = new Winch(id, name, owner, wcVer, w1, w2, w3, w4,
                     w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, mtc,
                     mvc, rot, optional);
-            DatabaseEntryInsert.addWinchToDB(importer);
+            DatabaseEntryInsert.addWinchToTempDB(importer);
         }
+        DatabaseEntryInsert.mergeWinch();
+        dropTempWinch(connection);
+        
     }
 
     private static void importPreviousLaunches() throws IOException, SQLException {
