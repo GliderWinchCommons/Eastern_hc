@@ -194,13 +194,13 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addSailplaneToTempDB(importer);
         }
         DatabaseEntryInsert.mergeGlider();
-        dropTempGlider(connection);       
+        dropTable(connection, "TEMPGLIDER");       
         
     }
 
     private static void importPilot() throws IOException {
         String s;
-        cleanPilot(connection);
+        //cleanPilot(connection);
         createTempPilot(connection);
         while ((s = br.readLine()) != null) {
             String[] pilotData = s.split(",", -1);
@@ -220,7 +220,7 @@ public class DatabaseImporter {
             
         }
         DatabaseEntryInsert.mergePilot();
-        dropTempPilot(connection);
+        dropTable(connection, "TEMPPILOT");
         
         
     }
@@ -244,7 +244,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addAirfieldToTempDB(importer);
         }
         DatabaseEntryInsert.mergeAirfield();
-        dropTempAirfield(connection);
+        dropTable(connection, "TEMPAIRFIELD");
         
     }
 
@@ -263,7 +263,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addRunwayToTempDB(importer);
         }
         DatabaseEntryInsert.mergeRunway();
-        dropTempRunway(connection);
+        dropTable(connection, "TEMPRUNWAY");
         
     }
 
@@ -284,7 +284,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addGliderPositionToTempDB(importer);
         }
         DatabaseEntryInsert.mergeGliderPosition();
-        dropTempGliderPosition(connection);
+        dropTable(connection, "TEMPGLIDERPOSITION");
     }
 
     private static void importWinchPosition() throws IOException {
@@ -305,7 +305,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addWinchPositionToTempDB(importer);
         }
         DatabaseEntryInsert.mergeWinchPosition();
-        dropTempWinchPosition(connection);
+        dropTable(connection, "TEMPWINCHPOSITION");
         
         
     }
@@ -326,7 +326,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addParachuteToTempDB(importer);
         }
         DatabaseEntryInsert.mergeParachute();
-        dropTempParachute(connection);
+        dropTable(connection, "TEMPPARACHUTE");
         
     }
 
@@ -362,7 +362,7 @@ public class DatabaseImporter {
         }
         
         DatabaseEntryInsert.mergeOperator();       
-        dropTempOperator(connection);
+        dropTable(connection, "TEMPOPERATOR");
         
     }
 
@@ -390,7 +390,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addDrumToTempDB(importer);
         }
         DatabaseEntryInsert.mergeDrum();
-        dropTempDrum(connection);
+        dropTable(connection, "TEMPDRUM");
         
         
     }
@@ -432,7 +432,7 @@ public class DatabaseImporter {
             DatabaseEntryInsert.addWinchToTempDB(importer);
         }
         DatabaseEntryInsert.mergeWinch();
-        dropTempWinch(connection);
+        dropTable(connection, "TEMPWINCH");
         
     }
 
@@ -636,4 +636,6 @@ public class DatabaseImporter {
         }
         PreviousAirfieldInsert.close();
     }
+
+    
 }

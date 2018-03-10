@@ -1003,15 +1003,39 @@ public class DatabaseInitialization {
         return true;
     }
     
-    public static void dropTempGlider(Connection connect) {
-        try (Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE TEMPGLIDER");
-        } catch (SQLException e) {
-            logError(e);
-        }
+    
+    public static boolean createTempPilot(Connection connection) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    public static boolean createTempAirfield(Connection connect) {
+        // TODO add functionality here
+        return false;
     }
     
     
+    public static boolean createTempRunway(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    
+    public static boolean createTempGliderPosition(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    public static boolean createTempWinchPosition(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    
+    public static boolean createTempParachute(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
     
     
     public static boolean createTempOperator(Connection connect) {
@@ -1035,12 +1059,27 @@ public class DatabaseInitialization {
         return true;
     }
     
-    public static void dropTempOperator(Connection connect) {
-        try (Statement stmt = connect.createStatement()) {
-            stmt.execute("DROP TABLE TEMPOPERATOR");
+    
+    public static boolean createTempDrum(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    
+    public static boolean createTempWinch(Connection connect) {
+        // TODO add functionality here
+        return false;
+    }
+    
+    
+    public static void dropTable(Connection connect, String tableName){
+        try{
+            PreparedStatement prepared = connect.prepareStatement("DROP TABLE ?");
+            prepared.setString(1, tableName);
+            prepared.executeUpdate();
+            prepared.close();
         } catch (SQLException e) {
             logError(e);
         }
     }
-    
 }

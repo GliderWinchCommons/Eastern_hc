@@ -60,7 +60,43 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+/**
+     * Adds the relevant data for a pilot to the database
+     *
+     * @param thePilot the pilot to add to the database
+     * @return false if add fails
+     */
+    public static boolean addPilotToTempDB(Pilot thePilot) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement pilotInsertStatement = connect.prepareStatement(
+                    "INSERT INTO TempPilot(pilot_id, first_name, last_name, middle_name, "
+                    + "flight_weight, capability, preference, "
+                    + "emergency_contact_name, emergency_contact_phone, optional_info)"
+                    + "values (?,?,?,?,?,?,?,?,?,?)");
+            pilotInsertStatement.setInt(1, thePilot.getPilotId());
+            pilotInsertStatement.setString(2, thePilot.getFirstName());
+            pilotInsertStatement.setString(3, thePilot.getLastName());
+            pilotInsertStatement.setString(4, thePilot.getMiddleName());
+            pilotInsertStatement.setFloat(5, thePilot.getWeight());
+            pilotInsertStatement.setInt(6,
+                    Capability.convertCapabilityStringToNum(thePilot.getCapability()));
+            pilotInsertStatement.setFloat(7, thePilot.getPreference());
+            pilotInsertStatement.setString(8, thePilot.getEmergencyName());
+            pilotInsertStatement.setString(9, thePilot.getEmergencyPhone());
+            pilotInsertStatement.setString(10, thePilot.getOptionalInfo());
+            pilotInsertStatement.executeUpdate();
+            pilotInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Pilot to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Adds the relevant data for a sailplane to the database
      *
@@ -214,7 +250,40 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    /**
+     * Adds the relevant data for an airfield to the database
+     *
+     * @param theAirfield the airfield to add to the database
+     * @return false if add fails
+     */
+    public static boolean addAirfieldToTempDB(Airfield theAirfield) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement AirfieldInsertStatement = connect.prepareStatement(
+                    "INSERT INTO TempAirfield(airfield_id, name, designator, elevation, "
+                    + "magnetic_variation, latitude, longitude, utc_offset, optional_info) "
+                    + "values (?,?,?,?,?,?,?,?,?)");
+            AirfieldInsertStatement.setInt(1, theAirfield.getId());
+            AirfieldInsertStatement.setString(2, theAirfield.getName());
+            AirfieldInsertStatement.setString(3, theAirfield.getDesignator());
+            AirfieldInsertStatement.setFloat(4, theAirfield.getElevation());
+            AirfieldInsertStatement.setFloat(5, theAirfield.getMagneticVariation());
+            AirfieldInsertStatement.setFloat(6, theAirfield.getLatitude());
+            AirfieldInsertStatement.setFloat(7, theAirfield.getLongitude());
+            AirfieldInsertStatement.setInt(8, theAirfield.getUTC());
+            AirfieldInsertStatement.setString(9, theAirfield.getOptionalInfo());
+            AirfieldInsertStatement.executeUpdate();
+            AirfieldInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Airfield to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Adds the relevant data for a runway to the database
      *
@@ -227,7 +296,7 @@ public class DatabaseEntryInsert {
                 return false;
             }
             PreparedStatement RunwayInsertStatement = connect.prepareStatement(
-                    "INSERT INTO Runway(runway_id, parent_id, runway_name, magnetic_heading, "
+                    "INSERT INTO TempRunway(runway_id, parent_id, runway_name, magnetic_heading, "
                     + "optional_info) "
                     + "values (?,?,?,?,?)");
             RunwayInsertStatement.setInt(1, theRunway.getId());
@@ -244,20 +313,50 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    /**
+     * Adds the relevant data for a runway to the database
+     *
+     * @param theRunway the runway to add to the database
+     * @return false if add fails
+     */
+    public static boolean addRunwayToTempDB(Runway theRunway) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement RunwayInsertStatement = connect.prepareStatement(
+                    "INSERT INTO TempRunway(runway_id, parent_id, runway_name, magnetic_heading, "
+                    + "optional_info) "
+                    + "values (?,?,?,?,?)");
+            RunwayInsertStatement.setInt(1, theRunway.getId());
+            RunwayInsertStatement.setInt(2, theRunway.getParentId());
+            RunwayInsertStatement.setString(3, theRunway.getName());
+            RunwayInsertStatement.setFloat(4, theRunway.getMagneticHeading());
+            RunwayInsertStatement.setString(5, theRunway.getOptionalInfo());
+            RunwayInsertStatement.executeUpdate();
+            RunwayInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Runway to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
     /**
      * Adds the relevant data for a glider position to the database
      *
      * @param theGliderPosition the runway to add to the database
      * @return false if add fails
      */
-    public static boolean addGliderPositionToDB(GliderPosition theGliderPosition) {
+    public static boolean addGliderPositionToTempDB(GliderPosition theGliderPosition) {
         try (Connection connect = connect()) {
             if (connect == null) {
                 return false;
             }
             PreparedStatement GliderPositionInsertStatement = connect.prepareStatement(
-                    "INSERT INTO GliderPosition(glider_position_id, parent_id, "
+                    "INSERT INTO TempGliderPosition(glider_position_id, parent_id, "
                     + "position_name, elevation, latitude, longitude, optional_info) "
                     + "values (?,?,?,?,?,?,?)");
             GliderPositionInsertStatement.setInt(1, theGliderPosition.getId());
@@ -310,7 +409,38 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+ /**
+     * Adds the relevant data for a winch position to the database
+     *
+     * @param theWinchPosition the runway to add to the database
+     * @return false if add fails
+     */
+    public static boolean addWinchPositionToTempDB(WinchPosition theWinchPosition) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement WinchPositionInsertStatement = connect.prepareStatement(
+                    "INSERT INTO TempWinchPosition(winch_position_id, parent_id, position_name, "
+                    + "elevation, latitude, longitude, optional_info) "
+                    + "values (?,?,?,?,?,?,?)");
+            WinchPositionInsertStatement.setInt(1, theWinchPosition.getId());
+            WinchPositionInsertStatement.setInt(2, theWinchPosition.getRunwayParentId());
+            WinchPositionInsertStatement.setString(3, theWinchPosition.getName());
+            WinchPositionInsertStatement.setFloat(4, theWinchPosition.getElevation());
+            WinchPositionInsertStatement.setFloat(5, theWinchPosition.getLatitude());
+            WinchPositionInsertStatement.setFloat(6, theWinchPosition.getLongitude());
+            WinchPositionInsertStatement.setString(7, theWinchPosition.getOptionalInfo());
+            WinchPositionInsertStatement.executeUpdate();
+            WinchPositionInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add WInch Position to Database, Check Error Log")
+                    .showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
     /**
      * Adds the relevant data for a parachute to the database
      *
@@ -324,6 +454,62 @@ public class DatabaseEntryInsert {
             }
             PreparedStatement WinchInsertStatement = connect.prepareStatement(
                     "INSERT INTO Winch "
+                    + "(winch_id, name, owner, wc_version, "
+                    + "w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, "
+                    + "w13, w14, w15, w16, meteorological_check_time, "
+                    + "meteorological_verify_time, run_orientation_tolerance, optional_info) "
+                    + "values ("
+                    + "?,?,?,?,?,?,?,?,?,?," //10
+                    + "?,?,?,?,?,?,?,?,?,?," //10
+                    + "?,?,?,?" //4
+                    + ")");
+            WinchInsertStatement.setInt(1, theWinch.getId());
+            WinchInsertStatement.setString(2, theWinch.getName());
+            WinchInsertStatement.setString(3, theWinch.getOwner());
+            WinchInsertStatement.setString(4, WINCH_PRAM_VERSION);
+            WinchInsertStatement.setFloat(5, theWinch.getW1());
+            WinchInsertStatement.setFloat(6, theWinch.getW2());
+            WinchInsertStatement.setFloat(7, theWinch.getW3());
+            WinchInsertStatement.setFloat(8, theWinch.getW4());
+            WinchInsertStatement.setFloat(9, theWinch.getW5());
+            WinchInsertStatement.setFloat(10, theWinch.getW6());
+            WinchInsertStatement.setFloat(11, theWinch.getW7());
+            WinchInsertStatement.setFloat(12, theWinch.getW8());
+            WinchInsertStatement.setFloat(13, theWinch.getW9());
+            WinchInsertStatement.setFloat(14, theWinch.getW10());
+            WinchInsertStatement.setFloat(15, theWinch.getW11());
+            WinchInsertStatement.setFloat(16, theWinch.getW12());
+            WinchInsertStatement.setFloat(17, theWinch.getW13());
+            WinchInsertStatement.setFloat(18, theWinch.getW14());
+            WinchInsertStatement.setFloat(19, theWinch.getW15());
+            WinchInsertStatement.setFloat(20, theWinch.getW16());
+            WinchInsertStatement.setInt(21, theWinch.meteorologicalCheckTime());
+            WinchInsertStatement.setInt(22, theWinch.meteorologicalVerifyTime());
+            WinchInsertStatement.setFloat(23, theWinch.runOrientationTolerance());
+            WinchInsertStatement.setString(24, theWinch.getOptionalInfo());
+            WinchInsertStatement.executeUpdate();
+            WinchInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Winch to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Adds the relevant data for a parachute to the database
+     *
+     * @param theWinch the winch to add to the database
+     * @return false if add fails
+     */
+    public static boolean addWinchToTempDB(Winch theWinch) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement WinchInsertStatement = connect.prepareStatement(
+                    "INSERT INTO TempWinch "
                     + "(winch_id, name, owner, wc_version, "
                     + "w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, "
                     + "w13, w14, w15, w16, meteorological_check_time, "
@@ -405,20 +591,58 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    /**
+     * Adds the relevant data for a parachute to the database
+     *
+     * @param theDrum the drum to add to the database
+     * @return false if add fails
+     */
+    public static boolean addDrumToTempDB(Drum theDrum) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement DrumInsertStatement = connect.prepareStatement(
+                    "INSERT INTO Drum(drum_id, drum_name, drum_number, core_diameter, kfactor, "
+                    + "spring_const, cable_length, cable_density, drum_system_emass, number_of_launches, "
+                    + "maximum_working_tension, winch_id, optional_info) "
+                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            DrumInsertStatement.setInt(1, theDrum.getId());
+            DrumInsertStatement.setString(2, theDrum.getName());
+            DrumInsertStatement.setInt(3, theDrum.getDrumNumber());
+            DrumInsertStatement.setFloat(4, theDrum.getCoreDiameter());
+            DrumInsertStatement.setFloat(5, theDrum.getKFactor());
+            DrumInsertStatement.setFloat(6, theDrum.getSpringConstant());
+            DrumInsertStatement.setFloat(7, theDrum.getCableLength());
+            DrumInsertStatement.setFloat(8, theDrum.getCableDensity());
+            DrumInsertStatement.setFloat(9, theDrum.getSystemEquivalentMass());
+            DrumInsertStatement.setInt(10, theDrum.getNumLaunches());
+            DrumInsertStatement.setFloat(11, theDrum.getMaxTension());
+            DrumInsertStatement.setInt(12, theDrum.getWinchId());
+            DrumInsertStatement.setString(13, theDrum.getOptionalInfo());
+            DrumInsertStatement.executeUpdate();
+            DrumInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Drum to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Adds the relevant data for a parachute to the database
      *
      * @param theParachute the runway to add to the database
      * @return false if add fails
      */
-    public static boolean addParachuteToDB(Parachute theParachute) {
+    public static boolean addParachuteToTempDB(Parachute theParachute) {
         try (Connection connect = connect()) {
             if (connect == null) {
                 return false;
             }
             PreparedStatement ParachuteInsertStatement = connect.prepareStatement(
-                    "INSERT INTO Parachute(parachute_id, name, lift, drag, weight, optional_info) "
+                    "INSERT INTO TempParachute(parachute_id, name, lift, drag, weight, optional_info) "
                     + "values (?,?,?,?,?,?)");
             ParachuteInsertStatement.setInt(1, theParachute.getParachuteId());
             ParachuteInsertStatement.setString(2, theParachute.getName());
