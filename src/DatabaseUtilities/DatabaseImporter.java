@@ -312,7 +312,7 @@ public class DatabaseImporter {
 
     private static void importParachute() throws IOException {
         String s;
-        cleanParachute(connection);
+        //cleanParachute(connection);
         createTempParachute(connection);
         while ((s = br.readLine()) != null) {
             String[] parachuteData = s.split(",", -1);

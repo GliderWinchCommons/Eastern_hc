@@ -1005,35 +1005,35 @@ public class DatabaseInitialization {
     
     
     public static boolean createTempPilot(Connection connection) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     
     public static boolean createTempAirfield(Connection connect) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     
     
     public static boolean createTempRunway(Connection connect) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     
     
     public static boolean createTempGliderPosition(Connection connect) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     
     public static boolean createTempWinchPosition(Connection connect) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     
     
     public static boolean createTempParachute(Connection connect) {
-        // TODO add functionality here
+         TODO add functionality here
         return false;
     }
     

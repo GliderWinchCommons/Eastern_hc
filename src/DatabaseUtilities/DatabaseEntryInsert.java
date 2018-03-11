@@ -97,6 +97,90 @@ public class DatabaseEntryInsert {
         return true;
     }
     
+    
+    
+    public static boolean mergePilot() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    /**
+     * Adds the relevant data for a parachute to the database
+     * @param theParachute 
+     * @return 
+     */
+    public static boolean addParachuteToDB(Parachute theParachute) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement parachuteInsertStatement = connect.prepareStatement(
+                    "INSERT INTO Parachute(parachute_id, name, lift, drag, weight, optional_info)"
+                    + "values (?,?,?,?,?,?)");
+            parachuteInsertStatement.setInt(1, theParachute.getParachuteId());
+            parachuteInsertStatement.setString(2, theParachute.getName());
+            parachuteInsertStatement.setFloat(3, theParachute.getLift());
+            parachuteInsertStatement.setFloat(4, theParachute.getDrag());
+            parachuteInsertStatement.setFloat(5, theParachute.getWeight());
+            parachuteInsertStatement.setString(6, theParachute.getInfo());
+            parachuteInsertStatement.executeUpdate();
+            parachuteInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Parachute to Database, Check Error Log").showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    public static boolean mergeParachute() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
     /**
      * Adds the relevant data for a sailplane to the database
      *
@@ -284,6 +368,35 @@ public class DatabaseEntryInsert {
         return true;
     }
     
+    public static boolean mergeAirfield() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Airfield o "
+                                + "USING tempAirfield t "
+                                + "ON o.airfield_id = t.airfield_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.name = t.name, o.designator = t.designator, "
+                                    + "o.elevation = t.elevation, o.magnetic_variation = t.magnetic_variation, "
+                                    + "o.latitude = t.latitude, o.longitude = t.longituge, "
+                                    + "o.utc_offset = t.utc_offset, o.optional_info = t.optional_info "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
     /**
      * Adds the relevant data for a runway to the database
      *
@@ -343,6 +456,32 @@ public class DatabaseEntryInsert {
         return true;
     }
     
+    public static boolean mergeRunway() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
     
     /**
      * Adds the relevant data for a glider position to the database
@@ -376,7 +515,34 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    
+    public static boolean mergeGliderPosition() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
     /**
      * Adds the relevant data for a winch position to the database
      *
@@ -441,6 +607,35 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
+    
+    public static boolean mergeWinchPosition() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
     /**
      * Adds the relevant data for a parachute to the database
      *
@@ -552,6 +747,35 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
+    
+    public static boolean mergeWinch() {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
 
     /**
      * Adds the relevant data for a parachute to the database
@@ -630,6 +854,33 @@ public class DatabaseEntryInsert {
         return true;
     }
     
+    public static boolean mergeDrum() {
+                try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            String statement = "MERGE INTO Glider o "
+                                + "USING tempGlider t "
+                                + "ON o.glider_id = t.glider_id "
+                                + "WHEN MATCHED THEN UPDATE SET "
+                                    + "o.reg_number = t.reg_number, "
+                                + "WHEN NOT MATCHED THEN INSERT "
+                                    + "values ()";
+            Statement mergeStatement = connect.createStatement();
+            mergeStatement.execute(statement);
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            //logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
     /**
      * Adds the relevant data for a parachute to the database
      *
@@ -693,7 +944,8 @@ public class DatabaseEntryInsert {
         }
         return true;
     }
-
+    
+    
     /**
      * used to import an operator from a file
      *
@@ -1088,4 +1340,5 @@ public class DatabaseEntryInsert {
             throw e;
         }
     }
+
 }
