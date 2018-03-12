@@ -1004,37 +1004,128 @@ public class DatabaseInitialization {
     }
     
     
-    public static boolean createTempPilot(Connection connection) {
-         TODO add functionality here
-        return false;
+    public static boolean createTempPilot(Connection connect) {
+         String createPilotString = "CREATE TABLE tempPilot"
+                + "(pilot_id INT, "
+                + "first_name VARCHAR(30), "
+                + "last_name VARCHAR(30), "
+                + "middle_name VARCHAR(30), "
+                + "flight_weight FLOAT, "
+                + "capability INT, "
+                + "preference FLOAT, "
+                + "emergency_contact_name VARCHAR(30), "
+                + "emergency_contact_phone VARCHAR(20), "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (pilot_id), "
+                + "FOREIGN KEY (capability) REFERENCES Capability (capability_id))";
+        try (Statement createPilotTableStatement = connect.createStatement()) {
+            createPilotTableStatement.execute(createPilotString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     public static boolean createTempAirfield(Connection connect) {
-         TODO add functionality here
-        return false;
+        String createAirfieldString = "CREATE TABLE tempAirfield"
+                + "(airfield_id INT, "
+                + "name VARCHAR(30), "
+                + "designator VARCHAR(30), "
+                + "elevation FLOAT, "
+                + "magnetic_variation FLOAT, "
+                + "latitude FLOAT, "
+                + "longitude FLOAT, "
+                + "utc_offset INT, "
+                + "optional_info LONG VARCHAR, "
+                + "UNIQUE (designator),"
+                + "PRIMARY KEY (airfield_id))";
+        try (Statement createAirfieldTableStatement = connect.createStatement()) {
+            createAirfieldTableStatement.execute(createAirfieldString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
     public static boolean createTempRunway(Connection connect) {
-         TODO add functionality here
-        return false;
+        String createRunwayString = "CREATE TABLE tempRunway "
+                + "(runway_id INT, "
+                + "parent_id INT, "
+                + "runway_name VARCHAR(10), "
+                + "magnetic_heading FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (runway_id), "
+                + "FOREIGN KEY (parent_id) REFERENCES Airfield (airfield_id) ON DELETE CASCADE)";
+        try (Statement createRunwayTableStatement = connect.createStatement()) {
+            createRunwayTableStatement.execute(createRunwayString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
     public static boolean createTempGliderPosition(Connection connect) {
-         TODO add functionality here
-        return false;
+        String createGliderPositionString = "CREATE TABLE tempGliderPosition "
+                + "(glider_position_id INT, "
+                + "parent_id INT, "
+                + "position_name VARCHAR(30), "
+                + "elevation FLOAT, "
+                + "latitude FLOAT, "
+                + "longitude FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (glider_position_id), "
+                + "FOREIGN KEY (parent_id) REFERENCES Runway (runway_id) ON DELETE CASCADE)";
+        try (Statement createGliderPositionTableStatement = connect.createStatement()) {
+            createGliderPositionTableStatement.execute(createGliderPositionString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     public static boolean createTempWinchPosition(Connection connect) {
-         TODO add functionality here
-        return false;
+        String createWinchPositionString = "CREATE TABLE tempWinchPosition"
+                + "(winch_position_id INT, "
+                + "parent_id INT, "
+                + "position_name VARCHAR(30), "
+                + "elevation FLOAT, "
+                + "latitude FLOAT, "
+                + "longitude FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (winch_position_id), "
+                + "FOREIGN KEY (parent_id) REFERENCES Runway (runway_id) ON DELETE CASCADE)";
+        try (Statement createWinchPositionTableStatement = connect.createStatement()) {
+            createWinchPositionTableStatement.execute(createWinchPositionString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
     public static boolean createTempParachute(Connection connect) {
-         TODO add functionality here
-        return false;
+        String createParachuteString = "CREATE TABLE tempParachute"
+                + "(parachute_id INT, "
+                + "name VARCHAR(30), "
+                + "lift FLOAT, "
+                + "drag FLOAT, "
+                + "weight FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (parachute_id))";
+        try (Statement createParachuteTableStatement = connect.createStatement()) {
+            createParachuteTableStatement.execute(createParachuteString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
@@ -1061,14 +1152,56 @@ public class DatabaseInitialization {
     
     
     public static boolean createTempDrum(Connection connect) {
-        // TODO add functionality here
-        return false;
+        String createDrumString = "CREATE TABLE tempDrum "
+                + "(drum_id INT, "
+                + "winch_id INT, "
+                + "drum_name VARCHAR(30), "
+                + "drum_number INT, "
+                + "core_diameter FLOAT, "
+                + "kfactor FLOAT, "
+                + "spring_const FLOAT, "
+                + "cable_length FLOAT, "
+                + "cable_density FLOAT, "
+                + "drum_system_emass FLOAT, "//Drum System Equivalent Mass
+                + "number_of_launches INT, "
+                + "maximum_working_tension FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (drum_id), "
+                + "FOREIGN KEY (winch_id) REFERENCES Winch (winch_id) ON DELETE CASCADE)";
+        try (Statement createDrumTableStatement = connect.createStatement()) {
+            createDrumTableStatement.execute(createDrumString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
     public static boolean createTempWinch(Connection connect) {
-        // TODO add functionality here
-        return false;
+        String createWinchString = "CREATE TABLE tempWinch "
+                + "(winch_id INT, "
+                + "name VARCHAR(30), "
+                + "owner VARCHAR(30), "
+                + "wc_version VARCHAR(10), "
+                + "w1 FLOAT, w2 FLOAT, w3 FLOAT, "
+                + "w4 FLOAT, w5 FLOAT, w6 FLOAT, "
+                + "w7 FLOAT, w8 FLOAT, w9 FLOAT, "
+                + "w10 FLOAT, w11 FLOAT, w12 FLOAT, "
+                + "w13 FLOAT, w14 FLOAT, w15 FLOAT, "
+                + "w16 FLOAT, "
+                + "meteorological_check_time INT, "
+                + "meteorological_verify_time INT, "
+                + "run_orientation_tolerance FLOAT, "
+                + "optional_info LONG VARCHAR, "
+                + "PRIMARY KEY (winch_id))";
+        try (Statement createDrumTableStatement = connect.createStatement()) {
+            createDrumTableStatement.execute(createWinchString);
+        } catch (SQLException e) {
+            logError(e);
+            return false;
+        }
+        return true;
     }
     
     
