@@ -105,19 +105,19 @@ public class DatabaseImporter {
                     System.out.println("Importing PROFILE");
                     importOperator();
                 } else if (fileName.contains("_DRUM_")) {
-                    System.out.println("Importing Drum");
+                    System.out.println("Importing DRUM");
                     importDrum();
                 } else if (fileName.contains("_WINCH_")) {
-                    System.out.println("Importing Winch");
+                    System.out.println("Importing WINCH");
                     importWinch();
                 } else if (fileName.contains("_PREVIOUSLAUNCHES_")) {
-                    System.out.println("Importing PreviousLaunches");
+                    System.out.println("Importing PREVIOUSLAUNCHES");
                     importPreviousLaunches();
                 } else if (fileName.contains("_PREVIOUSARIFIELDINFO_")) {
-                    System.out.println("Importing PreviousAirfield");
+                    System.out.println("Importing PREVIOUSAIRFIELDS");
                     importPreviousAirfieldInfo();
                 } else if (fileName.contains("_OPERATOR_")) {
-                    System.out.println("Importing operators");
+                    System.out.println("Importing OPERATORS");
                     importOperator();
                 }
             }
