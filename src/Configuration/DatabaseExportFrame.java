@@ -124,14 +124,15 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                             
                             for(String st : tempHolder)
                             {
-                                if(st.contains("AIRFIELD"))
+                                
+                                if(st.contentEquals("AIRFIELD with RUNWAY, GLIDER POSITION, WINCH POSITION"))
                                 {
                                     selectedTables.add("AIRFIELD");
                                     selectedTables.add("RUNWAY");
                                     selectedTables.add("GLIDERPOSITION");
                                     selectedTables.add("WINCHPOSITION");
                                 }
-                                else if(st.contains("WINCH"))
+                                else if(st.contentEquals("WINCH with DRUM"))
                                 {
                                     selectedTables.add("WINCH");
                                     selectedTables.add("DRUM");
@@ -149,8 +150,8 @@ public class DatabaseExportFrame extends javax.swing.JFrame {
                             if(!fileName.contains(".zip"))
                                 zipLocation += ".zip";
                             try{
-                            DatabaseExporter.exportDatabase(selectedTables, zipLocation);
-                            getFrame().dispose();
+                                DatabaseExporter.exportDatabase(selectedTables, zipLocation);
+                                getFrame().dispose();
                             }catch(Exception e) 
                             {
                                 JOptionPane.showMessageDialog(rootPane, "Couldn't export", "Error", JOptionPane.INFORMATION_MESSAGE);

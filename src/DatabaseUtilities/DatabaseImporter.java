@@ -45,9 +45,11 @@ public class DatabaseImporter {
             importTable(zipFile, importList);
 
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             new Alert(Alert.AlertType.ERROR, "Error creating file, Check Error Log").showAndWait();
             logError(e);
         } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e.getMessage());
             new Alert(Alert.AlertType.ERROR, "Error with the database, Check Error Log").showAndWait();
             logError(e);
         }
@@ -191,7 +193,13 @@ public class DatabaseImporter {
             String optional = gliderData[14];
             Sailplane importer = new Sailplane(id, reg, name, owner, type,
                     mgw, ew, iss, mws, mwls, mt, cra, cb, ms, optional);
-            DatabaseEntryInsert.addSailplaneToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addSailplaneToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeGlider();
         dropTable(connection, "TEMPGLIDER");       
@@ -216,7 +224,11 @@ public class DatabaseImporter {
             String optional = pilotData[9];
             Pilot importer = new Pilot(id, first, last, middle, weight,
                     capabilities, preference, eName, ePhone, optional);
-            DatabaseEntryInsert.addPilotToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addPilotToTempDB(importer);
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
             
         }
         DatabaseEntryInsert.mergePilot();
@@ -241,7 +253,13 @@ public class DatabaseImporter {
             int utc = Integer.parseInt(airfieldData[7]);
             String optional = airfieldData[8];
             Airfield importer = new Airfield(id, name, designator, ele, mv, lat, lng, utc, optional);
-            DatabaseEntryInsert.addAirfieldToTempDB(importer);
+            try{
+                 DatabaseEntryInsert.addAirfieldToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+           
         }
         DatabaseEntryInsert.mergeAirfield();
         dropTable(connection, "TEMPAIRFIELD");
@@ -260,7 +278,13 @@ public class DatabaseImporter {
             float mh = Float.parseFloat(runwayData[3]);
             String info = runwayData[4];
             Runway importer = new Runway(id, pid, name, mh, info);
-            DatabaseEntryInsert.addRunwayToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addRunwayToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeRunway();
         dropTable(connection, "TEMPRUNWAY");
@@ -281,7 +305,13 @@ public class DatabaseImporter {
             float lng = Float.parseFloat(gliderPositionData[5]);
             String optional = gliderPositionData[6];
             GliderPosition importer = new GliderPosition(id, pid, name, elv, lat, lng, optional);
-            DatabaseEntryInsert.addGliderPositionToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addGliderPositionToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeGliderPosition();
         dropTable(connection, "TEMPGLIDERPOSITION");
@@ -301,8 +331,12 @@ public class DatabaseImporter {
             float lng = Float.parseFloat(winchPositionData[5]);
             String optional = winchPositionData[6];
             WinchPosition importer = new WinchPosition(id, pid, name, elv, lat, lng, optional);
-
-            DatabaseEntryInsert.addWinchPositionToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addWinchPositionToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
         DatabaseEntryInsert.mergeWinchPosition();
         dropTable(connection, "TEMPWINCHPOSITION");
@@ -323,7 +357,13 @@ public class DatabaseImporter {
             float weight = Float.parseFloat(parachuteData[4]);
             String optional = parachuteData[5];
             Parachute importer = new Parachute(id, name, lift, drag, weight, optional);
-            DatabaseEntryInsert.addParachuteToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addParachuteToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeParachute();
         dropTable(connection, "TEMPPARACHUTE");
@@ -387,7 +427,13 @@ public class DatabaseImporter {
             String optional = drumData[11];
 
             Drum importer = new Drum(id, wid, name, number, cod, kf, sc, cal, cad, dse, nol, mwt, optional);
-            DatabaseEntryInsert.addDrumToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addDrumToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeDrum();
         dropTable(connection, "TEMPDRUM");
@@ -410,26 +456,32 @@ public class DatabaseImporter {
             float w3 = Float.parseFloat(winchData[6]);
             float w4 = Float.parseFloat(winchData[7]);
             float w5 = Float.parseFloat(winchData[8]);
-            float w6 = Float.parseFloat(winchData[4]);
-            float w7 = Float.parseFloat(winchData[5]);
-            float w8 = Float.parseFloat(winchData[6]);
-            float w9 = Float.parseFloat(winchData[7]);
-            float w10 = Float.parseFloat(winchData[8]);
-            float w11 = Float.parseFloat(winchData[4]);
-            float w12 = Float.parseFloat(winchData[5]);
-            float w13 = Float.parseFloat(winchData[6]);
-            float w14 = Float.parseFloat(winchData[7]);
-            float w15 = Float.parseFloat(winchData[8]);
-            float w16 = Float.parseFloat(winchData[8]);
-            int mtc = Integer.parseInt(winchData[9]);
-            int mvc = Integer.parseInt(winchData[9]);
-            float rot = Float.parseFloat(winchData[8]);
+            float w6 = Float.parseFloat(winchData[9]);
+            float w7 = Float.parseFloat(winchData[10]);
+            float w8 = Float.parseFloat(winchData[11]);
+            float w9 = Float.parseFloat(winchData[12]);
+            float w10 = Float.parseFloat(winchData[13]);
+            float w11 = Float.parseFloat(winchData[14]);
+            float w12 = Float.parseFloat(winchData[15]);
+            float w13 = Float.parseFloat(winchData[16]);
+            float w14 = Float.parseFloat(winchData[17]);
+            float w15 = Float.parseFloat(winchData[18]);
+            float w16 = Float.parseFloat(winchData[19]);
+            int mtc = Integer.parseInt(winchData[20]);
+            int mvc = Integer.parseInt(winchData[21]);
+            float rot = Float.parseFloat(winchData[22]);
             String optional = winchData[11];
 
             Winch importer = new Winch(id, name, owner, wcVer, w1, w2, w3, w4,
                     w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, mtc,
                     mvc, rot, optional);
-            DatabaseEntryInsert.addWinchToTempDB(importer);
+            try{
+                DatabaseEntryInsert.addWinchToTempDB(importer);
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         DatabaseEntryInsert.mergeWinch();
         dropTable(connection, "TEMPWINCH");
@@ -566,8 +618,12 @@ public class DatabaseImporter {
             PreviousLaunchesInsert.setFloat(50, Float.parseFloat(launchData[49]));
             PreviousLaunchesInsert.setFloat(51, Float.parseFloat(launchData[50]));
             PreviousLaunchesInsert.setInt(52, Integer.parseInt(launchData[51]));
-
-            PreviousLaunchesInsert.executeUpdate();
+            try{
+                PreviousLaunchesInsert.executeUpdate();
+            } catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }     
         }
         PreviousLaunchesInsert.close();
     }
@@ -631,8 +687,13 @@ public class DatabaseImporter {
             //Winch
             PreviousAirfieldInsert.setString(19, airfieldData[18]);
             PreviousAirfieldInsert.setString(20, airfieldData[19]);
-
-            PreviousAirfieldInsert.executeUpdate();
+            try{
+                PreviousAirfieldInsert.executeUpdate();
+            }catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            
         }
         PreviousAirfieldInsert.close();
     }

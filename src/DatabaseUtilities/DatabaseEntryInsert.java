@@ -91,7 +91,7 @@ public class DatabaseEntryInsert {
             pilotInsertStatement.close();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Could not add Pilot to Database, Check Error Log").showAndWait();
-            logError(e);
+            //logError(e);
             return false;
         }
         return true;
@@ -110,11 +110,11 @@ public class DatabaseEntryInsert {
                                 + "WHEN MATCHED THEN UPDATE SET "
                                     + "o.first_name = t.first_name, o.last_name = t.last_name, o.middle_name = t.middle_name, "
                                     + "o.flight_weight = t.flight_weight, o.capability = t.capability, o.preference = t.preference, "
-                                    + "o.emergency_contact_name = t.emergency_contact_name, o.emergency_contact_number = t.emergency_contact_number, "
+                                    + "o.emergency_contact_name = t.emergency_contact_name, o.emergency_contact_phone = t.emergency_contact_phone, "
                                     + "o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
                                     + "values (t.pilot_id, t.first_name, t.last_name, t.middle_name, t.flight_weight, t.capability, t.preference, "
-                                    + "t.emergency_contact_name, t.emergency_contact_number, t.optional_info)";
+                                    + "t.emergency_contact_name, t.emergency_contact_phone, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
@@ -282,7 +282,7 @@ public class DatabaseEntryInsert {
                                     + "o.indicated_stall_speed = t.indicated_stall_speed, o.max_winching_speed = t.max_winching_speed, "
                                     + "o.max_weak_link_strength = t.max_weak_link_strength, o.max_tension = t.max_tension, "
                                     + "o.cable_release_angle = t.cable_release_angle, o.carry_ballast = t.carry_ballast, "
-                                    + "o.multiple_seats = multiple_seats, o.optional_info = t.optional_info "
+                                    + "o.multiple_seats = t.multiple_seats, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
                                     + "values (t.glider_id, t.reg_number, t.common_name, t.owner, t.type, "
                                     + "t.max_gross_weight, t.empty_weight, t.indicated_stall_speed, "
@@ -383,10 +383,10 @@ public class DatabaseEntryInsert {
                                 + "WHEN MATCHED THEN UPDATE SET "
                                     + "o.name = t.name, o.designator = t.designator, "
                                     + "o.elevation = t.elevation, o.magnetic_variation = t.magnetic_variation, "
-                                    + "o.latitude = t.latitude, o.longitude = t.longituge, "
+                                    + "o.latitude = t.latitude, o.longitude = t.longitude, "
                                     + "o.utc_offset = t.utc_offset, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values (t.airfield_id, t.name, t.designator, t.elevation, t.magnetic_variation, t.latitude, t.longituge, "
+                                    + "values (t.airfield_id, t.name, t.designator, t.elevation, t.magnetic_variation, t.latitude, t.longitude, "
                                     + "t.utc_offset, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
@@ -487,8 +487,6 @@ public class DatabaseEntryInsert {
         return true;
     }
     
-    
-    
     /**
      * Adds the relevant data for a glider position to the database
      *
@@ -502,6 +500,39 @@ public class DatabaseEntryInsert {
             }
             PreparedStatement GliderPositionInsertStatement = connect.prepareStatement(
                     "INSERT INTO TempGliderPosition(glider_position_id, parent_id, "
+                    + "position_name, elevation, latitude, longitude, optional_info) "
+                    + "values (?,?,?,?,?,?,?)");
+            GliderPositionInsertStatement.setInt(1, theGliderPosition.getId());
+            GliderPositionInsertStatement.setInt(2, theGliderPosition.getRunwayParentId());
+            GliderPositionInsertStatement.setString(3, theGliderPosition.getName());
+            GliderPositionInsertStatement.setFloat(4, theGliderPosition.getElevation());
+            GliderPositionInsertStatement.setFloat(5, theGliderPosition.getLatitude());
+            GliderPositionInsertStatement.setFloat(6, theGliderPosition.getLongitude());
+            GliderPositionInsertStatement.setString(7, theGliderPosition.getOptionalInfo());
+            GliderPositionInsertStatement.executeUpdate();
+            GliderPositionInsertStatement.close();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Could not add Glider Position to Database, Check Error Log")
+                    .showAndWait();
+            logError(e);
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Adds the relevant data for a glider position to the database
+     *
+     * @param theGliderPosition the runway to add to the database
+     * @return false if add fails
+     */
+    public static boolean addGliderPositionToDB(GliderPosition theGliderPosition) {
+        try (Connection connect = connect()) {
+            if (connect == null) {
+                return false;
+            }
+            PreparedStatement GliderPositionInsertStatement = connect.prepareStatement(
+                    "INSERT INTO GliderPosition(glider_position_id, parent_id, "
                     + "position_name, elevation, latitude, longitude, optional_info) "
                     + "values (?,?,?,?,?,?,?)");
             GliderPositionInsertStatement.setInt(1, theGliderPosition.getId());
@@ -770,13 +801,13 @@ public class DatabaseEntryInsert {
                                     + "o.name = t.name, o.owner = t.owner, o.wc_version = t.wc_version, o.w1 = t.w1, o.w2 = t.w2, "
                                     + "o.w3 = t.w3, o.w4 = t.w4, o.w5 = t.w5, o.w6 = t.w6, o.w7 = t.w7, o.w8 = t.w8, o.w9 = t.w9, "
                                     + "o.w10 = t.w10, o.w11 = t.w11, o.w12 = t.w12, o.w13 = t.w13, o.w14 = t.w14, o.w15 = t.w15, "
-                                    + "o.w16 = t.w16, o.meteorlogical_check_time = t.meteorlogical_check_time, "
-                                    + "o.meteorlogical_verify_time = t.meteorlogical_verify_time, "
+                                    + "o.w16 = t.w16, o.meteorological_check_time = t.meteorological_check_time, "
+                                    + "o.meteorological_verify_time = t.meteorological_verify_time, "
                                     + "o.run_orientation_tolerance = t.run_orientation_tolerance, "
                                     + "o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values (t.winch_id, t.name, t.owner, t.wc_version, t.w1, t.w2, t.w3, t.w4, t.w5, t.w6, t.w7, t.w8, t.w9, t.w10 "
-                                    + "t.w11, t.w12, t.w13, t.w14, t.w15, t.w16, t.meteorlogical_check_time, t.meteorlogical_verify_time, "
+                                    + "values (t.winch_id, t.name, t.owner, t.wc_version, t.w1, t.w2, t.w3, t.w4, t.w5, t.w6, t.w7, t.w8, t.w9, t.w10, "
+                                    + "t.w11, t.w12, t.w13, t.w14, t.w15, t.w16, t.meteorological_check_time, t.meteorological_verify_time, "
                                     + "t.run_orientation_tolerance, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);

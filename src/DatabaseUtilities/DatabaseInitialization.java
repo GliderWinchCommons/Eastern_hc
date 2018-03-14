@@ -226,8 +226,7 @@ public class DatabaseInitialization {
                 + "emergency_contact_name VARCHAR(30), "
                 + "emergency_contact_phone VARCHAR(20), "
                 + "optional_info LONG VARCHAR, "
-                + "PRIMARY KEY (pilot_id), "
-                + "FOREIGN KEY (capability) REFERENCES Capability (capability_id))";
+                + "PRIMARY KEY (pilot_id))";
         try (Statement createPilotTableStatement = connect.createStatement()) {
             createPilotTableStatement.execute(createPilotString);
         } catch (SQLException e) {
@@ -555,6 +554,7 @@ public class DatabaseInitialization {
                 + "drum_number INT, "
                 + "core_diameter FLOAT, "
                 + "kfactor FLOAT, "
+                + "spring_const FLOAT, "
                 + "cable_length FLOAT, "
                 + "cable_density FLOAT, "
                 + "drum_system_emass FLOAT, " //Drum System Equivalent Mass
@@ -572,6 +572,7 @@ public class DatabaseInitialization {
         try (Statement createPastLaunchesInfoTableStatement = connect.createStatement()) {
             createPastLaunchesInfoTableStatement.execute(createPastLaunchesInfo);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             logError(e);
             return false;
         }
@@ -1005,7 +1006,7 @@ public class DatabaseInitialization {
     
     
     public static boolean createTempPilot(Connection connect) {
-         String createPilotString = "CREATE TABLE tempPilot"
+        String createPilotString = "CREATE TABLE tempPilot"
                 + "(pilot_id INT, "
                 + "first_name VARCHAR(30), "
                 + "last_name VARCHAR(30), "
@@ -1016,11 +1017,11 @@ public class DatabaseInitialization {
                 + "emergency_contact_name VARCHAR(30), "
                 + "emergency_contact_phone VARCHAR(20), "
                 + "optional_info LONG VARCHAR, "
-                + "PRIMARY KEY (pilot_id), "
-                + "FOREIGN KEY (capability) REFERENCES Capability (capability_id))";
+                + "PRIMARY KEY (pilot_id))";
         try (Statement createPilotTableStatement = connect.createStatement()) {
             createPilotTableStatement.execute(createPilotString);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             logError(e);
             return false;
         }
@@ -1206,12 +1207,13 @@ public class DatabaseInitialization {
     
     
     public static void dropTable(Connection connect, String tableName){
+        //Turns out you can't use prepared statements to drop tables. Ugh
         try{
-            PreparedStatement prepared = connect.prepareStatement("DROP TABLE ?");
-            prepared.setString(1, tableName);
-            prepared.executeUpdate();
-            prepared.close();
+            Statement stmt = connect.createStatement();
+            stmt.execute("DROP TABLE " + tableName);
+            stmt.close();
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             logError(e);
         }
     }

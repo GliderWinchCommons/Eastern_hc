@@ -94,10 +94,12 @@ public class DatabaseExporter {
 
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR, "File Not found").showAndWait();
+            System.out.println(e.getMessage());
             logError(e);
             return false;
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Error Exporting, Check Error Log").showAndWait();
+            System.out.println(e.getMessage());
             logError(e);
             return false;
         }
