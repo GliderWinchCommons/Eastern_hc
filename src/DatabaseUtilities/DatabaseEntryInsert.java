@@ -104,20 +104,24 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO Pilot o "
+                                + "USING tempPilot t "
+                                + "ON o.pilot_id = t.pilot_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.first_name = t.first_name, o.last_name = t.last_name, o.middle_name = t.middle_name, "
+                                    + "o.flight_weight = t.flight_weight, o.capability = t.capability, o.preference = t.preference, "
+                                    + "o.emergency_contact_name = t.emergency_contact_name, o.emergency_contact_number = t.emergency_contact_number, "
+                                    + "o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.pilot_id, t.first_name, t.last_name, t.middle_name, t.flight_weight, t.capability, t.preference, "
+                                    + "t.emergency_contact_name, t.emergency_contact_number, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Pilot to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -160,20 +164,20 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO Parachute o "
+                                + "USING tempParachute t "
+                                + "ON o.parachute_id = t.parachute_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.name = t.name, o.lift = t.lift, o.drag = t.drag, o.weight = t.weight, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.parachute_id, t.name, t.lift, t.drag, t.weight, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Parachute to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -278,7 +282,7 @@ public class DatabaseEntryInsert {
                                     + "o.indicated_stall_speed = t.indicated_stall_speed, o.max_winching_speed = t.max_winching_speed, "
                                     + "o.max_weak_link_strength = t.max_weak_link_strength, o.max_tension = t.max_tension, "
                                     + "o.cable_release_angle = t.cable_release_angle, o.carry_ballast = t.carry_ballast, "
-                                    + "o.multiple_seats = multiple_seats, o.optional_info = t.optional_info"
+                                    + "o.multiple_seats = multiple_seats, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
                                     + "values (t.glider_id, t.reg_number, t.common_name, t.owner, t.type, "
                                     + "t.max_gross_weight, t.empty_weight, t.indicated_stall_speed, "
@@ -291,7 +295,7 @@ public class DatabaseEntryInsert {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Glider to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -382,14 +386,15 @@ public class DatabaseEntryInsert {
                                     + "o.latitude = t.latitude, o.longitude = t.longituge, "
                                     + "o.utc_offset = t.utc_offset, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.airfield_id, t.name, t.designator, t.elevation, t.magnetic_variation, t.latitude, t.longituge, "
+                                    + "t.utc_offset, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Airfield to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -461,20 +466,21 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO Runway o "
+                                + "USING tempRunway t "
+                                + "ON o.runway_id = t.runway_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.parent_id = t.parent_id, o.runway_name = t.runway_name, o.magnetic_heading = t.magnetic_heading, "
+                                    + "o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.runway_id, t.parent_id, t.runway_name, t.magnetic_heading, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Runway to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -521,20 +527,22 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO GliderPosition o "
+                                + "USING tempGliderPosition t "
+                                + "ON o.glider_position_id = t.glider_position_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.parent_id = t.parent_id, o.position_name = t.position_name, o.elevation = t.elevation, "
+                                    + "o.latitude = t.latitude, o.longitude = t.longitude, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.glider_position_id, t.parent_id, t.position_name, t.elevation, t.latitude, "
+                                    + "t.longitude, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge GliderPosition to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -613,20 +621,22 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO WinchPosition o "
+                                + "USING tempWinchPosition t "
+                                + "ON o.winch_position_id = t.winch_position_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.parent_id = t.parent_id, o.position_name = t.position_name, o.elevation = t.elevation, "
+                                    + "o.latitude = t.latitude, o.longitude = t.longitude, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.winch_position_id, t.parent_id, t.position_name, t.elevation, "
+                                    + "t.latitude, t.longitude, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge WinchPosition to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -753,20 +763,28 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO Winch o "
+                                + "USING tempWinch t "
+                                + "ON o.winch_id = t.winch_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.name = t.name, o.owner = t.owner, o.wc_version = t.wc_version, o.w1 = t.w1, o.w2 = t.w2, "
+                                    + "o.w3 = t.w3, o.w4 = t.w4, o.w5 = t.w5, o.w6 = t.w6, o.w7 = t.w7, o.w8 = t.w8, o.w9 = t.w9, "
+                                    + "o.w10 = t.w10, o.w11 = t.w11, o.w12 = t.w12, o.w13 = t.w13, o.w14 = t.w14, o.w15 = t.w15, "
+                                    + "o.w16 = t.w16, o.meteorlogical_check_time = t.meteorlogical_check_time, "
+                                    + "o.meteorlogical_verify_time = t.meteorlogical_verify_time, "
+                                    + "o.run_orientation_tolerance = t.run_orientation_tolerance, "
+                                    + "o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.winch_id, t.name, t.owner, t.wc_version, t.w1, t.w2, t.w3, t.w4, t.w5, t.w6, t.w7, t.w8, t.w9, t.w10 "
+                                    + "t.w11, t.w12, t.w13, t.w14, t.w15, t.w16, t.meteorlogical_check_time, t.meteorlogical_verify_time, "
+                                    + "t.run_orientation_tolerance, t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Winch to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -859,20 +877,26 @@ public class DatabaseEntryInsert {
             if (connect == null) {
                 return false;
             }
-            String statement = "MERGE INTO Glider o "
-                                + "USING tempGlider t "
-                                + "ON o.glider_id = t.glider_id "
+            String statement = "MERGE INTO Drum o "
+                                + "USING tempDrum t "
+                                + "ON o.drum_id = t.drum_id "
                                 + "WHEN MATCHED THEN UPDATE SET "
-                                    + "o.reg_number = t.reg_number, "
+                                    + "o.winch_id = t.winch_id, o.drum_name = t.drum_name, "
+                                    + "o.drum_number = t.drum_number, o.core_diameter = t.core_diameter, o.kfactor = t.kfactor, "
+                                    + "o.spring_const = t.spring_const, o.cable_length = t.cable_length, o.cable_density = t.cable_density, "
+                                    + "o.drum_system_emass = t.drum_system_emass, o.number_of_launches = t.number_of_launches, "
+                                    + "o.maximum_working_tension = t.maximum_working_tension, o.optional_info = t.optional_info "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values ()";
+                                    + "values (t.drum_id, t.winch_id, t.drum_name, t.drum_number, t.core_diameter, t.kfactor, t.spring_const, "
+                                    + "t.cable_length, t.cable_density, t.drum_system_emass, t.number_of_launches, t.maximum_working_tension, "
+                                    + "t.optional_info)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Glider to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Drum to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
@@ -1033,14 +1057,15 @@ public class DatabaseEntryInsert {
                                     + "o.admin = t.admin, o.salt = t.salt, o.hash = t.hash, "
                                     + "o.optional_info = t.optional_info, o.unitsettings = t.unitsettings "
                                 + "WHEN NOT MATCHED THEN INSERT "
-                                    + "values (t.operator_id, t.first_name, t.middle_name, t.last_name, t.admin, t.salt, t.hash, t.optional_info, t.unitsettings)";
+                                    + "values (t.operator_id, t.first_name, t.middle_name, t.last_name, t.admin, t.salt, t.hash, "
+                                    + "t.optional_info, t.unitsettings)";
             Statement mergeStatement = connect.createStatement();
             mergeStatement.execute(statement);
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not add Operator to Database, Check Error Log").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Could not merge Operator to Database, Check Error Log").showAndWait();
             //logError(e);
             return false;
         }
