@@ -59,7 +59,7 @@
                   <Font name="SansSerif Bold" size="16.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#EditPilotButton_Click" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Pilot" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="editBtn" alignment="CENTER" mnemonicParsing="false" onAction="#EditPilotButton_Click" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Pilot" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font name="SansSerif Bold" size="16.0" />
                </font>

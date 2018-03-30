@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,7 +16,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="gliderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="gliderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <TableView fx:id="gliderTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <columns>
@@ -45,8 +49,8 @@
          </rowConstraints>
          <children>
             <Label alignment="CENTER" style="-fx-font-size: 3.16em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Glider" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#NewSailplaneButton_Click" prefHeight="60.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Glider" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#EditSailplaneButton_Click" prefHeight="60.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />              
+            <Button fx:id="addBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#NewSailplaneButton_Click" prefHeight="60.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="New Glider" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Button fx:id="editBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#EditSailplaneButton_Click" prefHeight="60.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Edit Glider" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />              
             <Button fx:id="gliderFinishButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#GliderFinishButton_Click" prefHeight="60.0" prefWidth="100.0" style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Finish" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
             <GridPane prefHeight="101.0" prefWidth="468.0" GridPane.columnSpan="7" GridPane.rowIndex="2" GridPane.rowSpan="3">
               <columnConstraints>
@@ -194,20 +198,20 @@
                   <Label style="-fx-font-size: 1.5em; -fx-font-weight: Bold; -fx-font-family: SansSerif;" text="Ballast Weight:" GridPane.rowIndex="10" />
                   <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <children>
-                        <TextField fx:id="baggageField" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
-                        <Label fx:id="baggageUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
+                        <TextField id="passengerWeight" fx:id="passengerWeightField" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+                        <Label id="passengerWeightUnits" fx:id="totalPassengerWeightUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                      <children>
-                        <TextField fx:id="passengerWeightField" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
-                        <Label fx:id="totalPassengerWeightUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
+                        <TextField id="ballast" fx:id="ballastField" alignment="CENTER" maxHeight="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+                        <Label id="ballestUnits" fx:id="ballastUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                      <children>
-                        <TextField fx:id="ballastField" alignment="CENTER" maxHeight="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
-                        <Label fx:id="ballastUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
+                        <TextField id="baggage" fx:id="baggageField" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" />
+                        <Label id="baggageUnits" fx:id="baggageUnitLabel" style="-fx-font-size: 1.16em; -fx-font-family: SansSerif;" text="Unit" />
                      </children>
                   </FlowPane>
                </children>

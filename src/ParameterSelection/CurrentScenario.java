@@ -11,6 +11,7 @@ import Configuration.ProfileManagementFrame;
 import Configuration.UnitLabelUtilities;
 import DataObjects.*;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -285,6 +286,9 @@ public class CurrentScenario implements Observer {
         Color completeBackground = Color.web("#27e833");
         //Luminious Vivid Amber
         Color incompleteBackground = Color.web("#FFBF00");
+        
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
 
         Pilot pilot = currentData.getCurrentPilot();
         if (pilot == null) {
@@ -307,8 +311,8 @@ public class CurrentScenario implements Observer {
             nNumberLabel.setText(glider.getRegNumber());
             //totalWeightLabel.setText();
             //totalWeightUnitsLabel.setText("");
-            maxWeakLinkStrengthLabel.setText(Float.toString(glider.getMaxWeakLinkStrength()));
-            //maxWeakLinkStrengthUnitsLabel.setText("");
+            maxWeakLinkStrengthLabel.setText(df.format(glider.getMaxWeakLinkStrength()));
+            maxWeakLinkStrengthUnitsLabel.setText("°");  //Set to degrees for now
             gliderGridBackground.setFill(completeBackground);
         }
         Airfield airfield = currentData.getCurrentAirfield();

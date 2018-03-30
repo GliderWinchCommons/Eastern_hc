@@ -7,12 +7,14 @@ import Configuration.UnitLabelUtilities;
 import DataObjects.CurrentDataObjectSet;
 import DataObjects.Pilot;
 import DatabaseUtilities.DatabaseEntrySelect;
+import java.text.DecimalFormat;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
@@ -41,10 +43,12 @@ public class PilotPanel implements Observer {
     Label flightWeightLabel;
     @FXML
     Label capabilityLabel;
-
     @FXML
     Label flightWeightUnitLabel;
 
+    @FXML
+    Button editBtn;
+    
     private int flightWeightUnitsID;
 
     public PilotPanel(SubScene editPilotPanel, GridPane scenarioHomePane, AddEditPilotPanel editFrame) {
@@ -108,15 +112,22 @@ public class PilotPanel implements Observer {
 
     public void loadData() {
         if (currentData.getCurrentPilot() != null) {
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+            
             pilotNameLabel.setText(currentData.getCurrentPilot().getFirstName() + " " + currentData.getCurrentPilot().getMiddleName() + " " + currentData.getCurrentPilot().getLastName());
-            flightWeightLabel.setText(currentData.getCurrentPilot().getWeight() * UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID) + " " + UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
+            flightWeightLabel.setText(df.format(currentData.getCurrentPilot().getWeight() * UnitConversionRate.convertWeightUnitIndexToFactor(flightWeightUnitsID)) + " " + UnitLabelUtilities.weightUnitIndexToString(flightWeightUnitsID));
             capabilityLabel.setText("" + currentData.getCurrentPilot().getCapability());
             preferenceSlider.adjustValue(currentData.getCurrentPilot().getPreference());
+            
+            editBtn.setDisable(false);
         } else {
             pilotNameLabel.setText("Pilot Name");
             flightWeightLabel.setText("N/A");
             capabilityLabel.setText("N/A");
             preferenceSlider.adjustValue(0.5);
+            
+            editBtn.setDisable(true);
         }
     }
 

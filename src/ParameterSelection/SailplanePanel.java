@@ -9,11 +9,14 @@ import DataObjects.CurrentLaunchInformation;
 import DataObjects.Sailplane;
 import DatabaseUtilities.DatabaseEntrySelect;
 import java.awt.Color;
+import java.text.DecimalFormat;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -82,6 +85,12 @@ public class SailplanePanel implements Observer {
     private int ballastWeightUnitsID;
     private int baggageWeightUnitsID;
     private int passengerWeightUnitsID;
+    
+    //Buttons
+    @FXML
+    Button editBtn;
+    @FXML
+    Button addBtn;
 
     @FXML
     TextField baggageField;
@@ -118,23 +127,59 @@ public class SailplanePanel implements Observer {
                 currentData.setCurrentGlider((Sailplane) newValue);
             }
         });
-        gliderTable.getSelectionModel().selectFirst();
+        
+        ballastField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                    ballastField.setText(oldValue);
+                }
+            }
+        });
+        
+        baggageField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                    baggageField.setText(oldValue);
+                }
+            }
+        });
+        
+        passengerWeightField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                    passengerWeightField.setText(oldValue);
+                }
+            }
+        });
+        
+        //gliderTable.getSelectionModel().selectFirst();
         loadData();
-        setupUnits();
+        //setupUnits();
     }
 
     public void loadData() {
         if (currentData.getCurrentSailplane() != null) {
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+            
             registrationNumberLabel.setText("" + currentData.getCurrentSailplane().getRegNumber());
             ownerLabel.setText("" + currentData.getCurrentSailplane().getOwner());
-            emptyWeightLabel.setText("" + currentData.getCurrentSailplane().getEmptyWeight());
-            maxGrossWeightLabel.setText("" + currentData.getCurrentSailplane().getMaxGrossWeight());
-            indicatedStallSpeedLabel.setText("" + currentData.getCurrentSailplane().getIndicatedStallSpeed());
-            maxWinchingSpeedLabel.setText("" + currentData.getCurrentSailplane().getMaxWinchingSpeed());
-            maxWeakLinkStrengthLabel.setText("" + currentData.getCurrentSailplane().getMaxWeakLinkStrength());
-            maxTensionLabel.setText("" + currentData.getCurrentSailplane().getMaxTension());
-            cableReleaseAngleLabel.setText("" + currentData.getCurrentSailplane().getCableReleaseAngle());
-        } else {
+            emptyWeightLabel.setText("" + df.format(currentData.getCurrentSailplane().getEmptyWeight() * UnitConversionRate.convertWeightUnitIndexToFactor(emptyWeightUnitsID)));
+            maxGrossWeightLabel.setText("" + df.format(currentData.getCurrentSailplane().getMaxGrossWeight() * UnitConversionRate.convertWeightUnitIndexToFactor(maxGrossWeightUnitsID)));
+            indicatedStallSpeedLabel.setText("" + df.format(currentData.getCurrentSailplane().getIndicatedStallSpeed() * UnitConversionRate.convertWeightUnitIndexToFactor(stallSpeedUnitsID)));
+            maxWinchingSpeedLabel.setText("" + df.format(currentData.getCurrentSailplane().getMaxWinchingSpeed() * UnitConversionRate.convertWeightUnitIndexToFactor(winchingSpeedUnitsID)));
+            maxWeakLinkStrengthLabel.setText("" + df.format(currentData.getCurrentSailplane().getMaxWeakLinkStrength() * UnitConversionRate.convertWeightUnitIndexToFactor(weakLinkStrengthUnitsID)));
+            maxTensionLabel.setText("" + df.format(currentData.getCurrentSailplane().getMaxTension() * UnitConversionRate.convertWeightUnitIndexToFactor(tensionUnitsID)));
+            cableReleaseAngleLabel.setText("" + df.format(currentData.getCurrentSailplane().getCableReleaseAngle()));
+            
+            editBtn.setDisable(false);
+            setupUnits();
+        } 
+        else {
+            //Name Labels
             registrationNumberLabel.setText("");
             ownerLabel.setText("");
             emptyWeightLabel.setText("");
@@ -144,13 +189,26 @@ public class SailplanePanel implements Observer {
             maxWeakLinkStrengthLabel.setText("");
             maxTensionLabel.setText("");
             cableReleaseAngleLabel.setText("");
+            
+            //Unit Labels
+            emptyWeightUnitLabel.setText("");
+            maxGrossWeightUnitLabel.setText("");
+            indicatedStallSpeedUnitLabel.setText("");
+            ballastUnitLabel.setText("");
+            baggageUnitLabel.setText("");
+            totalPassengerWeightUnitLabel.setText("");
+            maxTensionUnitLabel.setText("");
+            maxWeakLinkStrengthUnitLabel.setText("");
+            maxWinchingSpeedUnitLabel.setText("");
+            
+            editBtn.setDisable(true);
         }
     }
 
     @Override
     public void update() {
         loadData();
-        setupUnits();
+        //setupUnits();
         Sailplane selected = (Sailplane) gliderTable.getSelectionModel().getSelectedItem();
         Sailplane currSailplane = currentData.getCurrentSailplane();
         if (currSailplane == null && selected != null) {
@@ -181,13 +239,13 @@ public class SailplanePanel implements Observer {
 
     @FXML
     public void NewSailplaneButton_Click(ActionEvent e) {
-        editFrame.edit(null);
+        editFrame.edit(null, false);
         editSailplanePanel.toFront();
     }
 
     @FXML
     public void EditSailplaneButton_Click(ActionEvent e) {
-        editFrame.edit(currentData.getCurrentSailplane());
+        editFrame.edit(currentData.getCurrentSailplane(), true);
         editSailplanePanel.toFront();
     }
 
