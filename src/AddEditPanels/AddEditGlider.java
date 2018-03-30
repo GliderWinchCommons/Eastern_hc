@@ -51,6 +51,9 @@ public class AddEditGlider extends AddEditPanel {
     private Label weakLinkStrengthUnitsLabel;
     @FXML
     private Label winchingSpeedUnitsLabel;
+    @FXML
+    private Label addEditLabel;
+    
     private int emptyWeightUnitsID;
     private int maxGrossWeightUnitsID;
     private int stallSpeedUnitsID;
@@ -89,12 +92,19 @@ public class AddEditGlider extends AddEditPanel {
         super(gliderPane);
     }
 
-    public void edit(Sailplane sailplaneEdited) {
+    public void edit(Sailplane sailplaneEdited, boolean edit) {
         currentData = CurrentDataObjectSet.getCurrentDataObjectSet();
         setupUnits();
 
         isEditEntry = sailplaneEdited != null;
         currentGlider = sailplaneEdited;
+        
+        if(edit) {
+            addEditLabel.setText("Edit Glider");
+        }
+        else {
+            addEditLabel.setText("Add Glider");
+        }
 
         if (isEditEntry) {
             nNumberField.setText(sailplaneEdited.getRegNumber());
